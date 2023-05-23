@@ -8,7 +8,7 @@ public class Elder extends User{
     private Gender gender;
 
 
-    public Elder(String username, int ID, long phoneNumber, Date DOB, Gender gender) {
+    public Elder(String username, String ID, String phoneNumber, Date DOB, Gender gender) {
         super(username, ID, phoneNumber);
         this.DOB = DOB;
         this.gender = gender;

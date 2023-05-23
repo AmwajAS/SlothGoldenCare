@@ -2,11 +2,11 @@ package com.example.slothgoldencare;
 
 public class User {
     private String username;
-    private int ID;
-    private long phoneNumber;
+    private String ID;
+    private String phoneNumber;
 
 
-    public User(String username, int ID, long phoneNumber) {
+    public User(String username, String ID, String phoneNumber) {
         this.username = username;
         this.ID = ID;
         this.phoneNumber = phoneNumber;
@@ -20,19 +20,19 @@ public class User {
         this.username = username;
     }
 
-    public int getID() {
+    public String getID() {
         return ID;
     }
 
-    public void setID(int ID) {
+    public void setID(String ID) {
         this.ID = ID;
     }
 
-    public long getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(long phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 }
