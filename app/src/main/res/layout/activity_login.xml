@@ -18,11 +18,12 @@
 
 
     <EditText
-        android:id="@+id/username3"
+        android:id="@+id/userid"
         android:layout_width="356dp"
         android:layout_height="81dp"
         android:background="@drawable/edit_fields_border"
         android:inputType="text"
+        android:layout_marginTop="50dp"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
         android:selectAllOnFocus="true"
@@ -32,37 +33,25 @@
         app:layout_constraintTop_toTopOf="parent"
         android:text="ID"/>
 
-    <EditText
-        android:id="@+id/phone"
-        android:layout_width="356dp"
-        android:layout_height="74dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/edit_fields_border"
-        android:hint="Phone Number"
-        android:imeActionLabel="@string/action_sign_in_short"
-        android:imeOptions="actionDone"
-        android:inputType="text"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:selectAllOnFocus="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
+    <Button
+        android:id="@+id/loginBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="LOGIN" />
 
     <Button
-        android:id="@+id/login2"
-        android:layout_width="wrap_content"
+        android:id="@+id/elderBtn"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="64dp"
-        android:enabled="false"
-        android:text="LOGIN"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password"
-        app:layout_constraintVertical_bias="0.2" />
+        android:text="SIGNUP FOR ELDER" />
+
+    <Button
+        android:id="@+id/userBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SIGNUP FOR RELATED"
+        android:layout_marginTop="20dp"
+
+        />
 
 </LinearLayout>
