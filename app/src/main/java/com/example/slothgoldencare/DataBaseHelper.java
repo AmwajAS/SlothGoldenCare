@@ -33,13 +33,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String ELDER_GENDER = "gender";
 
     /*
-    creating the DB Tables:
+    creating the DB Tables Queries:
      */
     private static final String  CREATE_DB_QUERY_USER = "CREATE TABLE " + DB_TABLE + " ( " + USER_ID + "INTEGER PRIMARY KEY, " + USER_ID + " TEXT NOT NULL, " +
             USER_NAME + " TEXT NOT NULL, " + USER_PHONE + " TEXT NOT NULL, " + USER_PHONE + " UNIQUE "+ " );";
 
     private static final String CREATE_DB_QUERY_ELDER = "CREATE TABLE " + ELDER_TBL + " ( " + ELDER_ID + " INTEGER PRIMARY KEY, " +
-            ELDER_NAME + " TEXT NOT NULL, " + ELDER_PHONE + " TEXT NOT NULL UNIQUE, "  + ELDER_GENDER + " TEXT NOT NULL CHECK(" +
+            ELDER_NAME + " TEXT NOT NULL, " + ELDER_PHONE + " TEXT NOT NULL UNIQUE, " +  ELDER_DOB  + " TEXT NOT NULL CHECK(" +
+            ELDER_DOB + " <= date('now')), "  + ELDER_GENDER + " TEXT NOT NULL CHECK(" +
             ELDER_GENDER + " IN ('Male', 'Female', 'Other'))" + " );";
 
 
@@ -54,7 +55,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-       db.execSQL(CREATE_DB_QUERY_ELDER);
+     //  db.execSQL(CREATE_DB_QUERY_ELDER);
        // db.execSQL(CREATE_DB_QUERY_USER);
 
 
@@ -96,7 +97,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         contentValues.put(ELDER_ID, String.valueOf(elder.getID().toString()));
         contentValues.put(ELDER_NAME, String.valueOf(elder.getUsername().toString()));
         contentValues.put(ELDER_PHONE, String.valueOf(elder.getPhoneNumber().toString()));
-        //contentValues.put(ELDER_DOB, String.valueOf(elder.getDOB().toString()));
+        contentValues.put(ELDER_DOB, String.valueOf(elder.formatDateOfBirth(elder.getDOB())));
         contentValues.put(ELDER_GENDER, String.valueOf(elder.getGender().toString()));
 
         long res = db.insert(ELDER_TBL,null, contentValues);
@@ -144,6 +145,21 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+
+    public void deleteUserById(String userId) {
+        SQLiteDatabase db = getWritableDatabase();
+        String whereClause = "ID = ?";
+        String[] whereArgs = {String.valueOf(userId)};
+        int rowsDeleted = db.delete("ELDERS", whereClause, whereArgs);
+        db.close();
+
+        // Optional: Check the number of rows deleted for verification
+        if (rowsDeleted > 0) {
+            // Rows deleted successfully
+        } else {
+            // No rows deleted or an error occurred
+        }
+    }
 
 
 

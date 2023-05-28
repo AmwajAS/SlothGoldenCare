@@ -1,6 +1,9 @@
 package com.example.slothgoldencare;
 
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class Elder extends User{
 
@@ -8,8 +11,8 @@ public class Elder extends User{
     private Gender gender;
 
 
-    public Elder(String username, String ID, String phoneNumber, Date DOB, Gender gender) {
-        super(username, ID, phoneNumber);
+    public Elder(String ID, String username, String phoneNumber, Date DOB,Gender gender) {
+        super(ID, username, phoneNumber);
         this.DOB = DOB;
         this.gender = gender;
     }
@@ -29,4 +32,10 @@ public class Elder extends User{
     public void setGender(Gender gender) {
         this.gender = gender;
     }
+
+    public String formatDateOfBirth(Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        return dateFormat.format(date);
+    }
+
 }
