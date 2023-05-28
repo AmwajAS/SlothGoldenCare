@@ -28,7 +28,7 @@
             android:ems="10"
             android:inputType="number"
             android:singleLine="true"
-            android:text="ID"
+            android:hint="ID"
             android:paddingStart="12dp"/>
 
         <EditText
@@ -39,7 +39,7 @@
             android:background="@drawable/edit_fields_border"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Name"
+            android:hint="Name"
             android:paddingStart="12dp"/>
 
         <EditText
@@ -50,7 +50,7 @@
             android:background="@drawable/edit_fields_border"
             android:ems="10"
             android:inputType="phone"
-            android:text="Phone"
+            android:hint="Phone"
             android:paddingStart="12dp"/>
 
     </LinearLayout>
