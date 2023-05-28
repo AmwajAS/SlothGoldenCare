@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignupActivity">
+    tools:context=".UserSignupActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -53,67 +53,22 @@
             android:text="Phone"
             android:paddingStart="12dp"/>
 
-        <EditText
-            android:id="@+id/userDOB"
-            android:layout_width="295dp"
-            android:layout_height="66dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/edit_fields_border"
-            android:ems="10"
-            android:inputType="date"
-            android:text="Date of Birth"
-            android:paddingStart="12dp"/>
-
     </LinearLayout>
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/signupBtn"
         android:layout_width="178dp"
         android:layout_height="56dp"
-        android:layout_marginTop="39dp"
         android:layout_marginBottom="24dp"
         android:background="@drawable/button_border"
-        android:fontFamily="@font/sigmar_one"
+        android:fontFamily="sans-serif"
+        android:onClick="insertData"
         android:text="SIGN UP"
         android:textColor="#143A84"
         android:textSize="25sp"
-        android:onClick="btnSignUpPressed"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout4"
-        android:layout_width="411dp"
-        android:layout_height="95dp"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/button3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
-
-        <ImageButton
-            android:id="@+id/male"
-            android:layout_width="wrap_content"
-            android:layout_height="93dp"
-            android:layout_weight="1"
-            android:contentDescription="maleImg"
-            app:srcCompat="@drawable/man"
-            android:background="@drawable/button_border"
-             />
-
-        <ImageButton
-            android:id="@+id/female"
-            android:layout_width="wrap_content"
-            android:layout_height="95dp"
-            android:layout_weight="1"
-            android:contentDescription="femaleImg"
-            app:srcCompat="@drawable/woman"
-            android:background="@drawable/button_border"
-          />
-    </LinearLayout>
-
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

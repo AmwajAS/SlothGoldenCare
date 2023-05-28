@@ -1,14 +1,15 @@
 package com.example.slothgoldencare;
 
 public class User {
-    private String username;
     private String ID;
+    private String username;
+
     private String phoneNumber;
 
 
-    public User(String username, String ID, String phoneNumber) {
-        this.username = username;
+    public User(String ID, String username, String phoneNumber) {
         this.ID = ID;
+        this.username = username;
         this.phoneNumber = phoneNumber;
     }
 

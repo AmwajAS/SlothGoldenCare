@@ -1,9 +1,9 @@
 package com.example.slothgoldencare;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class homePageActivity extends AppCompatActivity {
+public class HomePageActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

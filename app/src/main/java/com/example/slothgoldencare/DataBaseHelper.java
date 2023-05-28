@@ -1,21 +1,47 @@
 package com.example.slothgoldencare;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.annotation.Nullable;
+import android.util.Log;
+
+import androidx.annotation.Nullable;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
-
+    private static final String TAG = "DBHelper";
     static final String DB_NAME = "GOLDEN_CARE.DB";
     static final int DB_VERSION = 1;
+    /*
+    Users Table info.
+     */
     static final String DB_TABLE = "USERES";
+    private static final String COLUMN_ID = "rowID";
     static final String USER_ID = "_ID";
     static final String USER_NAME = "user_name";
     static final String USER_PHONE = "user_phone";
 
-    private static final String  CREATE_DB_QUERY = "CREATE TABLE " + DB_TABLE + " ( " + USER_ID + "INTEGER PRIMARY KEY, " + USER_ID + " TEXT NOT NULL, " +
-            USER_NAME + " TEXT NOT NULL, " + USER_PHONE + " TEXT NOT NULL " + " );";
+  /*
+    Elders Table info.
+     */
+    static final String ELDER_TBL = "ELDERS";
+    static final String ELDER_ID = "ID";
+    static final String ELDER_NAME = "name";
+    static final String ELDER_PHONE = "phone";
+    static final String ELDER_DOB = "dateOfBirth";
+    static final String ELDER_GENDER = "gender";
+
+    /*
+    creating the DB Tables:
+     */
+    private static final String  CREATE_DB_QUERY_USER = "CREATE TABLE " + DB_TABLE + " ( " + USER_ID + "INTEGER PRIMARY KEY, " + USER_ID + " TEXT NOT NULL, " +
+            USER_NAME + " TEXT NOT NULL, " + USER_PHONE + " TEXT NOT NULL, " + USER_PHONE + " UNIQUE "+ " );";
+
+    private static final String CREATE_DB_QUERY_ELDER = "CREATE TABLE " + ELDER_TBL + " ( " + ELDER_ID + " INTEGER PRIMARY KEY, " +
+            ELDER_NAME + " TEXT NOT NULL, " + ELDER_PHONE + " TEXT NOT NULL UNIQUE, "  + ELDER_GENDER + " TEXT NOT NULL CHECK(" +
+            ELDER_GENDER + " IN ('Male', 'Female', 'Other'))" + " );";
+
 
 
 
@@ -24,16 +50,107 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         super(context, DB_NAME,  null , DB_VERSION);
     }
 
+
+
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_DB_QUERY);
+       db.execSQL(CREATE_DB_QUERY_ELDER);
+       // db.execSQL(CREATE_DB_QUERY_USER);
+
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + DB_TABLE);
+        //db.execSQL("DROP TABLE IF EXISTS " + ELDER_TBL);
 
     }
+    /*
+    this method inserting data to the USER table in the DB.
+     */
+
+    public  boolean addUserData(User user){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        //String id = "";
+        contentValues.put(USER_ID, String.valueOf(user.getID().toString()));
+        contentValues.put(USER_NAME, String.valueOf(user.getUsername().toString()));
+        contentValues.put(USER_PHONE, String.valueOf(user.getPhoneNumber().toString()));
+
+        long res = db.insert(DB_TABLE,null, contentValues);
+        if (res == -1){
+            return false;
+        }else{
+            Log.i(TAG, "This is a debug message "+ user.getID().toString() + user.getUsername().toString() + user.getPhoneNumber().toString()); // Debug log
+
+            return true;
+        }
+    }
+
+    public  boolean addElderData(Elder elder){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        onCreate(db);
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(ELDER_ID, String.valueOf(elder.getID().toString()));
+        contentValues.put(ELDER_NAME, String.valueOf(elder.getUsername().toString()));
+        contentValues.put(ELDER_PHONE, String.valueOf(elder.getPhoneNumber().toString()));
+        //contentValues.put(ELDER_DOB, String.valueOf(elder.getDOB().toString()));
+        contentValues.put(ELDER_GENDER, String.valueOf(elder.getGender().toString()));
+
+        long res = db.insert(ELDER_TBL,null, contentValues);
+        if (res == -1){
+            return false;
+        }else{
+            Log.i(TAG, "This is a debug message "+ elder.getID().toString() + elder.getUsername().toString() + elder.getPhoneNumber().toString()); // Debug log
+
+            return true;
+        }
+    }
+
+    public boolean checkUserID(String uid) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM USERES WHERE _ID=?", new String[]{uid});
+        if(cursor.getCount() > 0) {
+            Log.i(TAG, "This is a debug message " + " uid is exist"); // Debug log
+            return true;
+        }
+        else{
+            Log.i(TAG, "This is a debug message " + " uid is NOT exist"); // Debug log
+
+            return false;
+        }
+
+    }
+
+
+    public void deleteAllData() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(DB_TABLE, null, null);
+        db.close();
+    }
+
+
+    // Method to drop the table
+    public void dropTable() {
+        // Get a writable database
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Drop the table
+        db.execSQL("DROP TABLE IF EXISTS " + ELDER_TBL);
+
+        // Close the database connection
+        db.close();
+    }
+
+
+
+
+
+
+
+
+
 }
 
