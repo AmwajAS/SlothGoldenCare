@@ -111,7 +111,7 @@
                     <ImageView
                         android:layout_width="60dp"
                         android:layout_height="60dp"
-                        android:src="@drawable/baseline_settings_24" />
+                        android:src="@drawable/baseline_games_24" />
 
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
