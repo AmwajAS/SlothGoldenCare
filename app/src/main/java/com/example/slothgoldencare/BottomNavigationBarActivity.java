@@ -4,24 +4,27 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import android.content.Intent;
 import android.os.Bundle;
 import com.example.slothgoldencare.databinding.ActivityBottomNavigationBarBinding;
 
 
 public class BottomNavigationBarActivity extends AppCompatActivity {
     ActivityBottomNavigationBarBinding binding;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityBottomNavigationBarBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        replaceFragment(new HomeFragment());
+        replaceFragment(new ProfileFragment());
 
         binding.bottomNavigationBar.setOnItemSelectedListener(item -> {
+            Intent i;
         switch (item.getItemId()){
             case R.id.home:
-                replaceFragment(new HomeFragment());
+                i = new Intent(this, HomePageActivity.class);
+                startActivity(i);
                 break;
             case R.id.profile:
                 replaceFragment(new ProfileFragment());
