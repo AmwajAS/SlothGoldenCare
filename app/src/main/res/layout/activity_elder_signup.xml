@@ -142,7 +142,7 @@
         </androidx.cardview.widget.CardView>
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/signupBtn"
             android:layout_width="304dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
