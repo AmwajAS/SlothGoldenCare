@@ -12,7 +12,13 @@
         android:theme="@style/Theme.SlothGoldenCare"
         tools:targetApi="31">
         <activity
+            android:name=".AddRelated"
+            android:exported="false" />
+        <activity
             android:name=".BottomNavigationBarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ContactsActivity"
             android:exported="false" />
         <activity
             android:name=".ElderSignupActivity"
