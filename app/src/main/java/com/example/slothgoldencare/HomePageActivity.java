@@ -33,9 +33,12 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v){
         Intent i;
         switch (v.getId()){
-            case R.id.d1: i = new Intent(this, BottomNavigationBarActivity.class);
+            case R.id.d1: i = new Intent(this, MedicalServicesActivity.class);
             startActivity(i);
             break;
+            case R.id.d2: i = new Intent(this, BottomNavigationBarActivity.class);
+                startActivity(i);
+                break;
 
         }
 
