@@ -1,6 +1,7 @@
 package com.example.slothgoldencare;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -26,10 +27,10 @@ public class UserSignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_signup);
         userID = findViewById(R.id.userID);
-        userName =  findViewById(R.id.userName);
+        userName = findViewById(R.id.userName);
         userPhone = findViewById(R.id.userPhone);
         dbManager = new DataBaseManager(this);
-        try{
+        try {
             dbManager.open();
         } catch (SQLDataException e) {
             throw new RuntimeException(e);
@@ -38,19 +39,23 @@ public class UserSignupActivity extends AppCompatActivity {
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG,"asdxawcswc");
                 String newID = userID.getText().toString();
                 String newName = userName.getText().toString();
                 String newPhone = userPhone.getText().toString();
-                Log.i(TAG, "This is a debug message"+ userID.toString() + userName.toString() + userPhone.toString()); // Debug log
+                //Log.i(TAG, "This is a debug message" + userID.toString() + userName.toString() + userPhone.toString()); // Debug log
 
-                if((newID.length() != 0) && (newName.length() != 0) && (newPhone.length()!= 0)){
-
-                   User user = new User(newID, newName, newPhone);
-                    insertData(user);
-                    userID.setText("");
-                    userName.setText("");
-                    userPhone.setText("");
+                if ((newID.length() != 0) && (newName.length() != 0) && (newPhone.length() != 0)) {
+                    if (!ElderSignupActivity.checkIDValidation(newID)) {
+                        SimpleDialog.showAlertDialog(UserSignupActivity.this, R.string.alert_title_signup, R.string.alert_message_id);
+                    } else if (ElderSignupActivity.validatePhoneNumber(newPhone)) {
+                        SimpleDialog.showAlertDialog(UserSignupActivity.this, R.string.alert_title_signup, R.string.alert_message_phone);
+                    } else {
+                        User user = new User(newID, newName, newPhone);
+                        insertData(user);
+                        userID.setText("");
+                        userName.setText("");
+                        userPhone.setText("");
+                    }
                 }
             }
         });
@@ -59,17 +64,17 @@ public class UserSignupActivity extends AppCompatActivity {
     }
 
 
-    public void insertData(User newEntry){
+    public void insertData(User newEntry) {
         boolean insertData;
-        try{
+        try {
             insertData = dbHelper.addUserData(newEntry);
 
         } catch (NullPointerException e) {
             throw new RuntimeException(e);
         }
-        if(insertData){
+        if (insertData) {
             toastMessage("Data Successfully inserted");
-        }else{
+        } else {
             toastMessage("Something Went Wrong");
 
         }
