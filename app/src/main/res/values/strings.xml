@@ -31,6 +31,10 @@
     <string name="alert_message_id">ID Number consists of 9 Digits Only.</string>
     <string name="alert_message_phone">Phone Number Must be 10 digits and starts with \'05\'</string>
     <string name="alert_message_null">Please Fill all the Fields</string>
+    <string name="login">Login</string>
+    <string name="elderSignup">SIGNUP FOR ELDER</string>
+    <string name="userSignup">SIGNUP FOR Relative</string>
+    <string name="id">ID</string>
 
     <string-array name="Relation">
         <item>Choose Your Relation</item>

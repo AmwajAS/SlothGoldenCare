@@ -21,9 +21,10 @@
         android:id="@+id/userid"
         android:layout_width="356dp"
         android:layout_height="81dp"
-        android:background="@drawable/edit_fields_border"
+        android:backgroundTint="#143a84"
         android:inputType="text"
         android:layout_marginTop="50dp"
+        android:layout_margin="10dp"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
         android:selectAllOnFocus="true"
@@ -31,27 +32,54 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:hint="ID"/>
+        android:hint="@string/id"/>
 
-    <Button
-        android:id="@+id/loginBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="LOGIN" />
+    <LinearLayout
+        android:layout_width="378dp"
+        android:layout_height="94dp"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/elderBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="SIGNUP FOR ELDER" />
+        <Button
+            android:id="@+id/loginBtn"
+            android:layout_width="311dp"
+            android:layout_height="59dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="#143a84"
+            android:fontFamily="sans-serif-black"
+            android:text="@string/login"
+            android:textColor="#fff" />
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/userBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="SIGNUP FOR RELATED"
-        android:layout_marginTop="20dp"
+    <LinearLayout
+        android:layout_width="370dp"
+        android:layout_height="68dp"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal">
 
-        />
+        <Button
+            android:id="@+id/elderBtn"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:background="#143a84"
+            android:fontFamily="sans-serif-black"
+            android:text="@string/elderSignup"
+            android:textColor="#fff"
+
+            />
+
+        <Button
+            android:id="@+id/userBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/buttonradios"
+            android:fontFamily="sans-serif-black"
+            android:text="@string/userSignup"
+            android:textColor="#143a84"
+
+            />
+    </LinearLayout>
 
 </LinearLayout>
