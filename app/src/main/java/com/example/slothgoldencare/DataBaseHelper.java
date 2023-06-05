@@ -9,6 +9,8 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import java.util.Date;
+
 public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DBHelper";
     static final String DB_NAME = "GOLDEN_CARE.DB";
@@ -119,11 +121,104 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
         else{
             Log.i(TAG, "This is a debug message " + " uid is NOT exist"); // Debug log
-
             return false;
         }
-
     }
+    public boolean checkElderID(String uid) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM ELDERS WHERE ID=?", new String[]{uid});
+        if(cursor.getCount() > 0) {
+            Log.i(TAG, "This is a debug message " + " Elder ID is exist"); // Debug log
+            return true;
+        }
+        else{
+            Log.i(TAG, "This is a debug message " + " Elder ID is NOT exist"); // Debug log
+            return false;
+        }
+    }
+
+    public User findUserByID(String uid) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String[] projection = {
+                "_ID",
+                "user_name",
+                "user_phone"
+        };
+
+        String selection = "_ID = ?";
+        String[] selectionArgs = { uid };
+
+        Cursor cursor = db.query(
+                "USERES",
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        User user = null;
+        if (cursor != null && cursor.moveToFirst()) {
+            String userID = cursor.getString(cursor.getColumnIndexOrThrow("_ID"));
+            String name = cursor.getString(cursor.getColumnIndexOrThrow("user_name"));
+            String phone = cursor.getString(cursor.getColumnIndexOrThrow("user_phone"));
+            user = new User(userID, name, phone);
+        }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+
+        return user;
+    }
+
+    public Elder findElderByID(String uid) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String[] projection = {
+                "ID",
+                "name",
+                "phone",
+                "dateOfBirth",
+                "gender"
+
+        };
+
+        String selection = "ID = ?";
+        String[] selectionArgs = { uid };
+
+        Cursor cursor = db.query(
+                "ELDERS",
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        Elder elder = null;
+        if (cursor != null && cursor.moveToFirst()) {
+            String userID = cursor.getString(cursor.getColumnIndexOrThrow("ID"));
+            String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+            String phone = cursor.getString(cursor.getColumnIndexOrThrow("phone"));
+            String date = cursor.getString(cursor.getColumnIndexOrThrow("dateOfBirth"));
+            String gender = cursor.getString(cursor.getColumnIndexOrThrow("gender"));
+
+            elder = new Elder(userID, name, phone, ElderSignupActivity.convertStringIntoDate(date) , Elder.GenderConvertor(gender));
+        }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+
+        return elder;
+    }
+
 
 
     public void deleteAllData() {

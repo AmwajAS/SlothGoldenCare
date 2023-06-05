@@ -35,6 +35,9 @@
     <string name="elderSignup">SIGNUP FOR ELDER</string>
     <string name="userSignup">SIGNUP FOR Relative</string>
     <string name="id">ID</string>
+    <string name="alert_title_login">Login</string>
+    <string name="alert_message_idEmtpy">Please Enter your ID number</string>
+    <string name="alert_message_failed">Failed To Login, Please make sure to sign-up First</string>
 
     <string-array name="Relation">
         <item>Choose Your Relation</item>

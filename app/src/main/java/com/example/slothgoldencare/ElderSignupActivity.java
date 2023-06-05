@@ -78,7 +78,6 @@ public class ElderSignupActivity extends AppCompatActivity {
 
                 if ((newID.length() != 0) && (newName.length() != 0) && (newPhone.length() != 0) && (newDate != null) && (elderGender != null)) {
                     if (!checkIDValidation(newID)) {
-                        SimpleDialog dialog = null;
                         //show AlertDialog;
                         SimpleDialog.showAlertDialog(ElderSignupActivity.this, R.string.alert_title_signup, R.string.alert_message_id);
 
@@ -167,7 +166,7 @@ public class ElderSignupActivity extends AppCompatActivity {
     }
 
 
-    public Date convertStringIntoDate(String dateString) {
+    public static Date convertStringIntoDate(String dateString) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Date date = null;
         try {

@@ -15,6 +15,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText userid;
     DataBaseHelper dbHelper;
+    public static User user;
+    public static Elder elder;
 
 
     @Override
@@ -30,27 +32,30 @@ public class LoginActivity extends AppCompatActivity {
 
         loginBtn.setOnClickListener(v -> {
             String uid = userid.getText().toString();
-            if (uid.equals("")) { //check if the id number / field is empty.
-                Toast.makeText(LoginActivity.this, "Please enter your ID", Toast.LENGTH_SHORT).show();
-                Log.i(TAG, "This is a debug message " + uid); // Debug log
+            if (uid.equals("")) {
+                //check if the id number / field is empty.
+                SimpleDialog.showAlertDialog(LoginActivity.this, R.string.alert_title_login, R.string.alert_message_idEmtpy);
 
             } else {
-             //   if (checkIDValidation(uid)) {
-                    if (dbHelper.checkUserID(uid)) {
-                        Log.i(TAG, "This is a debug message " + " Login Successfully"); // Debug log
-                        Toast.makeText(LoginActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getApplicationContext(), HomePageActivity.class);
-                        startActivity(intent);
-                    } else {
-                        Log.i(TAG, "This is a debug message " + " Failed to Login"); // Debug log
+                //   if (checkIDValidation(uid)) {
+                if ((user = dbHelper.findUserByID(uid)) != null) {
+                   // Log.i(TAG, "This is a debug message " + " Login Successfully" + user.getUsername()); // Debug log
+                    Toast.makeText(LoginActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), HomePageActivity.class);
+                    startActivity(intent);
+                } else if ((elder = dbHelper.findElderByID(uid)) != null) {
+                    Intent intent = new Intent(getApplicationContext(), HomePageActivity.class);
+                    startActivity(intent);
 
-                        Toast.makeText(LoginActivity.this, "Failed to Login", Toast.LENGTH_SHORT).show();
+                } else {
+                    //Log.i(TAG, "This is a debug message " + " Failed to Login"); // Debug log
+                    SimpleDialog.showAlertDialog(LoginActivity.this, R.string.alert_title_login, R.string.alert_message_failed);
+                    Toast.makeText(LoginActivity.this, "Failed to Login", Toast.LENGTH_SHORT).show();
 
-                    }
+                }
                 //}
             }
         });
-
 
         elderBtn.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), ElderSignupActivity.class);
@@ -61,7 +66,6 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-
     }
 
     /*
@@ -71,19 +75,4 @@ public class LoginActivity extends AppCompatActivity {
     public boolean checkIDValidation(String idV) {
         return idV.matches("[0-9]{9}");
     }
-
-
-//    public int checkUserType(User user){
-//        if(user instanceof Elder){
-//            return 1;
-//        }else {
-//            return 0;
-//        }
-//    }
-
-
-//    private void toastMessage(String message) {
-//        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-//    }
-
 }

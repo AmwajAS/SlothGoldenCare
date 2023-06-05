@@ -38,4 +38,14 @@ public class Elder extends User{
         return dateFormat.format(date);
     }
 
+    public static Gender GenderConvertor(String gender){
+        switch(gender){
+            case "Female":
+                return Gender.Female;
+            case "Male":
+                return Gender.Male;
+        }
+        return null;
+    }
+
 }
