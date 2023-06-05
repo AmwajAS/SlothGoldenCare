@@ -12,6 +12,26 @@
     <string name="title_activity_home_page">homePageActivity</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="alert_dialog_two_buttons_title">Are you sure?</string>
+    <string name="alert_dialog_ok">OK</string>
+    <string name="alert_dialog_hide">Hide</string>
+    <string name="alert_dialog_something">Something</string>
+    <string name="alert_dialog_cancel">Cancel</string>
+    <string name="alert_dialog_progress_text2">145/305 KB</string>
+    <string name="select_dialog">Header title</string>
+    <string name="select_dialog_show">List dialog</string>
+    <string name="dialog_message">delete?</string>
+    <string name="dialog_title">Confirm</string>
+    <string name="ok">ok</string>
+    <string name="cancel">cancel</string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
+    <string name="alert_title">Sign-up</string>
+    <string name="alert_title_signup">sign-up</string>
+    <string name="alert_message_id">ID Number consists of 9 Digits Only.</string>
+    <string name="alert_message_phone">Phone Number Must be 10 digits and starts with \'05\'</string>
+    <string name="alert_message_null">Please Fill all the Fields</string>
+
     <string-array name="Relation">
         <item>Choose Your Relation</item>
         <item>Doctor</item>
@@ -20,4 +40,5 @@
         <item>Volunteer</item>
         <item>Friend</item>
     </string-array>
+
 </resources>
