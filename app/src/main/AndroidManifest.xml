@@ -12,7 +12,10 @@
         android:theme="@style/Theme.SlothGoldenCare"
         tools:targetApi="31">
         <activity
-            android:name=".MedicalServicesActivity"
+            android:name=".MedicalServices"
+            android:exported="false" />
+        <activity
+            android:name=".cardView1InHomePage"
             android:exported="false" />
         <activity
             android:name=".AddRelated"

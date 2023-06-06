@@ -14,7 +14,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
-import com.example.slothgoldencare.R;
+
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -67,11 +67,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
         Intent i;
         switch (v.getId()) {
             case R.id.d1:
-                i = new Intent(this, MedicalServicesActivity.class);
-                startActivity(i);
-                break;
-            case R.id.d2:
-                i = new Intent(this, BottomNavigationBarActivity.class);
+                i = new Intent(this, cardView1InHomePage.class);
                 startActivity(i);
                 break;
             case R.id.d5:
@@ -80,6 +76,10 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                 progressDialog.setCancelable(false); // Set whether the dialog can be canceled
                 progressDialog.show();
                 retrieveUserLocation();
+                break;
+            case R.id.d6:
+                i = new Intent(this, BottomNavigationBarActivity.class);
+                startActivity(i);
                 break;
         }
     }

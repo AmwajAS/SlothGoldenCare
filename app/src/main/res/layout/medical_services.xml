@@ -1,16 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/MedicalServicesLinearLay"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/dark_gradient"
+    android:orientation="vertical"
     tools:context=".HomePageActivity">
 
 
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:fontFamily="@font/sigmar_one"
+        android:gravity="center"
+        android:text="Medical  Services"
+        android:textColor="@color/purple_500" />
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageView"
-        android:layout_width="224dp"
+        android:layout_width="match_parent"
         android:layout_height="121dp"
         android:src="@drawable/mcabi"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
@@ -20,10 +31,24 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.514" />
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:fontFamily="@font/sigmar_one"
+        android:gravity="center"
+        android:text="Waht are you looking for?"
+        android:textColor="@color/purple_500"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.519"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
     <LinearLayout
         android:id="@+id/linearLayout3"
-        android:layout_width="389dp"
-        android:layout_height="428dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="115dp"
         android:layout_marginEnd="16dp"
@@ -36,16 +61,16 @@
         app:layout_constraintVertical_bias="0.717">
 
         <LinearLayout
-            android:layout_width="377dp"
-            android:layout_height="186dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginBottom="10dp"
             android:orientation="horizontal"
             android:weightSum="2">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/d1"
-                android:layout_width="62dp"
-                android:layout_height="120dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
@@ -79,8 +104,8 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/d2"
-                android:layout_width="57dp"
-                android:layout_height="120dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
@@ -89,7 +114,7 @@
                 app:cardMaxElevation="6dp">
 
                 <LinearLayout
-                    android:layout_width="155dp"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:orientation="vertical">
@@ -104,7 +129,6 @@
                         android:id="@+id/textView5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
                         android:fontFamily="@font/sigmar_one"
                         android:text="Diagnosis "
                         android:textColor="@color/white" />
@@ -116,14 +140,14 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal"
             android:weightSum="2">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/d3"
-                android:layout_width="57dp"
-                android:layout_height="121dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
@@ -134,7 +158,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -157,10 +181,11 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/d4"
-                android:layout_width="wrap_content"
-                android:layout_height="120dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
                 android:layout_weight="1"
                 app:cardBackgroundColor="#0091EA"
                 app:cardCornerRadius="6dp"
@@ -168,7 +193,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:orientation="vertical">
 
@@ -197,30 +222,4 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:fontFamily="@font/sigmar_one"
-        android:text="Waht are you looking for?"
-        android:textColor="@color/purple_500"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.519"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="393dp"
-        android:layout_height="19dp"
-        android:layout_marginTop="32dp"
-        android:fontFamily="@font/sigmar_one"
-        android:text="Medical Services"
-        android:textColor="@color/purple_500"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

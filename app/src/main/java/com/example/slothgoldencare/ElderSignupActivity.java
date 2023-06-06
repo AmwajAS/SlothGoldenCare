@@ -85,7 +85,7 @@ public class ElderSignupActivity extends AppCompatActivity {
                         SimpleDialog.showAlertDialog(ElderSignupActivity.this, R.string.alert_title_signup, R.string.alert_message_phone);
 
                     } else {
-                        ConfirmationDialog.showConfirmationDialog(ElderSignupActivity.this, R.string.alert_title_conf, R.string.alert_message_IDConf);
+                        //       ConfirmationDialog.showConfirmationDialog(ElderSignupActivity.this, R.string.alert_title_conf, R.string.alert_message_IDConf);
 
                         Elder elder = new Elder(newID, newName, newPhone, newDate, elderGender);
                         insertData(elder);

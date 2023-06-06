@@ -7,6 +7,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+
 import com.example.slothgoldencare.databinding.ActivityBottomNavigationBarBinding;
 
 
@@ -17,7 +20,13 @@ public class BottomNavigationBarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityBottomNavigationBarBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        replaceFragment(new ProfileFragment());
+        replaceFragment(new SettingsFragment());
+
+        // Hide a specific menu item
+        Menu menu = binding.bottomNavigationBar.getMenu();
+        MenuItem itemToHide = menu.findItem(R.id.currentView);
+        itemToHide.setVisible(false);
+
 
         binding.bottomNavigationBar.setOnItemSelectedListener(item -> {
             Intent i;
@@ -38,7 +47,6 @@ public class BottomNavigationBarActivity extends AppCompatActivity {
     }
 
     private void replaceFragment(Fragment fragment){
-
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, fragment);
