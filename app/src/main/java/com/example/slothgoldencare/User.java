@@ -3,6 +3,15 @@ package com.example.slothgoldencare;
 public class User {
     private String ID;
     private String username;
+    private int imgID;
+
+    public void setImgID(int imgID) {
+        this.imgID = imgID;
+    }
+
+    public int getImgID() {
+        return imgID;
+    }
 
     private String phoneNumber;
 

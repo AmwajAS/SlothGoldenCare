@@ -17,6 +17,7 @@ public class LoginActivity extends AppCompatActivity {
     DataBaseHelper dbHelper;
     public static User user;
     public static Elder elder;
+    public static boolean flag;
 
 
     @Override
@@ -40,10 +41,12 @@ public class LoginActivity extends AppCompatActivity {
                 //   if (checkIDValidation(uid)) {
                 if ((user = dbHelper.findUserByID(uid)) != null) {
                    // Log.i(TAG, "This is a debug message " + " Login Successfully" + user.getUsername()); // Debug log
+                    flag = true;
                     Toast.makeText(LoginActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), HomePageActivity.class);
                     startActivity(intent);
                 } else if ((elder = dbHelper.findElderByID(uid)) != null) {
+                    flag = false;
                     Intent intent = new Intent(getApplicationContext(), HomePageActivity.class);
                     startActivity(intent);
 
@@ -74,5 +77,17 @@ public class LoginActivity extends AppCompatActivity {
      */
     public boolean checkIDValidation(String idV) {
         return idV.matches("[0-9]{9}");
+    }
+
+    public static User getUser() {
+        return user;
+    }
+
+    public static Elder getElder() {
+        return elder;
+    }
+
+    public static boolean getFlag() {
+        return flag;
     }
 }

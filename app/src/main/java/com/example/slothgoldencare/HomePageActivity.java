@@ -6,14 +6,19 @@ import androidx.cardview.widget.CardView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 public class HomePageActivity extends AppCompatActivity implements View.OnClickListener {
     private CardView D1,D2,D3,D4,D5,D6;
+    private TextView username;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
 
+
+        username = findViewById(R.id.username);
+        setUsernameField();
         D1=(CardView) findViewById(R.id.d1);
         D2=(CardView) findViewById(R.id.d2);
         D3=(CardView) findViewById(R.id.d3);
@@ -27,6 +32,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
         D4.setOnClickListener( (View.OnClickListener)this);
         D5.setOnClickListener( (View.OnClickListener)this);
         D6.setOnClickListener( (View.OnClickListener)this);
+
     }
 
     @Override
@@ -40,6 +46,16 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                 startActivity(i);
                 break;
 
+        }
+
+    }
+
+    public void setUsernameField() {
+        if(LoginActivity.getFlag()){
+            username.setText(LoginActivity.getUser().getUsername());
+        }
+        else{
+            username.setText(LoginActivity.getElder().getUsername());
         }
 
     }
