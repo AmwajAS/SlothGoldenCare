@@ -31,4 +31,12 @@ public class AddRelated extends AppCompatActivity implements AdapterView.OnItemS
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
+
+
+    public void showAlertDialog(View view){
+
+    }
+
+
 }
