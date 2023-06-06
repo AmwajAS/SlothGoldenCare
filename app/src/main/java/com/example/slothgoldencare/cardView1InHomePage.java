@@ -34,10 +34,6 @@ public class cardView1InHomePage extends AppCompatActivity implements View.OnCli
                     LayoutInflater l= getLayoutInflater();
                     View view = l.inflate(R.layout.medical_services,null );
                     f.addView(view);
-                  /*  FrameLayout f= (FrameLayout)findViewById(R.id.frame_layout);
-                    LayoutInflater l=(LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-                    View view = l.inflate(R.layout.activity_check,null ,false);
-                    f.addView(view);*/
                     break;
 
                 case R.id.home:
@@ -59,10 +55,13 @@ public class cardView1InHomePage extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         Intent i;
         switch (v.getId()) {
-           /* case R.id.d1:
-                i = new Intent(this, MainActivity.class);
-                startActivity(i);
+            case R.id.d1:
+                replaceFragment(new DoctorsFragment());
+                break;
+            /*case R.id.d2:
+                replaceFragment();
                 break;*/
+
         }
     }
 
