@@ -38,6 +38,5 @@ public class MainActivity extends AppCompatActivity {
         logo.setAnimation(bottomAnim);
 
 
-
     }
 }

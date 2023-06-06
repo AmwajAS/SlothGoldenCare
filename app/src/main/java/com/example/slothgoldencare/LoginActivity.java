@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
                    // Log.i(TAG, "This is a debug message " + " Login Successfully" + user.getUsername()); // Debug log
                     flag = true;
                     Toast.makeText(LoginActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getApplicationContext(), HomePageActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), UserHomePageActivity.class);
                     startActivity(intent);
                 } else if ((elder = dbHelper.findElderByID(uid)) != null) {
                     flag = false;

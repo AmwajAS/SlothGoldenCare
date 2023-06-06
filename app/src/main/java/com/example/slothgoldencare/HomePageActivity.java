@@ -141,5 +141,6 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
         intent.setData(Uri.fromParts("package", gamePackageName, null));
         startActivity(intent);
     }
+
 }
 
