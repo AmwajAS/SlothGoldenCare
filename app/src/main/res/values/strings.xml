@@ -22,7 +22,7 @@
     <string name="select_dialog_show">List dialog</string>
     <string name="dialog_message">delete?</string>
     <string name="dialog_title">Confirm</string>
-    <string name="ok">ok</string>
+    <string name="ok">OK</string>
     <string name="cancel">cancel</string>
     <string name="yes">yes</string>
     <string name="no">no</string>
@@ -45,7 +45,9 @@
     <string name="Games">Games</string>
     <string name="Settings">Settings</string>
     <string name="Contacts">Contacts</string>
-
+    <string name="Tracking">Tracker</string>
+    <string name="Delete">Delete</string>
+    <string name="Star">Star</string>
 
 
     <string-array name="Relation">
