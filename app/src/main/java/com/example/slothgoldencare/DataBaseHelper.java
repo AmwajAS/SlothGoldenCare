@@ -1,15 +1,19 @@
 package com.example.slothgoldencare;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DBHelper";
@@ -254,6 +258,29 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         } else {
             // No rows deleted or an error occurred
         }
+    }
+
+    public List<User> getUsers() {
+        List<User> userList = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query("USERES", null, null, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") String id = cursor.getString(cursor.getColumnIndex("_ID"));
+                @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex("user_name"));
+                @SuppressLint("Range") String phone = cursor.getString(cursor.getColumnIndex("user_phone"));
+
+                User user = new User(id, name, phone);
+                userList.add(user);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return userList;
     }
 
 

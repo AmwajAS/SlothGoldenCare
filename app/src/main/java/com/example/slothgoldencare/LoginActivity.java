@@ -37,7 +37,11 @@ public class LoginActivity extends AppCompatActivity {
                 //check if the id number / field is empty.
                 SimpleDialog.showAlertDialog(LoginActivity.this, R.string.alert_title_login, R.string.alert_message_idEmtpy);
 
-            } else {
+            }
+            else if(uid.equals("admin")){
+                Intent intent = new Intent(getApplicationContext(),AdministratorActivity.class);
+                startActivity(intent);
+            }else {
                 //   if (checkIDValidation(uid)) {
                 if ((user = dbHelper.findUserByID(uid)) != null) {
                    // Log.i(TAG, "This is a debug message " + " Login Successfully" + user.getUsername()); // Debug log

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:orientation="vertical"
+              android:layout_height="match_parent">
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:id="@+id/user_line"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal">
+
+        <ImageView android:layout_width="wrap_content"
+                   android:layout_height="match_parent"
+                   android:src="@drawable/baseline_person_24"/>
+
+        <TextView
+                android:id="@+id/user_name"
+                android:layout_width="wrap_content"
+                  android:textSize="20dp"
+                  android:layout_height="wrap_content"
+                  android:text="Name:"/>
+
+        <Space android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1"/>
+
+        <ImageButton
+                android:id="@+id/edit_user_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_menu_edit"
+                android:background="@color/white"/>
+
+        <ImageButton
+                android:id="@+id/delete_user_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_delete"
+                android:background="@color/white"/>
+
+    </LinearLayout>
+    <LinearLayout
+            android:id="@+id/user_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/user_line">
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/user_line">
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="User ID:"/>
+            <EditText android:layout_width="match_parent"
+                      android:id="@+id/user_id_text"
+                      android:layout_height="wrap_content"
+            android:hint="ID"/>
+        </LinearLayout>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/user_line">
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Name:"/>
+            <EditText android:layout_width="match_parent"
+                      android:id="@+id/user_name_text"
+                      android:layout_height="wrap_content"
+                      android:hint="Name"/>
+        </LinearLayout>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/user_line">
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Phone Number:"/>
+
+            <EditText android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/user_phone_text"
+                      android:hint="phone number"/>
+        </LinearLayout>
+        <Button android:id="@+id/save_user_changes"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center" android:layout_height="wrap_content"
+        android:text="Save"/>
+    </LinearLayout>
+</LinearLayout>

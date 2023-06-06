@@ -52,6 +52,10 @@
             android:name=".SplashScreen"
             android:exported="false" />
         <activity
+            android:name=".AdministratorActivity"
+            android:exported="false">
+        </activity>
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
