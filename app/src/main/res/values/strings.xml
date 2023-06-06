@@ -38,6 +38,15 @@
     <string name="alert_title_login">Login</string>
     <string name="alert_message_idEmtpy">Please Enter your ID number</string>
     <string name="alert_message_failed">Failed To Login, Please make sure to sign-up First</string>
+    <string name="alert_title_conf">ID Confirmation</string>
+    <string name="alert_message_IDConf">Whenever you Sign up, You CANT update or change your ID number, Make sure its Correct</string>
+    <string name="Health">Health</string>
+    <string name="Todo">To-Do</string>
+    <string name="Games">Games</string>
+    <string name="Settings">Settings</string>
+    <string name="Contacts">Contacts</string>
+
+
 
     <string-array name="Relation">
         <item>Choose Your Relation</item>

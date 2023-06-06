@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.provider.Settings;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,7 +14,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
-
 import com.example.slothgoldencare.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
