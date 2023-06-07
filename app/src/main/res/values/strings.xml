@@ -51,7 +51,6 @@
     <string name="ADD">ADD</string>
     <string name="UserPhone">User Phone</string>
 
-
     <string-array name="Relation">
         <item>Choose Your Relation</item>
         <item>Doctor</item>
@@ -60,5 +59,15 @@
         <item>Volunteer</item>
         <item>Friend</item>
     </string-array>
+
+    <string name="CurrentPage">CurrentPage</string>
+    <string name="Home">Home</string>
+    <string name="Profile">Profile</string>
+
+    <string name="Doctors">Doctors</string>
+    <string name="Medications">Medications</string>
+    <string name="DiagnosisAndTreatments">Diagnosis and Treatments</string>
+    <string name="HeathStatus">Health Status</string>
+
 
 </resources>
