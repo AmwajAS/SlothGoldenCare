@@ -1,10 +1,13 @@
 package com.example.slothgoldencare;
 
+import android.nfc.Tag;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,12 +15,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdministratorActivity extends AppCompatActivity implements View.OnClickListener{
+public class AdministratorActivity extends AppCompatActivity implements View.OnClickListener {
+    private static final String TAG = "ADMIN";
+
     private ListView usersList;
     private ListView eldersList;
     private List<User> users;
     private List<Elder> elders;
     DataBaseHelper dbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +37,7 @@ public class AdministratorActivity extends AppCompatActivity implements View.OnC
         elders = dbHelper.getElders();
 
         //users.add()
-        ArrayAdapter<User> userAdapter = new ArrayAdapter<User>(this, R.layout.administrator_user_item, users){
+        ArrayAdapter<User> userAdapter = new ArrayAdapter<User>(this, R.layout.administrator_user_item, users) {
             @NonNull
             @Override
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -60,7 +66,14 @@ public class AdministratorActivity extends AppCompatActivity implements View.OnC
                         user.setID(idText.getText().toString());
                         user.setUsername(nameText.getText().toString());
                         user.setPhoneNumber(phoneText.getText().toString());
+
+                        String newID = idText.getText().toString();
+                        String newName = nameText.getText().toString();
+                        String newPhone = phoneText.getText().toString();
+
+
                         Toast.makeText(AdministratorActivity.this, "User details changed successfully", Toast.LENGTH_SHORT).show();
+                        dbHelper.updateUserInfo(newID, newName, newPhone);
                     }
                 });
 
@@ -84,13 +97,17 @@ public class AdministratorActivity extends AppCompatActivity implements View.OnC
                             idText.setText(user.getID());
                             nameText.setText(user.getUsername());
                             phoneText.setText(user.getPhoneNumber());
+
+                            Toast.makeText(AdministratorActivity.this, "User details changed successfully", Toast.LENGTH_SHORT).show();
+
+
                         }
                     }
                 });
                 return convertView;
             }
         };
-        ArrayAdapter<Elder> elderAdapter = new ArrayAdapter<Elder>(this, R.layout.administrator_user_item, elders){
+        ArrayAdapter<Elder> elderAdapter = new ArrayAdapter<Elder>(this, R.layout.administrator_user_item, elders) {
             @NonNull
             @Override
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -119,6 +136,16 @@ public class AdministratorActivity extends AppCompatActivity implements View.OnC
                         elder.setID(idText.getText().toString());
                         elder.setUsername(nameText.getText().toString());
                         elder.setPhoneNumber(phoneText.getText().toString());
+
+
+                        String newID = idText.getText().toString();
+                        String newName = nameText.getText().toString();
+                        String newPhone = phoneText.getText().toString();
+
+                        Log.i(TAG, "This is a new elder message " + newID + newName + newPhone + elder.formatDateOfBirth(elder.getDOB())+ elder.getGender().toString()); // Debug log
+                        dbHelper.updateElderInfo(newID, newName, newPhone, elder.formatDateOfBirth(elder.getDOB()), elder.getGender().toString());
+                        Log.i(TAG, "This is a new elder message " + elder.formatDateOfBirth(elder.getDOB()) ); // Debug log
+
                         Toast.makeText(AdministratorActivity.this, "User details changed successfully", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -162,6 +189,7 @@ public class AdministratorActivity extends AppCompatActivity implements View.OnC
     public void onPointerCaptureChanged(boolean hasCapture) {
         super.onPointerCaptureChanged(hasCapture);
     }
+
     private void deleteUser(User user) {
         dbHelper.deleteUserById(user.getID());
     }

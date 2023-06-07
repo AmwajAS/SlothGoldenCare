@@ -169,7 +169,7 @@ public class ElderSignupActivity extends AppCompatActivity {
 
 
     public static Date convertStringIntoDate(String dateString) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date date = null;
         try {
             date = sdf.parse(dateString);
@@ -177,6 +177,7 @@ public class ElderSignupActivity extends AppCompatActivity {
         } catch (ParseException e) {
             // Handle the case where the input is not a valid date
         }
+        Log.i(TAG,"This is the date 3:"+ date);
         return date;
     }
 

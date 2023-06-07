@@ -30,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
         userid = (EditText) findViewById(R.id.userid);
         Button loginBtn = (Button) findViewById(R.id.loginBtn);
         dbHelper = new DataBaseHelper(this);
+        //dbHelper.dropTable();
 
         loginBtn.setOnClickListener(v -> {
             String uid = userid.getText().toString();

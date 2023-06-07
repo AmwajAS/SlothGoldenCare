@@ -50,9 +50,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     creating the DB Tables Queries:
      */
     private static final String CREATE_DB_QUERY_USER = "CREATE TABLE " + DB_TABLE + " ( " + USER_ID + "INTEGER PRIMARY KEY, " + USER_ID + " TEXT NOT NULL, " +
-            USER_NAME + " TEXT NOT NULL, " + USER_PHONE + " TEXT NOT NULL UNIQUE"  + " );";
+            USER_NAME + " TEXT NOT NULL, " + USER_PHONE + " TEXT NOT NULL UNIQUE" + " );";
 
-    private static final String CREATE_DB_QUERY_ELDER = "CREATE TABLE " + ELDER_TBL + " ( " + ELDER_ID + " INTEGER PRIMARY KEY, " +
+    private static final String CREATE_DB_QUERY_ELDER = "CREATE TABLE " + ELDER_TBL + " ( " + ELDER_ID + " INTEGER PRIMARY KEY, " + ELDER_ID + " TEXT NOT NULL, " +
             ELDER_NAME + " TEXT NOT NULL, " + ELDER_PHONE + " TEXT NOT NULL UNIQUE, " + ELDER_DOB + " TEXT NOT NULL CHECK(" +
             ELDER_DOB + " <= date('now')), " + ELDER_GENDER + " TEXT NOT NULL CHECK(" +
             ELDER_GENDER + " IN ('Male', 'Female', 'Other'))" + " );";
@@ -68,10 +68,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-      //  db.execSQL(CREATE_DB_QUERY_USER_ELDER);
-      //  db.execSQL(CREATE_DB_QUERY_USER);
-      //  db.execSQL(CREATE_DB_QUERY_ELDER);
-
+        //db.execSQL(CREATE_DB_QUERY_ELDER);
+        //  db.execSQL(CREATE_DB_QUERY_USER_ELDER);
+        //  db.execSQL(CREATE_DB_QUERY_USER);
+        //
 
 
     }
@@ -303,8 +303,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 String phone = cursor.getString(cursor.getColumnIndexOrThrow("phone"));
                 String date = cursor.getString(cursor.getColumnIndexOrThrow("dateOfBirth"));
                 String gender = cursor.getString(cursor.getColumnIndexOrThrow("gender"));
-
+                Log.i(TAG, "This is the date 1:" + date);
                 Elder elder = new Elder(userID, name, phone, ElderSignupActivity.convertStringIntoDate(date), Elder.GenderConvertor(gender));
+                Log.i(TAG, "This is the date 2:" + elder.getDOB());
                 eldersList.add(elder);
             } while (cursor.moveToNext());
         }
@@ -313,6 +314,40 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
 
         return eldersList;
+    }
+
+    public void updateUserInfo(String userId, String newName, String newPhoneNumber) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("user_name", newName);
+        values.put("user_phone", newPhoneNumber);
+
+        String whereClause = "_ID = ?";
+        String[] whereArgs = {String.valueOf(userId)};
+
+        db.update("USERES", values, whereClause, whereArgs);
+
+        db.close();
+    }
+
+
+    public void updateElderInfo(String elderId, String newName, String newPhoneNumber, String newDateOfBirth,String newGender) {
+        SQLiteDatabase db = this.getWritableDatabase();
+       Log.i(TAG, "This is the USER IN DB:" + elderId + newName + newPhoneNumber + newDateOfBirth +newGender);
+
+        ContentValues values = new ContentValues();
+        values.put("name", newName);
+        values.put("phone", newPhoneNumber);
+        values.put("dateOfBirth", newDateOfBirth);
+        values.put("gender", newGender);
+
+        String whereClause = "ID = ?";
+        String[] whereArgs = {String.valueOf(elderId)};
+
+        db.update("ELDERS", values, whereClause, whereArgs);
+
+        db.close();
     }
 
 
