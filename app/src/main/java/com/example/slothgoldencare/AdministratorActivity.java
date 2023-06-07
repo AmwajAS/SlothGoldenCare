@@ -130,25 +130,25 @@ public class AdministratorActivity extends AppCompatActivity implements View.OnC
                 ImageButton deleteButton = convertView.findViewById(R.id.delete_user_btn);
                 ImageButton editButton = convertView.findViewById(R.id.edit_user_btn);
                 Button saveUserChanges = convertView.findViewById(R.id.save_user_changes);
-                saveUserChanges.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        elder.setID(idText.getText().toString());
-                        elder.setUsername(nameText.getText().toString());
-                        elder.setPhoneNumber(phoneText.getText().toString());
-
-
-                        String newID = idText.getText().toString();
-                        String newName = nameText.getText().toString();
-                        String newPhone = phoneText.getText().toString();
-
-                        Log.i(TAG, "This is a new elder message " + newID + newName + newPhone + elder.formatDateOfBirth(elder.getDOB())+ elder.getGender().toString()); // Debug log
-                        dbHelper.updateElderInfo(newID, newName, newPhone, elder.formatDateOfBirth(elder.getDOB()), elder.getGender().toString());
-                        Log.i(TAG, "This is a new elder message " + elder.formatDateOfBirth(elder.getDOB()) ); // Debug log
-
-                        Toast.makeText(AdministratorActivity.this, "User details changed successfully", Toast.LENGTH_SHORT).show();
-                    }
-                });
+//                saveUserChanges.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        elder.setID(idText.getText().toString());
+//                        elder.setUsername(nameText.getText().toString());
+//                        elder.setPhoneNumber(phoneText.getText().toString());
+//
+//
+//                        String newID = idText.getText().toString();
+//                        String newName = nameText.getText().toString();
+//                        String newPhone = phoneText.getText().toString();
+//
+//                        Log.i(TAG, "This is a new elder message " + newID + newName + newPhone + elder.formatDateOfBirth(elder.getDOB())+ elder.getGender().toString()); // Debug log
+//                        dbHelper.updateElderInfo(newID, newName, newPhone, elder.formatDateOfBirth(elder.getDOB()), elder.getGender().toString());
+//                        Log.i(TAG, "This is a new elder message " + elder.formatDateOfBirth(elder.getDOB()) ); // Debug log
+//
+//                        Toast.makeText(AdministratorActivity.this, "User details changed successfully", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
 
 
                 // Set a click listener for the delete button
