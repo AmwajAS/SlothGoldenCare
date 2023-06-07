@@ -70,7 +70,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         //  db.execSQL(CREATE_DB_QUERY_ELDER);
         // db.execSQL(CREATE_DB_QUERY_USER);
-        db.execSQL(CREATE_DB_QUERY_USER_ELDER);
+        //db.execSQL(CREATE_DB_QUERY_USER_ELDER);
 
 
     }
@@ -287,6 +287,30 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
 
         return userList;
+    }
+    public List<Elder> getElders() {
+        List<Elder> eldersList = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query("ELDERS", null, null, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String userID = cursor.getString(cursor.getColumnIndexOrThrow("ID"));
+                String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+                String phone = cursor.getString(cursor.getColumnIndexOrThrow("phone"));
+                String date = cursor.getString(cursor.getColumnIndexOrThrow("dateOfBirth"));
+                String gender = cursor.getString(cursor.getColumnIndexOrThrow("gender"));
+
+                Elder elder = new Elder(userID, name, phone,ElderSignupActivity.convertStringIntoDate(date),Elder.GenderConvertor(gender));
+                eldersList.add(elder);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return eldersList;
     }
 
 

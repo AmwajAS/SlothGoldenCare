@@ -28,5 +28,20 @@ android:padding="5dp">
                 android:layout_height="match_parent"/>
 
     </LinearLayout>
+    <Space android:layout_width="20dp" android:layout_height="match_parent" />
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_weight="1"
+                  android:orientation="vertical"
+                  android:layout_height="match_parent">
+        <TextView android:layout_width="match_parent"
+                  android:textSize="20dp"
+                  android:layout_height="wrap_content"
+                  android:text="Elderly"/>
+        <ListView
+                android:id="@+id/elderly_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+    </LinearLayout>
 </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
