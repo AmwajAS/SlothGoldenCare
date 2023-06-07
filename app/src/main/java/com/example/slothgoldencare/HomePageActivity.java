@@ -81,6 +81,10 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                 i = new Intent(this, BottomNavigationBarActivity.class);
                 startActivity(i);
                 break;
+            case R.id.d4:
+                i = new Intent(this, ContactsActivity.class);
+                startActivity(i);
+                break;
         }
     }
 
