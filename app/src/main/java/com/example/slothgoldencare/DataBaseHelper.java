@@ -136,7 +136,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             return false;
         }
     }
-
+/*
+This method check if the input ID is already exists in the DB, and return true if yes, otherwise false.
+ */
     public boolean checkElderID(String uid) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM ELDERS WHERE ID=?", new String[]{uid});
@@ -148,7 +150,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             return false;
         }
     }
-
+    /*
+    This method takes as a input a user ID and return the whole row - User object.
+     */
     public User findUserByID(String uid) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -187,6 +191,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return user;
     }
 
+    /*
+   This method takes as a input a Elder ID and return the whole row - Elder object.
+    */
     public Elder findElderByID(String uid) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -230,7 +237,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         return elder;
     }
-
+/*
+method to delete al data in User Tbl.
+ */
 
     public void deleteAllData() {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -250,7 +259,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         // Close the database connection
         db.close();
     }
-
+/*
+this method take as an input Elder ID and delete it from the DB.
+ */
 
     public void deleteUserById(String userId) {
         SQLiteDatabase db = getWritableDatabase();
@@ -266,7 +277,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             // No rows deleted or an error occurred
         }
     }
-
+/*
+This method connects to the DB and returns all the data in the Users TBL.
+ */
     public List<User> getUsers() {
         List<User> userList = new ArrayList<>();
 
@@ -289,7 +302,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         return userList;
     }
-
+    /*
+    This method connects to the DB and returns all the data in the Elders TBL.
+     */
     public List<Elder> getElders() {
         List<Elder> eldersList = new ArrayList<>();
 
@@ -315,7 +330,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         return eldersList;
     }
-
+/*
+this method updated the changed values of the User TBL fileds.
+ */
     public void updateUserInfo(String userId, String newName, String newPhoneNumber) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -331,6 +348,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    /*
+this method updated the changed values of the Elder TBL fileds.
+ */
 
     public void updateElderInfo(String elderId, String newName, String newPhoneNumber, String newDateOfBirth,String newGender) {
         SQLiteDatabase db = this.getWritableDatabase();
