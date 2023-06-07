@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/currentView"
-        android:icon="@drawable/baseline_apps_24"
+        android:icon="@drawable/baseline_square_24"
         android:title="CurrentPage"
         />
     <item

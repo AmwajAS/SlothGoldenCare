@@ -11,10 +11,11 @@ import android.widget.ImageView;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link DoctorsFragment#newInstance} factory method to
+ * Use the {@link DiagnosisTreatmentsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DoctorsFragment extends Fragment {
+public class DiagnosisTreatmentsFragment extends Fragment {
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -24,10 +25,9 @@ public class DoctorsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private ImageView imageViewDoc1;
-    private ImageView imageViewDoc2;
+    private ImageView imageViewDT;
 
-    public DoctorsFragment() {
+    public DiagnosisTreatmentsFragment() {
         // Required empty public constructor
     }
 
@@ -37,11 +37,11 @@ public class DoctorsFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment DoctorsFragment.
+     * @return A new instance of fragment DiagnosisTreatmentsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DoctorsFragment newInstance(String param1, String param2) {
-        DoctorsFragment fragment = new DoctorsFragment();
+    public static DiagnosisTreatmentsFragment newInstance(String param1, String param2) {
+        DiagnosisTreatmentsFragment fragment = new DiagnosisTreatmentsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -62,16 +62,13 @@ public class DoctorsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-        View view = inflater.inflate(R.layout.fragment_doctors, container, false);
+       // return inflater.inflate(R.layout.fragment_diagnosis_treatments, container, false);
+        View view = inflater.inflate(R.layout.fragment_diagnosis_treatments, container, false);
 
         // Find the ImageView in the layout
-        imageViewDoc1 = view.findViewById(R.id.imageViewDoc1);
-        imageViewDoc2 = view.findViewById(R.id.imageViewDoc2);
-
+        imageViewDT= view.findViewById(R.id.imageViewDT);
         // Set the image resource for the ImageView
-        imageViewDoc1.setImageResource(R.drawable.doc1);
-        imageViewDoc2.setImageResource(R.drawable.doc2);
+        imageViewDT.setImageResource(R.drawable.diag_treatment);
 
         return view;
     }

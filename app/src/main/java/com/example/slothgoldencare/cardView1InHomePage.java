@@ -58,10 +58,12 @@ public class cardView1InHomePage extends AppCompatActivity implements View.OnCli
             case R.id.d1:
                 replaceFragment(new DoctorsFragment());
                 break;
-            /*case R.id.d2:
-                replaceFragment();
-                break;*/
-
+            case R.id.d2:
+                replaceFragment(new DiagnosisTreatmentsFragment());
+                break;
+            case R.id.d3:
+                replaceFragment(new MedicationsFragment());
+                break;
         }
     }
 

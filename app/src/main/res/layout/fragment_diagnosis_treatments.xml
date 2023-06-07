@@ -1,0 +1,77 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/dark_gradient"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:fontFamily="@font/sigmar_one"
+        android:gravity="center"
+        android:text="Diagnosis And Treatments"
+        android:textColor="#3F51B5"
+        android:textSize="20sp" />
+
+    <ImageView
+        android:id="@+id/imageViewDT"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="sans-serif-black"
+            android:gravity="center"
+            android:text="Diagnosis: Hypertension (High blood pressure)"
+            android:textSize="16sp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="sans-serif-black"
+            android:text="Hypertension is a chronic condition characterized by consistently high blood pressure levels. It can put strain on the heart and blood vessels, increasing the risk of heart disease, stroke, and other health complications. Hypertension is often influenced by lifestyle factors, genetics, and age." />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="sans-serif-black"
+            android:gravity="center"
+            android:text="Treatment: Physical therapy and pain management"
+            android:textSize="16sp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="sans-serif-black"
+            android:text="The treatment for osteoarthritis in the elderly often involves a multimodal approach aimed at managing pain and improving joint function. Physical therapy plays a crucial role in strengthening the muscles surrounding the affected joint, improving flexibility, and providing exercises to reduce pain and increase mobility. Pain management may include over-the-counter or prescription medications, such as nonsteroidal anti-inflammatory drugs (NSAIDs) or analgesics, to alleviate pain and reduce inflammation." />
+    </LinearLayout>
+
+
+
+</LinearLayout>
