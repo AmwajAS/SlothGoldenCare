@@ -92,7 +92,7 @@
             </androidx.cardview.widget.CardView>
 
             <Button
-                android:id="@+id/signupBtn"
+                android:id="@+id/addEldBtn"
                 android:layout_width="304dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"

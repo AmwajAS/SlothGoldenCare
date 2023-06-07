@@ -50,7 +50,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     creating the DB Tables Queries:
      */
     private static final String CREATE_DB_QUERY_USER = "CREATE TABLE " + DB_TABLE + " ( " + USER_ID + "INTEGER PRIMARY KEY, " + USER_ID + " TEXT NOT NULL, " +
-            USER_NAME + " TEXT NOT NULL, " + USER_PHONE + " TEXT NOT NULL, " + USER_PHONE + " UNIQUE " + " );";
+            USER_NAME + " TEXT NOT NULL, " + USER_PHONE + " TEXT NOT NULL UNIQUE"  + " );";
 
     private static final String CREATE_DB_QUERY_ELDER = "CREATE TABLE " + ELDER_TBL + " ( " + ELDER_ID + " INTEGER PRIMARY KEY, " +
             ELDER_NAME + " TEXT NOT NULL, " + ELDER_PHONE + " TEXT NOT NULL UNIQUE, " + ELDER_DOB + " TEXT NOT NULL CHECK(" +
@@ -68,9 +68,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        //  db.execSQL(CREATE_DB_QUERY_ELDER);
-        // db.execSQL(CREATE_DB_QUERY_USER);
-        //db.execSQL(CREATE_DB_QUERY_USER_ELDER);
+      //  db.execSQL(CREATE_DB_QUERY_USER_ELDER);
+      //  db.execSQL(CREATE_DB_QUERY_USER);
+      //  db.execSQL(CREATE_DB_QUERY_ELDER);
+
 
 
     }
@@ -288,6 +289,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         return userList;
     }
+
     public List<Elder> getElders() {
         List<Elder> eldersList = new ArrayList<>();
 
@@ -302,7 +304,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 String date = cursor.getString(cursor.getColumnIndexOrThrow("dateOfBirth"));
                 String gender = cursor.getString(cursor.getColumnIndexOrThrow("gender"));
 
-                Elder elder = new Elder(userID, name, phone,ElderSignupActivity.convertStringIntoDate(date),Elder.GenderConvertor(gender));
+                Elder elder = new Elder(userID, name, phone, ElderSignupActivity.convertStringIntoDate(date), Elder.GenderConvertor(gender));
                 eldersList.add(elder);
             } while (cursor.moveToNext());
         }
