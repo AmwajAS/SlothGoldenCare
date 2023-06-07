@@ -24,14 +24,14 @@
                 android:layout_height="90dp"
                 android:scaleType="centerCrop"
                 android:layout_centerHorizontal="true"
-                android:id="@+id/image_view"
+                android:id="@+id/elder_image"
                 android:src="@drawable/ic_launcher_background"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:text="Canada"
-                android:layout_below="@+id/image_view"
+                android:layout_below="@+id/elder_image"
                 android:id="@+id/name"
                 android:layout_centerHorizontal="true"
                 android:gravity="center"

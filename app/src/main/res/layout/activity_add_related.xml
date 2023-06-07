@@ -71,17 +71,6 @@
                         android:inputType="number"
                         android:padding="12dp" />
 
-                    <EditText
-                        android:id="@+id/userPhone"
-                        android:layout_width="match_parent"
-                        android:layout_height="63dp"
-                        android:layout_marginBottom="20dp"
-                        android:background="@android:color/transparent"
-                        android:ems="10"
-                        android:fontFamily="sans-serif-black"
-                        android:hint="@string/UserPhone"
-                        android:inputType="phone"
-                        android:padding="12dp" />
 
                     <Spinner
                         android:id="@+id/relation"
