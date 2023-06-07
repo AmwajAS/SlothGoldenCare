@@ -41,6 +41,8 @@ public class LoginActivity extends AppCompatActivity {
             else if(uid.equals("admin")){
                 Intent intent = new Intent(getApplicationContext(),AdministratorActivity.class);
                 startActivity(intent);
+                userid.setText("");
+
             }else {
                 //   if (checkIDValidation(uid)) {
                 if ((user = dbHelper.findUserByID(uid)) != null) {
@@ -49,11 +51,12 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), UserHomePageActivity.class);
                     startActivity(intent);
+                    userid.setText("");
                 } else if ((elder = dbHelper.findElderByID(uid)) != null) {
                     flag = false;
                     Intent intent = new Intent(getApplicationContext(), HomePageActivity.class);
                     startActivity(intent);
-
+                    userid.setText("");
                 } else {
                     //Log.i(TAG, "This is a debug message " + " Failed to Login"); // Debug log
                     SimpleDialog.showAlertDialog(LoginActivity.this, R.string.alert_title_login, R.string.alert_message_failed);

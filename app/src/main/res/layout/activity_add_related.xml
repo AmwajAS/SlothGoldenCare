@@ -67,7 +67,7 @@
                         android:background="@android:color/transparent"
                         android:ems="10"
                         android:fontFamily="sans-serif-black"
-                        android:hint="ID"
+                        android:hint="@string/id"
                         android:inputType="number"
                         android:padding="12dp" />
 
@@ -79,7 +79,7 @@
                         android:background="@android:color/transparent"
                         android:ems="10"
                         android:fontFamily="sans-serif-black"
-                        android:hint="User Phone"
+                        android:hint="@string/UserPhone"
                         android:inputType="phone"
                         android:padding="12dp" />
 

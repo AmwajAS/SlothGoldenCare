@@ -48,6 +48,8 @@
     <string name="Tracking">Tracker</string>
     <string name="Delete">Delete</string>
     <string name="Star">Star</string>
+    <string name="ADD">ADD</string>
+    <string name="UserPhone">User Phone</string>
 
 
     <string-array name="Relation">
