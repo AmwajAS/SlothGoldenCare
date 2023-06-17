@@ -41,7 +41,9 @@ public class Elder extends User{
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         return dateFormat.format(date);
     }
-
+/*
+this method convert from String to Gender - Enum
+ */
     public static Gender GenderConvertor(String gender){
         switch(gender){
             case "Female":

@@ -33,69 +33,68 @@ public class LoginActivity extends AppCompatActivity {
         //dbHelper.dropTable();
 
         loginBtn.setOnClickListener(v -> {
-            String uid = userid.getText().toString();
-            if (uid.equals("")) {
-                //check if the id number / field is empty.
-                SimpleDialog.showAlertDialog(LoginActivity.this, R.string.alert_title_login, R.string.alert_message_idEmtpy);
+                    String uid = userid.getText().toString();
+                    if (uid.equals("")) {
+                        //check if the id number / field is empty.
+                        SimpleDialog.showAlertDialog(LoginActivity.this, R.string.alert_title_login, R.string.alert_message_idEmtpy);
 
-            }
-            else if(uid.equals("admin")){
-                Intent intent = new Intent(getApplicationContext(),AdministratorActivity.class);
-                startActivity(intent);
-                userid.setText("");
+                    } else if (uid.equals("admin")) {
+                        Intent intent = new Intent(getApplicationContext(), AdministratorActivity.class);
+                        startActivity(intent);
+                        userid.setText("");
 
-            }else {
-                //   if (checkIDValidation(uid)) {
-                if ((user = dbHelper.findUserByID(uid)) != null) {
-                   // Log.i(TAG, "This is a debug message " + " Login Successfully" + user.getUsername()); // Debug log
-                    flag = true;
-                    Toast.makeText(LoginActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getApplicationContext(), UserHomePageActivity.class);
-                    startActivity(intent);
-                    userid.setText("");
-                } else if ((elder = dbHelper.findElderByID(uid)) != null) {
-                    flag = false;
-                    Intent intent = new Intent(getApplicationContext(), HomePageActivity.class);
-                    startActivity(intent);
-                    userid.setText("");
-                } else {
-                    //Log.i(TAG, "This is a debug message " + " Failed to Login"); // Debug log
-                    SimpleDialog.showAlertDialog(LoginActivity.this, R.string.alert_title_login, R.string.alert_message_failed);
-                    Toast.makeText(LoginActivity.this, "Failed to Login", Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (checkIDValidation(uid)) {
+                            if ((user = dbHelper.findUserByID(uid)) != null) {
+                                // Log.i(TAG, "This is a debug message " + " Login Successfully" + user.getUsername()); // Debug log
+                                flag = true;
+                                Toast.makeText(LoginActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getApplicationContext(), UserHomePageActivity.class);
+                                startActivity(intent);
+                                userid.setText("");
+                            } else if ((elder = dbHelper.findElderByID(uid)) != null) {
+                                flag = false;
+                                Intent intent = new Intent(getApplicationContext(), HomePageActivity.class);
+                                startActivity(intent);
+                                userid.setText("");
+                            } else {
+                                //Log.i(TAG, "This is a debug message " + " Failed to Login"); // Debug log
+                                SimpleDialog.showAlertDialog(LoginActivity.this, R.string.alert_title_login, R.string.alert_message_failed);
+                                Toast.makeText(LoginActivity.this, "Failed to Login", Toast.LENGTH_SHORT).show();
+
+                            }
+                            }
+                        }
+                    });
+
+                    elderBtn.setOnClickListener(v -> {
+                        Intent intent = new Intent(getApplicationContext(), ElderSignupActivity.class);
+                        startActivity(intent);
+                    });
+                    userBtn.setOnClickListener(v -> {
+                        Intent intent = new Intent(getApplicationContext(), UserSignupActivity.class);
+                        startActivity(intent);
+                    });
 
                 }
-                //}
-            }
-        });
-
-        elderBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), ElderSignupActivity.class);
-            startActivity(intent);
-        });
-        userBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), UserSignupActivity.class);
-            startActivity(intent);
-        });
-
-    }
 
     /*
     Since the Real Id Number consists of 9 digits Only, So in this method we check the Id Validation.
     9 numbers only between 0-9.
      */
-    public boolean checkIDValidation(String idV) {
-        return idV.matches("[0-9]{9}");
-    }
+        public boolean checkIDValidation (String idV){
+            return idV.matches("[0-9]{9}");
+        }
 
-    public static User getUser() {
-        return user;
-    }
+        public static User getUser () {
+            return user;
+        }
 
-    public static Elder getElder() {
-        return elder;
-    }
+        public static Elder getElder () {
+            return elder;
+        }
 
-    public static boolean getFlag() {
-        return flag;
+        public static boolean getFlag () {
+            return flag;
+        }
     }
-}

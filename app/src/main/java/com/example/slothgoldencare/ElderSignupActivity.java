@@ -74,7 +74,7 @@ public class ElderSignupActivity extends AppCompatActivity {
                 String newPhone = userPhone.getText().toString();
                 Date newDate = convertStringIntoDate(etSelectDate.getText().toString());
                 Gender elderGender = onGenderSelection();
-                Log.i(TAG, "This is a debug message" + userID.toString() + userName.toString() + userPhone.toString()); // Debug log
+                Log.i(TAG, "This is a debug message" + newID + newName + newPhone + newDate + elderGender); // Debug log
 
                 if ((newID.length() != 0) && (newName.length() != 0) && (newPhone.length() != 0) && (newDate != null) && (elderGender != null)) {
                     if (!checkIDValidation(newID)) {
@@ -169,7 +169,7 @@ public class ElderSignupActivity extends AppCompatActivity {
 
 
     public static Date convertStringIntoDate(String dateString) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Date date = null;
         try {
             date = sdf.parse(dateString);
@@ -182,7 +182,7 @@ public class ElderSignupActivity extends AppCompatActivity {
     }
 
     public String formatDateOfBirth(Date date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         return dateFormat.format(date);
     }
 

@@ -52,7 +52,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_DB_QUERY_USER = "CREATE TABLE " + DB_TABLE + " ( " + USER_ID + "INTEGER PRIMARY KEY, " + USER_ID + " TEXT NOT NULL, " +
             USER_NAME + " TEXT NOT NULL, " + USER_PHONE + " TEXT NOT NULL UNIQUE" + " );";
 
-    private static final String CREATE_DB_QUERY_ELDER = "CREATE TABLE " + ELDER_TBL + " ( " + ELDER_ID + " INTEGER PRIMARY KEY, " + ELDER_ID + " TEXT NOT NULL, " +
+    private static final String CREATE_DB_QUERY_ELDER = "CREATE TABLE " + ELDER_TBL + " ( " + ELDER_ID + " INTEGER PRIMARY KEY, " +
             ELDER_NAME + " TEXT NOT NULL, " + ELDER_PHONE + " TEXT NOT NULL UNIQUE, " + ELDER_DOB + " TEXT NOT NULL CHECK(" +
             ELDER_DOB + " <= date('now')), " + ELDER_GENDER + " TEXT NOT NULL CHECK(" +
             ELDER_GENDER + " IN ('Male', 'Female', 'Other'))" + " );";
@@ -68,9 +68,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        //db.execSQL(CREATE_DB_QUERY_ELDER);
+     //   db.execSQL(CREATE_DB_QUERY_ELDER);
         //  db.execSQL(CREATE_DB_QUERY_USER_ELDER);
-        //  db.execSQL(CREATE_DB_QUERY_USER);
+         // db.execSQL(CREATE_DB_QUERY_USER);
         //
 
 
