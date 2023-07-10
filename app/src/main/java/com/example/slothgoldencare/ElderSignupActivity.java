@@ -1,5 +1,6 @@
 package com.example.slothgoldencare;
 
+import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -7,12 +8,9 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.sql.SQLDataException;
 import java.text.ParseException;
@@ -36,6 +34,7 @@ public class ElderSignupActivity extends AppCompatActivity {
     private RadioGroup genderGroup;
     DataBaseManager dbManager;
     private EditText etSelectDate;
+    private FirebaseFirestore db;
 
     DataBaseHelper dbHelper = new DataBaseHelper(this);
 
@@ -43,6 +42,7 @@ public class ElderSignupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_elder_signup);
+        db = FirebaseFirestore.getInstance();
         userID = findViewById(R.id.userID);
         userName = findViewById(R.id.userName);
         userPhone = findViewById(R.id.userPhone);
@@ -50,12 +50,12 @@ public class ElderSignupActivity extends AppCompatActivity {
         maleBtn = findViewById(R.id.maleBtn);
         femaleBtn = findViewById(R.id.femaleBtn);
 
-        dbManager = new DataBaseManager(this);
-        try {
-            dbManager.open();
-        } catch (SQLDataException e) {
-            throw new RuntimeException(e);
-        }
+//        dbManager = new DataBaseManager(this);
+//        try {
+//            dbManager.open();
+//        } catch (SQLDataException e) {
+//            throw new RuntimeException(e);
+//        }
 
         etSelectDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,7 +133,7 @@ public class ElderSignupActivity extends AppCompatActivity {
     }
 
 
-    private void insertData(Elder elder) {
+    private void DBinsertData(Elder elder) {
         boolean insertData;
         try {
             insertData = dbHelper.addElderData(elder);
@@ -149,6 +149,14 @@ public class ElderSignupActivity extends AppCompatActivity {
         }
 
 
+    }
+    private void insertData(Elder elder) {
+        DocumentReference documentRef = db.collection("Elderlies").document(elder.getID());
+        documentRef.set(elder).addOnSuccessListener(documentReference -> {
+            Toast.makeText(getApplicationContext(), "User "+elder.getID()+" added successfully", Toast.LENGTH_SHORT).show();
+        }).addOnFailureListener(e -> {
+            Toast.makeText(getApplicationContext(), "Failed to add user: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        });
     }
 
 

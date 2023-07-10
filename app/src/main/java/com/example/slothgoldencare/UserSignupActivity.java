@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.util.Log;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 import java.sql.SQLDataException;
@@ -18,6 +20,7 @@ public class UserSignupActivity extends AppCompatActivity {
     private EditText userName;
     private EditText userPhone;
     private Button signup;
+    private FirebaseFirestore db;
     DataBaseManager dbManager;
 
     DataBaseHelper dbHelper = new DataBaseHelper(this);
@@ -25,6 +28,7 @@ public class UserSignupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        db = FirebaseFirestore.getInstance();
         setContentView(R.layout.activity_user_signup);
         userID = findViewById(R.id.userID);
         userName = findViewById(R.id.userName);
@@ -63,7 +67,7 @@ public class UserSignupActivity extends AppCompatActivity {
     }
 
 
-    public void insertData(User newEntry) {
+    public void DBinsertData(User newEntry) {
         boolean insertData;
         try {
             insertData = dbHelper.addUserData(newEntry);
@@ -77,6 +81,14 @@ public class UserSignupActivity extends AppCompatActivity {
             toastMessage("Something Went Wrong");
 
         }
+    }
+    public void insertData(User newEntry) {
+        DocumentReference documentRef = db.collection("User").document(newEntry.getID());
+        documentRef.set(newEntry).addOnSuccessListener(documentReference -> {
+            Toast.makeText(getApplicationContext(), "User "+newEntry.getID()+" added successfully", Toast.LENGTH_SHORT).show();
+        }).addOnFailureListener(e -> {
+            Toast.makeText(getApplicationContext(), "Failed to add user: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        });
     }
 
     private void toastMessage(String message) {
