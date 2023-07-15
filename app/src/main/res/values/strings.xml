@@ -43,6 +43,7 @@
     <string name="id">ID</string>
     <string name="alert_title_login">Login</string>
     <string name="alert_message_idEmtpy">Please Enter your ID number</string>
+    <string name="alert_message_failed_sign_in">Incorrect ID, try again.</string>
     <string name="alert_message_failed">Failed To Login, Please make sure to sign-up First</string>
     <string name="alert_title_conf">ID Confirmation</string>
     <string name="alert_message_IDConf">Whenever you Sign up, You CANT update or change your ID number, Make sure its

@@ -1,15 +1,13 @@
 package com.example.slothgoldencare;
 
-import android.widget.CheckBox;
+import android.view.View;
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -33,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private FirebaseAuth auth;
     private CheckBox relativeCheckBox;
+    private ProgressBar progressBar;
     private Task<QuerySnapshot> query;
 
     public static boolean flag;
@@ -48,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         userid = (EditText) findViewById(R.id.userid);
         relativeCheckBox = (CheckBox) findViewById(R.id.relative_login_checkbox);
         Button loginBtn = (Button) findViewById(R.id.loginBtn);
+        progressBar = findViewById(R.id.progress_bar_login);
         dbHelper = new DataBaseHelper(this);
         //dbHelper.dropTable();
 
@@ -63,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                         userid.setText("");
 
                     } else {
+                        progressBar.setVisibility(View.VISIBLE);
                         if (checkIDValidation(uid)) {
                             if(relativeCheckBox.isChecked()){
                                 query = db.collection("Users").whereEqualTo("id",uid).get();
@@ -76,38 +77,48 @@ public class LoginActivity extends AppCompatActivity {
                                         if (task.isSuccessful()) {
                                             auth = FirebaseAuth.getInstance();
                                             List<DocumentSnapshot> documentSnapshot = task.getResult().getDocuments();
-                                            DocumentSnapshot snapshot = documentSnapshot.get(0);
-                                            auth.signInWithEmailAndPassword(snapshot.get("email").toString(), snapshot.get("password").toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                                @Override
-                                                public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
-                                                    if (task.isSuccessful()) {
-                                                        if(relativeCheckBox.isChecked()){
-                                                            Intent intent = new Intent(LoginActivity.this, UserHomePageActivity.class);
-                                                            intent.putExtra("userID", snapshot.get("id").toString());
-                                                            intent.putExtra("username", snapshot.get("username").toString());
-                                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                            startActivity(intent);
-                                                            finish();
+                                            if(!documentSnapshot.isEmpty()){
+                                                DocumentSnapshot snapshot = documentSnapshot.get(0);
+                                                auth.signInWithEmailAndPassword(snapshot.get("email").toString(), snapshot.get("password").toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
+                                                        if (task.isSuccessful()) {
+                                                            progressBar.setVisibility(View.GONE);
+                                                            if(relativeCheckBox.isChecked()){
+                                                                Intent intent = new Intent(LoginActivity.this, UserHomePageActivity.class);
+                                                                intent.putExtra("userID", snapshot.get("id").toString());
+                                                                intent.putExtra("username", snapshot.get("username").toString());
+                                                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                startActivity(intent);
+                                                                finish();
 
-                                                        }else{
-                                                            Intent intent = new Intent(LoginActivity.this, HomePageActivity.class);
-                                                            intent.putExtra("userID", snapshot.get("id").toString());
-                                                            intent.putExtra("username", snapshot.get("username").toString());
-                                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                            startActivity(intent);
-                                                            finish();
+                                                            }else{
+                                                                Intent intent = new Intent(LoginActivity.this, HomePageActivity.class);
+                                                                intent.putExtra("userID", snapshot.get("id").toString());
+                                                                intent.putExtra("username", snapshot.get("username").toString());
+                                                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                startActivity(intent);
+                                                                finish();
+                                                            }
+                                                        } else {
+                                                            progressBar.setVisibility(View.GONE);
+                                                            Toast.makeText(LoginActivity.this, task.getException().getMessage().toString(), Toast.LENGTH_LONG).show();
                                                         }
-                                                    } else {
-                                                        Toast.makeText(LoginActivity.this, task.getException().getMessage().toString(), Toast.LENGTH_LONG).show();
                                                     }
-                                                }
-                                            });
+                                                });
+                                            }
+                                            else{
+                                                progressBar.setVisibility(View.GONE);
+                                                Toast.makeText(LoginActivity.this,R.string.alert_message_failed_sign_in, Toast.LENGTH_LONG).show();
+                                            }
                                         } else {
+                                            progressBar.setVisibility(View.GONE);
                                             Toast.makeText(LoginActivity.this, task.getException().getMessage().toString(), Toast.LENGTH_LONG).show();
                                         }
                                     }
                                 });
                         }else{
+                            progressBar.setVisibility(View.GONE);
                             SimpleDialog.showAlertDialog(LoginActivity.this, R.string.alert_title_login, R.string.alert_message_idEmtpy);
                         }
                         }
