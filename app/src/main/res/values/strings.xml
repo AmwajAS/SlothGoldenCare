@@ -2,10 +2,14 @@
     <string name="app_name">SlothGoldenCare</string>
     <string name="title_activity_register">RegisterActivity</string>
     <string name="prompt_email">Email</string>
+    <string name="name">Name</string>
+    <string name="not_elderly">Not an elderly?</string>
+    <string name="dateofbirth">Date Of Birth</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
+    <string name="Signup">Sign Up</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
+    <string name="welcome">Welcome</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
@@ -29,7 +33,9 @@
     <string name="alert_title">Sign-up</string>
     <string name="alert_title_signup">sign-up</string>
     <string name="alert_message_id">ID Number consists of 9 Digits Only.</string>
+    <string name="alert_message_id_exists">ID Number already exists.</string>
     <string name="alert_message_phone">Phone Number Must be 10 digits and starts with \'05\'</string>
+    <string name="alert_message_email">Valid email required</string>
     <string name="alert_message_null">Please Fill all the Fields</string>
     <string name="login">Login</string>
     <string name="elderSignup">SIGNUP FOR ELDER</string>
@@ -39,7 +45,9 @@
     <string name="alert_message_idEmtpy">Please Enter your ID number</string>
     <string name="alert_message_failed">Failed To Login, Please make sure to sign-up First</string>
     <string name="alert_title_conf">ID Confirmation</string>
-    <string name="alert_message_IDConf">Whenever you Sign up, You CANT update or change your ID number, Make sure its Correct</string>
+    <string name="alert_message_IDConf">Whenever you Sign up, You CANT update or change your ID number, Make sure its
+        Correct
+    </string>
     <string name="Health">Health</string>
     <string name="Todo">To-Do</string>
     <string name="Games">Games</string>
@@ -49,7 +57,7 @@
     <string name="Delete">Delete</string>
     <string name="Star">Star</string>
     <string name="ADD">ADD</string>
-    <string name="UserPhone">User Phone</string>
+    <string name="UserPhone">Phone Number</string>
 
     <string-array name="Relation">
         <item>Choose Your Relation</item>
