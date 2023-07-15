@@ -1,6 +1,10 @@
 package com.example.slothgoldencare;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.util.Patterns;
 import android.widget.*;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -8,9 +12,17 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.SQLDataException;
 import java.text.ParseException;
@@ -30,8 +42,12 @@ public class ElderSignupActivity extends AppCompatActivity {
     private EditText userPhone;
     private RadioButton maleBtn;
     private RadioButton femaleBtn;
+    private EditText emailEditText;
+    private EditText passwordEditText;
+    private  boolean valid;
     private Button signupBtn;
     private RadioGroup genderGroup;
+    private ProgressDialog progressDialog;;
     DataBaseManager dbManager;
     private EditText etSelectDate;
     private FirebaseFirestore db;
@@ -49,6 +65,8 @@ public class ElderSignupActivity extends AppCompatActivity {
         etSelectDate = findViewById(R.id.etSelectDate);
         maleBtn = findViewById(R.id.maleBtn);
         femaleBtn = findViewById(R.id.femaleBtn);
+        emailEditText = findViewById(R.id.email);
+        passwordEditText = findViewById(R.id.password);
 
 //        dbManager = new DataBaseManager(this);
 //        try {
@@ -72,28 +90,56 @@ public class ElderSignupActivity extends AppCompatActivity {
                 String newID = userID.getText().toString();
                 String newName = userName.getText().toString();
                 String newPhone = userPhone.getText().toString();
+                String newEmail = emailEditText.getText().toString();
+                String newPassword = passwordEditText.getText().toString();
                 Date newDate = convertStringIntoDate(etSelectDate.getText().toString());
                 Gender elderGender = onGenderSelection();
                 Log.i(TAG, "This is a debug message" + newID + newName + newPhone + newDate + elderGender); // Debug log
 
+
+                //Checking validation of input.
                 if ((newID.length() != 0) && (newName.length() != 0) && (newPhone.length() != 0) && (newDate != null) && (elderGender != null)) {
                     if (!checkIDValidation(newID)) {
-                        //show AlertDialog;
                         SimpleDialog.showAlertDialog(ElderSignupActivity.this, R.string.alert_title_signup, R.string.alert_message_id);
-
-                    } else if (!validatePhoneNumber(newPhone)) {
-                        SimpleDialog.showAlertDialog(ElderSignupActivity.this, R.string.alert_title_signup, R.string.alert_message_phone);
-
-                    } else {
-                        //       ConfirmationDialog.showConfirmationDialog(ElderSignupActivity.this, R.string.alert_title_conf, R.string.alert_message_IDConf);
-
-                        Elder elder = new Elder(newID, newName, newPhone, newDate, elderGender);
-                        insertData(elder);
-                        userID.setText("");
-                        userName.setText("");
-                        userPhone.setText("");
                     }
+                    //checking existence of ID
+                    checkUsersIDExistence(newID, new ElderSignupActivity.IDExistenceCallback() {
+                        @Override
+                        public void onIDExistenceChecked(boolean isIDValid) {
+                            if (isIDValid) {
+                                checkElderliesIDExistence(newID, new ElderSignupActivity.IDExistenceCallback() {
+                                    @Override
+                                    public void onIDExistenceChecked(boolean isIDValid) {
+                                        if(isIDValid){
+                                            //checking email, phone validation
+                                            if(!checkEmailValidation(newEmail)){
+                                                SimpleDialog.showAlertDialog(ElderSignupActivity.this, R.string.alert_title_signup, R.string.alert_message_email);
+                                            } else if (!validatePhoneNumber(newPhone)) {
+                                                SimpleDialog.showAlertDialog(ElderSignupActivity.this, R.string.alert_title_signup, R.string.alert_message_phone);
+                                            }
+                                            else if(!checkEmailValidation(newEmail)){
+                                                SimpleDialog.showAlertDialog(ElderSignupActivity.this, R.string.alert_title_signup, R.string.alert_message_email);
+                                            } else {
+                                                //Continue if all validations go well.
+                                                progressDialog = ProgressDialog.show(ElderSignupActivity.this, "Creating Account", "Please wait...", true);
+                                                Elder elder = new Elder(newID, newName, newPhone,newDate,elderGender,newEmail,newPassword);
+                                                insertData(elder);
+                                                userID.setText("");
+                                                userName.setText("");
+                                                userPhone.setText("");
+                                            }
+                                        }
+                                        else{
+                                            SimpleDialog.showAlertDialog(ElderSignupActivity.this, R.string.alert_title_signup, R.string.alert_message_id_exists);
+                                        }
+                                    }
+                                });
 
+                            } else {
+                                SimpleDialog.showAlertDialog(ElderSignupActivity.this, R.string.alert_title_signup, R.string.alert_message_id_exists);
+                            }
+                        }
+                    });
 
                 } else {
                     SimpleDialog.showAlertDialog(ElderSignupActivity.this, R.string.alert_title_signup, R.string.alert_message_null);
@@ -116,6 +162,47 @@ public class ElderSignupActivity extends AppCompatActivity {
         } else {
             return false;
         }
+    }
+
+    public interface IDExistenceCallback {
+        void onIDExistenceChecked(boolean isIDValid);
+    }
+    //Checking if the Id exists for users
+
+    public static void checkUsersIDExistence(String idV, IDExistenceCallback callback) {
+        FirebaseFirestore db;
+        db = FirebaseFirestore.getInstance();
+        db.collection("Users").whereEqualTo("id", idV).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                boolean isIDValid = task.getResult().getDocuments().isEmpty();
+                callback.onIDExistenceChecked(isIDValid);
+            } else {
+                // Handle any errors or exceptions
+                callback.onIDExistenceChecked(false); // Assume invalid ID if there's an error
+            }
+        });
+    }
+    //Checking if the Id exists for elderlies
+    public static void checkElderliesIDExistence(String idV, IDExistenceCallback callback) {
+        FirebaseFirestore db;
+        db = FirebaseFirestore.getInstance();
+        db.collection("Elderlies").whereEqualTo("id", idV).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                boolean isIDValid = task.getResult().getDocuments().isEmpty();
+                callback.onIDExistenceChecked(isIDValid);
+            } else {
+                // Handle any errors or exceptions
+                callback.onIDExistenceChecked(false); // Assume invalid ID if there's an error
+            }
+        });
+    }
+    //Email validation function
+    public static boolean checkEmailValidation(String email){
+        boolean valid = true;
+        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            valid = false;
+        }
+        return valid;
     }
 
     public static boolean validatePhoneNumber(String phoneNumber) {
@@ -148,15 +235,64 @@ public class ElderSignupActivity extends AppCompatActivity {
 
         }
 
-
     }
+    //Creating user with Authentication and Firestore
     private void insertData(Elder elder) {
-        DocumentReference documentRef = db.collection("Elderlies").document(elder.getID());
-        documentRef.set(elder).addOnSuccessListener(documentReference -> {
-            Toast.makeText(getApplicationContext(), "User "+elder.getID()+" added successfully", Toast.LENGTH_SHORT).show();
-        }).addOnFailureListener(e -> {
-            Toast.makeText(getApplicationContext(), "Failed to add user: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-        });
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        //creating user in Authenticator
+        auth.createUserWithEmailAndPassword(elder.getEmail(),elder.getPassword()).addOnCompleteListener(ElderSignupActivity.this,
+                new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
+                        if(task.isSuccessful()) {
+                            FirebaseUser firebaseUser = auth.getCurrentUser();
+
+                            //Send Verification Email
+                            firebaseUser.sendEmailVerification();
+
+                            //Save user data in firestore
+                            db = FirebaseFirestore.getInstance();
+                            db.collection("Elderlies").document(firebaseUser.getUid()).set(elder).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                    //updating the display name in the authenticator for the elderly username
+                                    if (task.isSuccessful()) {
+                                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                                .setDisplayName(elder.getUsername())
+                                                .build();
+                                        firebaseUser.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                                //if all went good then we can declare that the user created successfully and move to the home page.
+                                                if(task.isSuccessful()){
+                                                    Toast.makeText(ElderSignupActivity.this, "User registered successfully", Toast.LENGTH_LONG).show();
+                                                    Intent intent = new Intent(ElderSignupActivity.this, HomePageActivity.class);
+                                                    intent.putExtra("userID", elder.getID());
+                                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                    progressDialog.dismiss();
+                                                    startActivity(intent);
+                                                    finish();
+                                                }
+                                                else{
+                                                    Toast.makeText(ElderSignupActivity.this, task.getException().getMessage().toString(), Toast.LENGTH_LONG).show();
+                                                }
+                                            }
+                                        });
+
+                                    } else {
+                                        Toast.makeText(ElderSignupActivity.this, task.getException().getMessage().toString(), Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            });
+                        }
+                        //Open user profile
+
+                        else{
+                            Toast.makeText(ElderSignupActivity.this,task.getException().getMessage().toString(),Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
     }
 
 

@@ -21,6 +21,12 @@ public class Elder extends User{
         this.gender = gender;
     }
 
+    public Elder(String ID, String username, String phoneNumber, Date DOB,Gender gender,String email,String password) {
+        super(ID, username, phoneNumber,email,password);
+        this.DOB = DOB;
+        this.gender = gender;
+    }
+
     public Date getDOB() {
         return DOB;
     }

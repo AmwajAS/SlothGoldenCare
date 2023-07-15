@@ -4,6 +4,8 @@ public class User {
     private String ID;
     private String username;
     private int imgID;
+    private String email;
+    private String password;
 
     public void setImgID(int imgID) {
         this.imgID = imgID;
@@ -20,6 +22,13 @@ public class User {
         this.ID = ID;
         this.username = username;
         this.phoneNumber = phoneNumber;
+    }
+    public User(String ID, String username, String phoneNumber,String email,String password) {
+        this.ID = ID;
+        this.username = username;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.password = password;
     }
 
     public String getUsername() {
@@ -44,6 +53,22 @@ public class User {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
 

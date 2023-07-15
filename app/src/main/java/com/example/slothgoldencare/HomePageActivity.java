@@ -5,6 +5,8 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.provider.Settings;
+import android.widget.EditText;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import android.Manifest;
@@ -21,17 +23,30 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class HomePageActivity extends AppCompatActivity implements View.OnClickListener {
     private CardView D1, D2, D3, D4, D5, D6;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationCallback locationCallback;
     private ProgressDialog progressDialog;
+    private TextView editTextUsername;
+    private String username;
+    private FirebaseAuth auth;
+    private FirebaseFirestore db;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        auth = FirebaseAuth.getInstance();
         setContentView(R.layout.activity_home_page);
+        editTextUsername = findViewById(R.id.username);
+        username = getIntent().getStringExtra("username");
+        userId = getIntent().getStringExtra("userID");
+
+        editTextUsername.setText(auth.getCurrentUser().getDisplayName());
 
         D1 = findViewById(R.id.d1);
         D2 = findViewById(R.id.d2);

@@ -44,28 +44,28 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="355dp"
-            android:layout_marginTop="30dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:orientation="vertical"
             app:cardCornerRadius="4dp"
             app:cardElevation="8dp"
             app:cardMaxElevation="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/button"
+            app:layout_constraintBottom_toTopOf="@+id/genderGroup"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="348dp"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
 
                 <EditText
                     android:id="@+id/userID"
                     android:layout_width="match_parent"
-                    android:layout_height="62dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:background="@android:color/transparent"
                     android:ems="10"
                     android:fontFamily="sans-serif-black"
@@ -76,8 +76,8 @@
                 <EditText
                     android:id="@+id/userName"
                     android:layout_width="match_parent"
-                    android:layout_height="59dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:background="@android:color/transparent"
                     android:ems="10"
                     android:fontFamily="sans-serif-black"
@@ -86,10 +86,22 @@
                     android:padding="12dp" />
 
                 <EditText
+                        android:id="@+id/email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@android:color/transparent"
+                        android:ems="10"
+                        android:fontFamily="sans-serif-black"
+                        android:hint="Email"
+                        android:inputType="textPersonName"
+                        android:padding="12dp" />
+
+                <EditText
                     android:id="@+id/userPhone"
                     android:layout_width="match_parent"
-                    android:layout_height="63dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:background="@android:color/transparent"
                     android:ems="10"
                     android:fontFamily="sans-serif-black"
@@ -97,14 +109,27 @@
                     android:inputType="phone"
                     android:padding="12dp" />
 
+                <EditText
+                        android:id="@+id/password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@android:color/transparent"
+                        android:ems="10"
+                        android:fontFamily="sans-serif-black"
+                        android:hint="Password"
+                        android:inputType="textPassword"
+                        android:padding="12dp" />
+
                 <TextView
                     android:id="@+id/tvSelectDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:contentDescription="month"
                     android:fontFamily="sans-serif-black"
-                    android:text="Date Of Birth"
-                    android:textSize="20sp" />
+                    android:text="  Date Of Birth"
+                    android:textSize="18sp" />
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -114,8 +139,8 @@
                 <EditText
                     android:id="@+id/etSelectDate"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:hint="Select Date"
                     android:inputType="date"
                     android:textColor="@android:color/black"
@@ -129,8 +154,8 @@
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="95dp"
+            android:layout_marginTop="10dp"
             android:layout_marginLeft="80dp"
-            android:layout_marginTop="30dp"
 
             >
 
@@ -138,6 +163,7 @@
                 android:id="@+id/genderGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
                 android:orientation="horizontal">
 
                 <RadioButton

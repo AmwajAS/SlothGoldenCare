@@ -19,7 +19,7 @@
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="306dp"
-        android:layout_height="548dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="50dp"
@@ -72,12 +72,31 @@
             android:hint="Phone"
             android:inputType="phone"
             android:paddingStart="12dp" />
+        <EditText
+                android:id="@+id/userEmail"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/edit_fields_border"
+                android:ems="10"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:paddingStart="12dp" />
+        <EditText
+                android:id="@+id/userPassword"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/edit_fields_border"
+                android:ems="10"
+                android:hint="Passwrod"
+                android:inputType="textPassword"
+                android:paddingStart="12dp" />
 
         <Button
             android:id="@+id/signupBtn"
             android:layout_width="304dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
             android:layout_marginBottom="4dp"
             android:background="#143a84"
             android:fontFamily="@font/sigmar_one"

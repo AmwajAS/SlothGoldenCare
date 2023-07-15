@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,11 +24,21 @@ public class UserHomePageActivity extends AppCompatActivity {
     private List<Elder> relatives;
     private RecyclerView relativesList;
     private Button addBtn;
+    private TextView username;
+    private FirebaseAuth auth;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_home_page);
+        //Firebase parameters, authenticated user.
+        auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        username = findViewById(R.id.username);
+        username.setText(auth.getCurrentUser().getDisplayName());
+
+        //Relatives list (in progress)
         relatives = new ArrayList<>();
         Elder elder = new Elder("123456789","habeb","0528222682",Gender.Male);
         relatives.add(elder);
