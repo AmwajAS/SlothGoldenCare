@@ -6,10 +6,17 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,18 +29,22 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     /*
     Users Table info.
      */
-    static final String DB_TABLE = "USERES";
+    static final String DB_TABLE = "USERS";
     private static final String COLUMN_ID = "rowID";
-    static final String USER_ID = "_ID";
+    static final String USER_ID = "ID";
+    static final String USER_EMAIL = "user_email";
+    static final String USER_PASSWORD = "user_password";
     static final String USER_NAME = "user_name";
     static final String USER_PHONE = "user_phone";
 
     /*
       Elders Table info.
        */
-    static final String ELDER_TBL = "ELDERS";
+    static final String ELDER_TBL = "ELDERLIES";
     static final String ELDER_ID = "ID";
     static final String ELDER_NAME = "name";
+    static final String ELDER_EMAIL = "email";
+    static final String ELDER_PASSWORD = "password";
     static final String ELDER_PHONE = "phone";
     static final String ELDER_DOB = "dateOfBirth";
     static final String ELDER_GENDER = "gender";
@@ -49,13 +60,25 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     /*
     creating the DB Tables Queries:
      */
-    private static final String CREATE_DB_QUERY_USER = "CREATE TABLE " + DB_TABLE + " ( " + USER_ID + "INTEGER PRIMARY KEY, " + USER_ID + " TEXT NOT NULL, " +
-            USER_NAME + " TEXT NOT NULL, " + USER_PHONE + " TEXT NOT NULL UNIQUE" + " );";
+    private static final String CREATE_DB_QUERY_USER = "CREATE TABLE " + DB_TABLE + " ( " +
+            USER_ID + " INTEGER PRIMARY KEY, " +
+            USER_EMAIL + " TEXT NOT NULL, " +
+            USER_PASSWORD + " TEXT NOT NULL, " +
+            USER_NAME + " TEXT NOT NULL, " +
+            USER_PHONE + " TEXT NOT NULL UNIQUE" +
+            " );";
 
-    private static final String CREATE_DB_QUERY_ELDER = "CREATE TABLE " + ELDER_TBL + " ( " + ELDER_ID + " INTEGER PRIMARY KEY, " +
-            ELDER_NAME + " TEXT NOT NULL, " + ELDER_PHONE + " TEXT NOT NULL UNIQUE, " + ELDER_DOB + " TEXT NOT NULL CHECK(" +
-            ELDER_DOB + " <= date('now')), " + ELDER_GENDER + " TEXT NOT NULL CHECK(" +
-            ELDER_GENDER + " IN ('Male', 'Female', 'Other'))" + " );";
+
+    private static final String CREATE_DB_QUERY_ELDER = "CREATE TABLE " + ELDER_TBL + " ( " +
+            ELDER_ID + " INTEGER PRIMARY KEY, " +
+            ELDER_EMAIL + " TEXT NOT NULL, " +
+            ELDER_PASSWORD + " TEXT NOT NULL, " +
+            ELDER_PHONE + " TEXT NOT NULL UNIQUE, " +
+            ELDER_NAME + " TEXT NOT NULL, " +
+            ELDER_DOB + " TEXT NOT NULL, " +
+            ELDER_GENDER + " TEXT NOT NULL CHECK(" + ELDER_GENDER + " IN ('Male', 'Female', 'Other'))" +
+            " );";
+
 
     private static final String CREATE_DB_QUERY_USER_ELDER = "CREATE TABLE " + ELD_REL_TBL + " ( " + ELD_ID + "INTEGER PRIMARY KEY, " + REL_ID + " INTEGER PRIMARY KEY, " +
             RELATION + " TEXT NOT NULL " + " );";
@@ -68,12 +91,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-     //   db.execSQL(CREATE_DB_QUERY_ELDER);
-        //  db.execSQL(CREATE_DB_QUERY_USER_ELDER);
-         // db.execSQL(CREATE_DB_QUERY_USER);
-        //
-
-
+        db.execSQL(CREATE_DB_QUERY_ELDER);
+        db.execSQL(CREATE_DB_QUERY_USER);
+        FetchDataFromFirestore();
     }
 
     @Override
@@ -370,6 +390,84 @@ this method updated the changed values of the Elder TBL fileds.
         db.close();
     }
 
+    public void FetchElderliesDataFromFirestore(){
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        firestore.collection("Elderlies").get().addOnSuccessListener(querySnapshot -> {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            // Iterate over documents
+            for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                try {
+                    // Extract required fields from the document
+                    String elderId = document.getString("id").toString();
+                    String elderName = document.getString("username").toString();
+                    String elderPhone = document.getString("phoneNumber").toString();
+                    Timestamp elderDOB = document.getTimestamp("dob");
+                    String elderGender = document.getString("gender").toString();
+                    String elderEmail = document.getString("email").toString();
+                    String elderPassword = document.getString("password").toString();
+
+                    // Execute the INSERT statement for the "Elderlies" table
+                    String insertQuery = "INSERT INTO " + ELDER_TBL + " (" + ELDER_ID + ", " + ELDER_NAME + ", " + ELDER_PHONE + ", " + ELDER_DOB + ", " + ELDER_GENDER + ", " + ELDER_EMAIL + ", " + ELDER_PASSWORD + ") VALUES (?, ?, ?, ?, ?, ?, ?)";
+                    SQLiteStatement statement = db.compileStatement(insertQuery);
+                    statement.bindString(1, elderId);
+                    statement.bindString(2, elderName);
+                    statement.bindString(3, elderPhone);
+                    statement.bindString(4, elderDOB.toDate().toString());
+                    statement.bindString(5, elderGender);
+                    statement.bindString(6, elderEmail);
+                    statement.bindString(7, elderPassword);
+                    long rowId = statement.executeInsert();
+
+                }catch (Exception e){
+                    Log.w(TAG,"Specific elderly data error: "+e.getMessage().toString());
+                }
+            }
+        }).addOnFailureListener(e -> {
+            Log.w(TAG,"Error fetching Elderlies data from firestore to SQLite: "+e.getMessage().toString());
+        });
+    }
+    public void FetchUsersDataFromFirestore(){
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        firestore.collection("Users").get().addOnSuccessListener(querySnapshot -> {
+            // Open connection to SQLite database
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            // Iterate over documents
+            for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                try {
+                    // Extract required fields from the document
+                    String userId = document.getString("id").toString();
+                    String userName = document.getString("username").toString();
+                    String userPhone = document.getString("phoneNumber").toString();
+                    String userEmail = document.getString("email").toString();
+                    String userPassword = document.getString("password").toString();
+
+                    // Execute the INSERT statement for the "Users" table
+                    String insertQuery = "INSERT INTO Users (" + USER_ID + ", " + USER_NAME + ", " + USER_PHONE + ", " + USER_EMAIL + ", " + USER_PASSWORD + ") VALUES (?, ?, ?, ?, ?)";
+                    SQLiteStatement statement = db.compileStatement(insertQuery);
+                    statement.bindString(1, userId);
+                    statement.bindString(2, userName);
+                    statement.bindString(3, userPhone);
+                    statement.bindString(4, userEmail);
+                    statement.bindString(5, userPassword);
+                    long rowId = statement.executeInsert();
+
+                }catch (Exception e){
+                    Log.w(TAG,"Specific user data error : "+e.getMessage().toString());
+                }
+            }
+
+            // Close the database connection
+            db.close();
+        }).addOnFailureListener(e -> {
+            Log.w(TAG,"Error fetching Users data from firestore to SQLite: "+e.getMessage().toString());
+        });
+    }
+    public void FetchDataFromFirestore(){
+       FetchUsersDataFromFirestore();
+       FetchElderliesDataFromFirestore();
+    }
 
 }
 
