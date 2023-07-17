@@ -136,11 +136,6 @@ public class UserSignupActivity extends AppCompatActivity {
     }
     private void insertData(User user) {
 
-
-// Display the loading dialog
-
-// To dismiss the dialog, call progressDialog.dismiss() when the loading is complete or when you want to hide it.
-// For example:
         FirebaseAuth auth = FirebaseAuth.getInstance();
         //creating user in Authenticator
         auth.createUserWithEmailAndPassword(user.getEmail(),user.getPassword()).addOnCompleteListener(UserSignupActivity.this,
@@ -168,13 +163,19 @@ public class UserSignupActivity extends AppCompatActivity {
                                             public void onComplete(@NonNull @NotNull Task<Void> task) {
                                                 //if all went good then we can declare that the user created successfully and move to the home page.
                                                 if(task.isSuccessful()){
-                                                    Toast.makeText(UserSignupActivity.this, "User registered successfully", Toast.LENGTH_LONG).show();
-                                                    Intent intent = new Intent(UserSignupActivity.this, UserHomePageActivity.class);
-                                                    intent.putExtra("userID", user.getID());
-                                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                    progressDialog.dismiss();
-                                                    startActivity(intent);
-                                                    finish();
+                                                    DataBaseHelper dataBaseHelper = new DataBaseHelper(getApplicationContext());
+                                                    user.setDocId(firebaseUser.getUid());
+                                                    if(dataBaseHelper.addUserData(user)){
+                                                        Toast.makeText(UserSignupActivity.this, "User registered successfully", Toast.LENGTH_LONG).show();
+                                                        Intent intent = new Intent(UserSignupActivity.this, UserHomePageActivity.class);
+                                                        intent.putExtra("userID", user.getID());
+                                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                        progressDialog.dismiss();
+                                                        startActivity(intent);
+                                                        finish();
+                                                    }else{
+                                                        SimpleDialog.showAlertDialog(UserSignupActivity.this, R.string.alert_title_signup, R.string.sqlite_adding_user_data_error);
+                                                    }
                                                 }
                                                 else{
                                                     Toast.makeText(UserSignupActivity.this, task.getException().getMessage().toString(), Toast.LENGTH_LONG).show();
@@ -195,6 +196,7 @@ public class UserSignupActivity extends AppCompatActivity {
                         }
                     }
                 });
+        progressDialog.dismiss();
     }
 
     private void toastMessage(String message) {

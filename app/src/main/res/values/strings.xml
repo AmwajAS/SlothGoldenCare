@@ -78,5 +78,7 @@
     <string name="DiagnosisAndTreatments">Diagnosis and Treatments</string>
     <string name="HeathStatus">Health Status</string>
 
+    <string name="sqlite_adding_user_data_error">Problem Occurred adding User to Sqlite.</string>
+    <string name="sqlite_adding_elderly_data_error">Problem Occurred adding User to Sqlite.</string>
 
 </resources>

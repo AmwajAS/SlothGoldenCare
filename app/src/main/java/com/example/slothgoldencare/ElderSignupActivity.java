@@ -266,13 +266,19 @@ public class ElderSignupActivity extends AppCompatActivity {
                                             public void onComplete(@NonNull @NotNull Task<Void> task) {
                                                 //if all went good then we can declare that the user created successfully and move to the home page.
                                                 if(task.isSuccessful()){
-                                                    Toast.makeText(ElderSignupActivity.this, "User registered successfully", Toast.LENGTH_LONG).show();
-                                                    Intent intent = new Intent(ElderSignupActivity.this, HomePageActivity.class);
-                                                    intent.putExtra("userID", elder.getID());
-                                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                    progressDialog.dismiss();
-                                                    startActivity(intent);
-                                                    finish();
+                                                    DataBaseHelper dataBaseHelper = new DataBaseHelper(getApplicationContext());
+                                                    elder.setDocId(firebaseUser.getUid());
+                                                    if(dataBaseHelper.addElderData(elder)){
+                                                        Toast.makeText(ElderSignupActivity.this, "User registered successfully", Toast.LENGTH_LONG).show();
+                                                        Intent intent = new Intent(ElderSignupActivity.this, HomePageActivity.class);
+                                                        intent.putExtra("userID", elder.getID());
+                                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                        progressDialog.dismiss();
+                                                        startActivity(intent);
+                                                        finish();
+                                                    }else{
+                                                        SimpleDialog.showAlertDialog(ElderSignupActivity.this, R.string.alert_title_signup, R.string.sqlite_adding_elderly_data_error);
+                                                    }
                                                 }
                                                 else{
                                                     Toast.makeText(ElderSignupActivity.this, task.getException().getMessage().toString(), Toast.LENGTH_LONG).show();
@@ -293,6 +299,7 @@ public class ElderSignupActivity extends AppCompatActivity {
                         }
                     }
                 });
+        progressDialog.dismiss();
     }
 
 

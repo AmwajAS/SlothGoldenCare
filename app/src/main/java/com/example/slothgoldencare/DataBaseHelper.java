@@ -122,20 +122,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public boolean addUserData(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        //String id = "";
-        contentValues.put(USER_ID, String.valueOf(user.getID().toString()));
-        contentValues.put(USER_NAME, String.valueOf(user.getUsername().toString()));
-        contentValues.put(USER_PHONE, String.valueOf(user.getPhoneNumber().toString()));
 
-        long res = db.insert(USERS_TBL, null, contentValues);
-        if (res == -1) {
-            return false;
-        } else {
-            Log.i(TAG, "This is a debug message " + user.getID().toString() + user.getUsername().toString() + user.getPhoneNumber().toString()); // Debug log
+        ContentValues values = new ContentValues();
+        values.put(DOCUMNET_ID,user.getDocId());
+        values.put(USER_ID, user.getID());
+        values.put(USER_EMAIL , user.getEmail());
+        values.put(USER_PASSWORD , user.getPassword());
+        values.put(USER_NAME, user.getUsername());
+        values.put(USER_PHONE, user.getPhoneNumber());
 
-            return true;
-        }
+        long result = db.insert(USERS_TBL, null, values);
+        return result != -1;
     }
 
     public boolean addElderRelative(ElderRelative elderRelative) {
@@ -153,25 +150,20 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 
     public boolean addElderData(Elder elder) {
-
         SQLiteDatabase db = this.getWritableDatabase();
-        onCreate(db);
-        ContentValues contentValues = new ContentValues();
 
-        contentValues.put(ELDER_ID, String.valueOf(elder.getID().toString()));
-        contentValues.put(ELDER_NAME, String.valueOf(elder.getUsername().toString()));
-        contentValues.put(ELDER_PHONE, String.valueOf(elder.getPhoneNumber().toString()));
-        contentValues.put(ELDER_DOB, String.valueOf(elder.formatDateOfBirth(elder.getDOB())));
-        contentValues.put(ELDER_GENDER, String.valueOf(elder.getGender().toString()));
+        ContentValues values = new ContentValues();
+        values.put(DOCUMNET_ID,elder.getDocId());
+        values.put(ELDER_ID, elder.getID());
+        values.put(ELDER_EMAIL , elder.getEmail());
+        values.put(ELDER_PASSWORD , elder.getPassword());
+        values.put(ELDER_NAME, elder.getUsername());
+        values.put(ELDER_PHONE, elder.getPhoneNumber());
+        values.put(ELDER_DOB,elder.getDOB().toString());
+        values.put(ELDER_GENDER,elder.getGender().toString());
 
-        long res = db.insert(ELDER_TBL, null, contentValues);
-        if (res == -1) {
-            return false;
-        } else {
-            Log.i(TAG, "This is a debug message " + elder.getID().toString() + elder.getUsername().toString() + elder.getPhoneNumber().toString()); // Debug log
-
-            return true;
-        }
+        long result = db.insert(USERS_TBL, null, values);
+        return result != -1;
     }
 
     public boolean checkUserID(String uid) {
