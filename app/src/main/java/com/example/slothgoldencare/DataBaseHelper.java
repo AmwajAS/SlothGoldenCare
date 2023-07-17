@@ -18,9 +18,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import org.jetbrains.annotations.NotNull;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DBHelper";
@@ -42,6 +45,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
        */
     static final String ELDER_TBL = "ELDERLIES";
     static final String ELDER_ID = "ID";
+    static final String DOCUMNET_ID = "docId";
     static final String ELDER_NAME = "name";
     static final String ELDER_EMAIL = "email";
     static final String ELDER_PASSWORD = "password";
@@ -61,7 +65,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     creating the DB Tables Queries:
      */
     private static final String CREATE_DB_QUERY_USER = "CREATE TABLE " + DB_TABLE + " ( " +
-            USER_ID + " INTEGER PRIMARY KEY, " +
+            DOCUMNET_ID + " TEXT PRIMARY KEY, " +
+            USER_ID + " INTEGER NOT NULL, " +
             USER_EMAIL + " TEXT NOT NULL, " +
             USER_PASSWORD + " TEXT NOT NULL, " +
             USER_NAME + " TEXT NOT NULL, " +
@@ -70,7 +75,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 
     private static final String CREATE_DB_QUERY_ELDER = "CREATE TABLE " + ELDER_TBL + " ( " +
-            ELDER_ID + " INTEGER PRIMARY KEY, " +
+            DOCUMNET_ID + " TEXT PRIMARY KEY, " +
+            ELDER_ID + " INTEGER NOT NULL, " +
             ELDER_EMAIL + " TEXT NOT NULL, " +
             ELDER_PASSWORD + " TEXT NOT NULL, " +
             ELDER_PHONE + " TEXT NOT NULL UNIQUE, " +
@@ -210,6 +216,38 @@ This method check if the input ID is already exists in the DB, and return true i
 
         return user;
     }
+
+    public Elder getElderById(String elderId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(ELDER_TBL, null, ELDER_ID + "=?", new String[]{elderId}, null, null, null);
+        if (cursor.moveToFirst()) {
+            String docId = cursor.getString(cursor.getColumnIndexOrThrow(DOCUMNET_ID));
+            String id = cursor.getString(cursor.getColumnIndexOrThrow(ELDER_ID));
+            String name = cursor.getString(cursor.getColumnIndexOrThrow(ELDER_NAME));
+            String email = cursor.getString(cursor.getColumnIndexOrThrow(ELDER_EMAIL));
+            String password = cursor.getString(cursor.getColumnIndexOrThrow(ELDER_PASSWORD));
+            String phone = cursor.getString(cursor.getColumnIndexOrThrow(ELDER_PHONE));
+            String dobString = cursor.getString(cursor.getColumnIndexOrThrow(ELDER_DOB));
+            String genderString = cursor.getString(cursor.getColumnIndexOrThrow(ELDER_GENDER));
+
+            Date dob = null;
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                dob = sdf.parse(dobString);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Gender gender = Elder.GenderConvertor(genderString);
+            // Create and return the Elder object
+            Elder elder = new Elder(id, name,phone,dob, gender ,email, password);
+            elder.setDocId(docId);
+            return elder;
+        }
+        cursor.close();
+        // Return null if no matching elder found
+        return null;
+    }
+
 
     /*
    This method takes as a input a Elder ID and return the whole row - Elder object.
@@ -399,6 +437,7 @@ this method updated the changed values of the Elder TBL fileds.
             for (DocumentSnapshot document : querySnapshot.getDocuments()) {
                 try {
                     // Extract required fields from the document
+                    String docId = document.getId().toString();
                     String elderId = document.getString("id").toString();
                     String elderName = document.getString("username").toString();
                     String elderPhone = document.getString("phoneNumber").toString();
@@ -408,15 +447,16 @@ this method updated the changed values of the Elder TBL fileds.
                     String elderPassword = document.getString("password").toString();
 
                     // Execute the INSERT statement for the "Elderlies" table
-                    String insertQuery = "INSERT INTO " + ELDER_TBL + " (" + ELDER_ID + ", " + ELDER_NAME + ", " + ELDER_PHONE + ", " + ELDER_DOB + ", " + ELDER_GENDER + ", " + ELDER_EMAIL + ", " + ELDER_PASSWORD + ") VALUES (?, ?, ?, ?, ?, ?, ?)";
+                    String insertQuery = "INSERT INTO " + ELDER_TBL + " ("+DOCUMNET_ID+"," + ELDER_ID + ", " + ELDER_NAME + ", " + ELDER_PHONE + ", " + ELDER_DOB + ", " + ELDER_GENDER + ", " + ELDER_EMAIL + ", " + ELDER_PASSWORD + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
                     SQLiteStatement statement = db.compileStatement(insertQuery);
-                    statement.bindString(1, elderId);
-                    statement.bindString(2, elderName);
-                    statement.bindString(3, elderPhone);
-                    statement.bindString(4, elderDOB.toDate().toString());
-                    statement.bindString(5, elderGender);
-                    statement.bindString(6, elderEmail);
-                    statement.bindString(7, elderPassword);
+                    statement.bindString(1,docId);
+                    statement.bindString(2, elderId);
+                    statement.bindString(3, elderName);
+                    statement.bindString(4, elderPhone);
+                    statement.bindString(5, elderDOB.toDate().toString());
+                    statement.bindString(6, elderGender);
+                    statement.bindString(7, elderEmail);
+                    statement.bindString(8, elderPassword);
                     long rowId = statement.executeInsert();
 
                 }catch (Exception e){
@@ -437,6 +477,7 @@ this method updated the changed values of the Elder TBL fileds.
             for (DocumentSnapshot document : querySnapshot.getDocuments()) {
                 try {
                     // Extract required fields from the document
+                    String docId = document.getId().toString();
                     String userId = document.getString("id").toString();
                     String userName = document.getString("username").toString();
                     String userPhone = document.getString("phoneNumber").toString();
@@ -444,13 +485,14 @@ this method updated the changed values of the Elder TBL fileds.
                     String userPassword = document.getString("password").toString();
 
                     // Execute the INSERT statement for the "Users" table
-                    String insertQuery = "INSERT INTO Users (" + USER_ID + ", " + USER_NAME + ", " + USER_PHONE + ", " + USER_EMAIL + ", " + USER_PASSWORD + ") VALUES (?, ?, ?, ?, ?)";
+                    String insertQuery = "INSERT INTO Users ("+DOCUMNET_ID+"," + USER_ID + ", " + USER_NAME + ", " + USER_PHONE + ", " + USER_EMAIL + ", " + USER_PASSWORD + ") VALUES (?, ?, ?, ?, ?, ?)";
                     SQLiteStatement statement = db.compileStatement(insertQuery);
-                    statement.bindString(1, userId);
-                    statement.bindString(2, userName);
-                    statement.bindString(3, userPhone);
-                    statement.bindString(4, userEmail);
-                    statement.bindString(5, userPassword);
+                    statement.bindString(1,docId);
+                    statement.bindString(2, userId);
+                    statement.bindString(3, userName);
+                    statement.bindString(4, userPhone);
+                    statement.bindString(5, userEmail);
+                    statement.bindString(6, userPassword);
                     long rowId = statement.executeInsert();
 
                 }catch (Exception e){

@@ -45,7 +45,7 @@ public class UserHomePageActivity extends AppCompatActivity {
         elder = new Elder("123456788","test","0528222688",Gender.Female);
         relatives.add(elder);
         toolbar = findViewById(R.id.actBar);
-        addBtn = findViewById(R.id.addBtn);
+        addBtn = findViewById(R.id.addRelativeBtn);
         relativesList = findViewById(R.id.relativesListView);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);

@@ -60,7 +60,7 @@
 
 
                     <EditText
-                        android:id="@+id/userID"
+                        android:id="@+id/related_id"
                         android:layout_width="match_parent"
                         android:layout_height="62dp"
                         android:layout_marginBottom="20dp"

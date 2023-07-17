@@ -1,6 +1,7 @@
 package com.example.slothgoldencare;
 
 public class User {
+    private String docId;
     private String ID;
     private String username;
     private int imgID;
@@ -69,6 +70,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setDocId(String documentId){
+        docId = documentId;
+    }
+    public String getDocId(){
+        return docId;
     }
 }
 
