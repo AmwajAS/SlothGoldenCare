@@ -1,5 +1,7 @@
 package com.example.slothgoldencare;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.view.*;
 import android.widget.*;
 import androidx.annotation.NonNull;
@@ -40,10 +42,8 @@ public class UserHomePageActivity extends AppCompatActivity {
 
         //Relatives list (in progress)
         relatives = new ArrayList<>();
-        Elder elder = new Elder("123456789","habeb","0528222682",Gender.Male);
-        relatives.add(elder);
-        elder = new Elder("123456788","test","0528222688",Gender.Female);
-        relatives.add(elder);
+        relatives = GetRelativeElderlies();
+
         toolbar = findViewById(R.id.actBar);
         addBtn = findViewById(R.id.addRelativeBtn);
         relativesList = findViewById(R.id.relativesListView);
@@ -100,6 +100,46 @@ public class UserHomePageActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.action_menu, menu);
         return true;
+    }
+
+    public List<Elder> GetRelativeElderlies(){
+        List<Elder> temp = new ArrayList<>();
+        // Assuming you have a valid SQLiteDatabase object named "db"
+
+        String query = "SELECT * FROM ELDER_RELATIVE INNER JOIN ELDERLIES ON ELDER_RELATIVE.ElderID = ELDERLIES.docId " +
+                "WHERE ELDER_RELATIVE.RelativeID = ?";
+        String[] selectionArgs = {auth.getUid()};
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(this);
+        SQLiteDatabase sqLiteDatabase = dataBaseHelper.getWritableDatabase();
+        Cursor cursor = sqLiteDatabase.rawQuery(query, selectionArgs);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+
+                // Extract data from the cursor for each matching row
+                String documentId = cursor.getString(cursor.getColumnIndexOrThrow("docId"));
+                String elderId = cursor.getString(cursor.getColumnIndexOrThrow("ID"));
+                String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+                String email = cursor.getString(cursor.getColumnIndexOrThrow("email"));
+                String password = cursor.getString(cursor.getColumnIndexOrThrow("password"));
+                String phone = cursor.getString(cursor.getColumnIndexOrThrow("phone"));
+                String dob = cursor.getString(cursor.getColumnIndexOrThrow("dateOfBirth"));
+                String genderString = cursor.getString(cursor.getColumnIndexOrThrow("gender"));
+
+                Gender gender = Elder.GenderConvertor(genderString);
+                Date dateOfBirth = Elder.convertStringIntoDate(dob);
+
+                Elder elder = new Elder(elderId,name,phone,dateOfBirth,gender,email,password);
+                elder.setDocId(documentId);
+                temp.add(elder);
+
+            } while (cursor.moveToNext());
+        }
+
+// Close the cursor when done
+        if (cursor != null) {
+            cursor.close();
+        }
+        return temp;
     }
 
 }

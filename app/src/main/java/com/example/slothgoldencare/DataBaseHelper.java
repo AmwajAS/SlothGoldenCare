@@ -138,6 +138,20 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public boolean addElderRelative(ElderRelative elderRelative) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(DOCUMNET_ID,elderRelative.getDocId());
+        values.put(ELD_ID, elderRelative.getElderlyId());
+        values.put(REL_ID, elderRelative.getRelativeId());
+        values.put(RELATION, elderRelative.getRelation());
+
+        long result = db.insert(ELD_REL_TBL, null, values);
+        return result != -1; // Return true if insertion was successful
+    }
+
+
     public boolean addElderData(Elder elder) {
 
         SQLiteDatabase db = this.getWritableDatabase();

@@ -55,10 +55,14 @@ public class AddRelated extends AppCompatActivity implements AdapterView.OnItemS
                 //if exists, adding. STILL NEED TO ADD IN DATABASE.
                 ElderRelative elderRelative = new ElderRelative(currUser.getUid(),elder.getDocId(),spinner.getSelectedItem().toString());
                 db.collection("ElderlyRelative").add(elderRelative).addOnSuccessListener(documentReference -> {
-                    Toast.makeText(AddRelated.this,"Added User "+elder.getUsername()+" Successfuly", Toast.LENGTH_LONG).show();
+                    elderRelative.setDocId(documentReference.getId());
+                    if(dataBaseHelper.addElderRelative(elderRelative)) {
+                        Toast.makeText(AddRelated.this, "Added User " + elder.getUsername() + " Successfuly", Toast.LENGTH_LONG).show();
+                    }
                 }).addOnFailureListener(e -> {
                     Toast.makeText(AddRelated.this,e.getMessage().toString(), Toast.LENGTH_LONG).show();
                 });
+
             }
         });
     }

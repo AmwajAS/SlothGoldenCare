@@ -62,11 +62,11 @@
 
     <string-array name="Relation">
         <item>Choose Your Relation</item>
-        <item>Doctor</item>
-        <item>Son</item>
-        <item>Daughter</item>
-        <item>Volunteer</item>
-        <item>Friend</item>
+        <item>Father</item>
+        <item>Mother</item>
+        <item>Grandfather</item>
+        <item>Grandmother</item>
+        <item>Other</item>
     </string-array>
 
     <string name="CurrentPage">CurrentPage</string>

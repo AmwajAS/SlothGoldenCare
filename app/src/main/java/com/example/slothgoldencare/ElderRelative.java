@@ -4,6 +4,7 @@ public class ElderRelative {
     String relativeId;
     String elderlyId;
     String relation;
+    String docId;
 
     public ElderRelative(String relativeId, String elderlyId, String relation) {
         this.relativeId = relativeId;
@@ -33,5 +34,13 @@ public class ElderRelative {
 
     public void setRelation(String relation) {
         this.relation = relation;
+    }
+
+    public void setDocId(String docId){
+        this.docId = docId;
+    }
+
+    public String getDocId(){
+        return docId;
     }
 }

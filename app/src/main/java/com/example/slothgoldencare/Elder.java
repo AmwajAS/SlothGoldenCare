@@ -1,6 +1,9 @@
 package com.example.slothgoldencare;
 
 
+import android.util.Log;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -47,6 +50,19 @@ public class Elder extends User{
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         return dateFormat.format(date);
     }
+
+    public static Date convertStringIntoDate(String dateString) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = null;
+        try {
+            date = sdf.parse(dateString);
+            // Your code to handle the parsed date
+        } catch (ParseException e) {
+            // Handle the case where the input is not a valid date
+        }
+        return date;
+    }
+
 /*
 this method convert from String to Gender - Enum
  */

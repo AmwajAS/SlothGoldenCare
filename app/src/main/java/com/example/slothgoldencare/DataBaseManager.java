@@ -32,12 +32,12 @@ public class DataBaseManager {
         contentValues.put(DataBaseHelper.USER_ID, ID);
         contentValues.put(DataBaseHelper.USER_NAME, username);
         contentValues.put(DataBaseHelper.USER_PHONE, phoneNumber);
-        database.insert(DataBaseHelper.DB_TABLE,null, contentValues );
+        database.insert(DataBaseHelper.USERS_TBL,null, contentValues );
     }
 
     public Cursor fetch(){
         String[] columns = new String[] {DataBaseHelper.USER_ID, DataBaseHelper.USER_NAME, DataBaseHelper.USER_PHONE};
-        Cursor cursor = database.query(DataBaseHelper.DB_TABLE, columns, null, null, null, null, null);
+        Cursor cursor = database.query(DataBaseHelper.USERS_TBL, columns, null, null, null, null, null);
         if (cursor != null){
             cursor.moveToFirst();
         }
@@ -48,12 +48,12 @@ public class DataBaseManager {
         ContentValues contentValues = new ContentValues();
         contentValues.put(DataBaseHelper.USER_NAME, username);
         contentValues.put(DataBaseHelper.USER_PHONE, phoneNumber);
-        int ret = database.update(DataBaseHelper.DB_TABLE, contentValues, DataBaseHelper.USER_ID + "=" +_id, null );
+        int ret = database.update(DataBaseHelper.USERS_TBL, contentValues, DataBaseHelper.USER_ID + "=" +_id, null );
         return ret;
     }
 
     public void delete( long _id){
-        database.delete(DataBaseHelper.DB_TABLE, DataBaseHelper.USER_ID + "=" +_id, null);
+        database.delete(DataBaseHelper.USERS_TBL, DataBaseHelper.USER_ID + "=" +_id, null);
     }
 
 
