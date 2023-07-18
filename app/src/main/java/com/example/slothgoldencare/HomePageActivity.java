@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.slothgoldencare.sudoko.GameActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -94,6 +95,10 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.d6:
                 i = new Intent(this, BottomNavigationBarActivity.class);
+                startActivity(i);
+                break;
+            case R.id.d3:
+                i = new Intent(this, GameActivity.class);
                 startActivity(i);
                 break;
             case R.id.d4:
