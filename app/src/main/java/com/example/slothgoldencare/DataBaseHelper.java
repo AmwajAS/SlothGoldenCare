@@ -355,17 +355,20 @@ This method connects to the DB and returns all the data in the Users TBL.
  */
     public List<User> getUsers() {
         List<User> userList = new ArrayList<>();
-
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query("USERES", null, null, null, null, null, null);
+        Cursor cursor = db.query(USERS_TBL, null, null, null, null, null, null);
 
         if (cursor.moveToFirst()) {
             do {
-                @SuppressLint("Range") String id = cursor.getString(cursor.getColumnIndex("_ID"));
-                @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex("user_name"));
-                @SuppressLint("Range") String phone = cursor.getString(cursor.getColumnIndex("user_phone"));
+                String docId = cursor.getString(cursor.getColumnIndexOrThrow(DOCUMNET_ID));
+                String id = cursor.getString(cursor.getColumnIndexOrThrow(USER_ID));
+                String name = cursor.getString(cursor.getColumnIndexOrThrow(USER_NAME));
+                String phone = cursor.getString(cursor.getColumnIndexOrThrow(USER_PHONE));
+                String email = cursor.getString(cursor.getColumnIndexOrThrow(USER_EMAIL));
+                String password = cursor.getString(cursor.getColumnIndexOrThrow(USER_PASSWORD));
 
-                User user = new User(id, name, phone);
+                User user = new User(id, name, phone,email,password);
+                user.setDocId(docId);
                 userList.add(user);
             } while (cursor.moveToNext());
         }
@@ -382,18 +385,23 @@ This method connects to the DB and returns all the data in the Users TBL.
         List<Elder> eldersList = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query("ELDERS", null, null, null, null, null, null);
+        Cursor cursor = db.query(ELDER_TBL, null, null, null, null, null, null);
 
         if (cursor.moveToFirst()) {
             do {
-                String userID = cursor.getString(cursor.getColumnIndexOrThrow("ID"));
-                String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
-                String phone = cursor.getString(cursor.getColumnIndexOrThrow("phone"));
-                String date = cursor.getString(cursor.getColumnIndexOrThrow("dateOfBirth"));
-                String gender = cursor.getString(cursor.getColumnIndexOrThrow("gender"));
-                Log.i(TAG, "This is the date 1:" + date);
-                Elder elder = new Elder(userID, name, phone, ElderSignupActivity.convertStringIntoDate(date), Elder.GenderConvertor(gender));
-                Log.i(TAG, "This is the date 2:" + elder.getDOB());
+                String docId = cursor.getString(cursor.getColumnIndexOrThrow(DOCUMNET_ID));
+                String id = cursor.getString(cursor.getColumnIndexOrThrow(ELDER_ID));
+                String name = cursor.getString(cursor.getColumnIndexOrThrow(ELDER_NAME));
+                String phone = cursor.getString(cursor.getColumnIndexOrThrow(ELDER_PHONE));
+                String email = cursor.getString(cursor.getColumnIndexOrThrow(ELDER_EMAIL));
+                String password = cursor.getString(cursor.getColumnIndexOrThrow(ELDER_PASSWORD));
+                String dobString = cursor.getString(cursor.getColumnIndexOrThrow(ELDER_DOB));
+                String genderString = cursor.getString(cursor.getColumnIndexOrThrow(ELDER_GENDER));
+                Gender gender = Elder.GenderConvertor(genderString);
+                Date dob = convertStringToDate(dobString);
+                Elder elder = new Elder(id, name, phone,dob,gender,email,password);
+                elder.setDocId(docId);
+
                 eldersList.add(elder);
             } while (cursor.moveToNext());
         }
@@ -561,6 +569,17 @@ this method updated the changed values of the Elder TBL fileds.
        FetchUsersDataFromFirestore();
        FetchElderliesDataFromFirestore();
        FetchElderlyRelativesDataFromFirestore();
+    }
+
+    public Date convertStringToDate(String dobString){
+        Date dob = null;
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            dob = sdf.parse(dobString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return dob;
     }
 
 }

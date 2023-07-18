@@ -4,22 +4,20 @@
                                                    xmlns:tools="http://schemas.android.com/tools"
                                                    android:layout_width="match_parent"
                                                    android:layout_height="match_parent"
-                                                   tools:context=".AdministratorActivity">
-
+                                                   tools:context=".AdministratorElderliesActivity">
     <LinearLayout android:layout_width="match_parent"
+                  android:layout_weight="1"
                   android:orientation="vertical"
-                  android:gravity="center"
                   android:layout_height="match_parent">
-
-        <Button android:id="@+id/users_btn"
+        <TextView android:layout_width="match_parent"
+                  android:textSize="20dp"
+                  android:layout_height="wrap_content"
+                  android:gravity="center_horizontal"
+                  android:text="Elderly"/>
+        <ListView
+                android:id="@+id/elderly_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Users"/>
-
-        <Button android:id="@+id/elderlies_btn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Elderlies"/>
+                android:layout_height="match_parent"/>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

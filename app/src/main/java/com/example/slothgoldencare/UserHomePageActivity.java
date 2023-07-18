@@ -65,6 +65,17 @@ public class UserHomePageActivity extends AppCompatActivity {
                 Elder elder = relatives.get(position);
                 holder.relativeImg.setImageResource(R.drawable.man);
                 holder.relativeName.setText(elder.getUsername());
+
+                //clicking on a specific elderly to show the profile.
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(view.getContext(), "Item clicked: " + elder.getUsername(), Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(UserHomePageActivity.this,VisitElderlyProfileActivity.class);
+                        intent.putExtra("elderlyId",elder.getID());
+                        startActivity(intent);
+                    }
+                });
             }
 
             @Override
