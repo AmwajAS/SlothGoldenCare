@@ -1,19 +1,36 @@
 package com.example.slothgoldencare.Reminder;
 
-//model class is used to set and get the data from the database
+
+/**
+ * The Model class is a data model used to set and get data from the database.
+ */
+
 
 public class Model {
     String title, date, time;
 
+    /**
+     * Default constructor for the Model class.
+     */
     public Model() {
     }
 
+    /**
+     * Constructor for the Model class.
+     *
+     * @param title The title of the model.
+     * @param date  The date of the model.
+     * @param time  The time of the model.
+     */
     public Model(String title, String date, String time) {
         this.title = title;
         this.date = date;
         this.time = time;
     }
 
+    /*
+    getters & setters
+     */
     public String getTitle() {
         return title;
     }

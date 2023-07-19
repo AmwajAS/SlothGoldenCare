@@ -15,6 +15,12 @@ import androidx.core.app.NotificationCompat;
 
 import com.example.slothgoldencare.R;
 
+
+/**
+ * The AlarmBroadcast class is a BroadcastReceiver that handles the broadcast
+ * when the alarm is triggered. It creates and displays a notification with
+ * the specified event and date.
+ */
 public class AlarmBroadcast extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -58,7 +64,7 @@ public class AlarmBroadcast extends BroadcastReceiver {
             notificationManager.createNotificationChannel(channel);
             mBuilder.setChannelId(channelId);
         }
-
+        // Display the notification
         Notification notification = mBuilder.build();
         notificationManager.notify(1, notification);
 
