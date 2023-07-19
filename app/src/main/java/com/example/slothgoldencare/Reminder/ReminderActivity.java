@@ -2,6 +2,7 @@ package com.example.slothgoldencare.Reminder;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.slothgoldencare.DataBaseHelper;
 import com.example.slothgoldencare.R;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,7 +29,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 
-//this class is to take the reminders from the user and inserts into the database
+/**
+ * This class is used to take reminders from the user and insert them into the database.
+ */
 public class ReminderActivity extends AppCompatActivity {
 
     // Declare the RadioGroup and RadioButtons
@@ -38,6 +42,10 @@ public class ReminderActivity extends AppCompatActivity {
     EditText mTitledit;
     String timeTonotify;
 
+    /**
+     * This method is called when the activity is created.
+     * It initializes the UI components and sets the click listeners for buttons.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,41 +73,104 @@ public class ReminderActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 selectDate();
-            }                                        //when we click on the choose date button it calls the select date method
+            }   //when we click on the choose date button it calls the select date method
         });
 
         mSubmitbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String title = mTitledit.getText().toString().trim();                               //access the data from the input field
-                String date = mDatebtn.getText().toString().trim();                                 //access the date from the choose date button
-                String time = mTimebtn.getText().toString().trim();                                 //access the time from the choose time button
+                String title = mTitledit.getText().toString().trim();                //access the data from the input field
+                String date = mDatebtn.getText().toString().trim();                 //access the date from the choose date button
+                String time = mTimebtn.getText().toString().trim();                 //access the time from the choose time button
                 // Get the selected task frequency
-                String frequency = getSelectedFrequency();
-                if (title.isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Please Enter text", Toast.LENGTH_SHORT).show();   //shows the toast if input field is empty
-                } else {
-                    if (time.equals("time") || date.equals("date")) {                                               //shows toast if date and time are not selected
-                        Toast.makeText(getApplicationContext(), "Please select date and time", Toast.LENGTH_SHORT).show();
-                    } else {
-                        processinsert(title, date, time);
-
-                    }
+                if (checkEmptyFields(title, date, time)) {
+                    processinsert(title, date, time);
                 }
-
-
             }
         });
     }
 
+    /**
+     * Checks if the fields (title, date, time) and frequency are empty.
+     * If any field is empty, shows an AlertDialog indicating the empty field.
+     *
+     * @param title The reminder title
+     * @param date  The reminder date
+     * @param time  The reminder time
+     * @return True if all fields are filled, False otherwise
+     */
+    private boolean checkEmptyFields(String title, String date, String time) {
+        if (title.isEmpty() || date.equals("date") || time.equals("time") || getSelectedFrequency().isEmpty()) {
+            // Show AlertDialog indicating the empty field
+            AlertDialog.Builder builder = new AlertDialog.Builder(ReminderActivity.this);
+            builder.setTitle("Warning");
+            builder.setMessage("Please fill in all the fields and select a frequency");
+            builder.setPositiveButton("OK", null);
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+            return false;
+        } else {
+            return true;
+        }
 
-    private void processinsert(String title, String date, String time) {
-        String result = new DataBaseHelper(this).addreminder(title, date, time);                  //inserts the title,date,time into sql lite database
-        setAlarm(title, date, time);                                                                //calls the set alarm method to set alarm
-        mTitledit.setText("");
-        Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Before the Processes of insertion of the reminder into the database.
+     * Checks if the selected date and time are in the past.
+     *
+     * @param date  The reminder date
+     * @param time  The reminder time
+     */
+
+    private boolean checkPastDateTime(String date, String time) {
+        DateFormat dateFormat = new SimpleDateFormat("d-M-yyyy hh:mm");
+        try {
+            Date selectedDateTime = dateFormat.parse(date + " " + time);
+            Date currentDateTime = new Date();
+
+            if (selectedDateTime.before(currentDateTime)) {
+                // Show AlertDialog indicating that the selected date and time are in the past
+                AlertDialog.Builder builder = new AlertDialog.Builder(ReminderActivity.this);
+                builder.setTitle("Warning");
+                builder.setMessage("Please select a future date and time");
+                builder.setPositiveButton("OK", null);
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+                return false;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+
+    /**
+     * Processes the insertion of the reminder into the database.
+     * Checks if the fields are empty and if the selected date and time are in the past.
+     * If all checks pass, inserts the reminder into the database and sets the alarm.
+     *
+     * @param title The reminder title
+     * @param date  The reminder date
+     * @param time  The reminder time
+     */
+    private void processinsert(String title, String date, String time) {
+
+        String result = new DataBaseHelper(this).addreminder(title, date, time);
+
+        if(checkPastDateTime(date, time)){
+            setAlarm(title, date, time);
+            mTitledit.setText("");
+            Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    /**
+     * Displays a TimePickerDialog and allows the user to select the time.
+     * Sets the selected time as the text for the time button.
+     */
     private void selectTime() {                                                                     //this method performs the time picker task
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -114,6 +185,10 @@ public class ReminderActivity extends AppCompatActivity {
         timePickerDialog.show();
     }
 
+    /**
+     * Displays a DatePickerDialog and allows the user to select the date.
+     * Sets the selected date as the text for the date button.
+     */
     private void selectDate() {                                                                     //this method performs the date picker task
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -128,6 +203,13 @@ public class ReminderActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
+    /**
+     * Formats the given hour and minute into 12-hour format with AM/PM.
+     *
+     * @param hour   The selected hour
+     * @param minute The selected minute
+     * @return The formatted time string
+     */
     public String FormatTime(int hour, int minute) {                                                //this method converts the time into 12hr format and assigns am or pm
 
         String time;
@@ -156,7 +238,14 @@ public class ReminderActivity extends AppCompatActivity {
         return time;
     }
 
-
+    /**
+     * Sets the alarm for the reminder.
+     * Creates an alarm using AlarmManager and schedules a PendingIntent.
+     *
+     * @param text The reminder text/event
+     * @param date The reminder date
+     * @param time The reminder time
+     */
     private void setAlarm(String text, String date, String time) {
         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);                   //assigning alarm manager object to set alarm
 
@@ -184,7 +273,11 @@ public class ReminderActivity extends AppCompatActivity {
     }
 
 
-    // Method to get the selected task frequency
+    /**
+     * Retrieves the selected task frequency from the RadioGroup.
+     *
+     * @return The selected task frequency (One-time or Daily)
+     */
     private String getSelectedFrequency() {
         int selectedId = radioGroupFrequency.getCheckedRadioButtonId();
         if (selectedId == R.id.radioButtonOneTime) {
