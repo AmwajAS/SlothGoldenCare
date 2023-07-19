@@ -119,6 +119,7 @@
     <string name="score_label">Score: </string>
     <string name="todo_Label"> TO-DO LIST</string>
     <string name="reminder_Label"> Add Reminder Here...</string>
+    <string name="reminder_add_success">Successfully Added Reminder</string>
     <string name="task_Label"> Enter The Task</string>
     <string name="task_date"> DATE</string>
     <string name="task_time"> TIME</string>
@@ -132,5 +133,10 @@
     <string name="sqlite_adding_user_data_error">Problem Occurred adding User to Sqlite.</string>
     <string name="sqlite_adding_elderly_data_error">Problem Occurred adding User to Sqlite.</string>
     <string name="todo">TODO</string>
+
+    <string name="relative_login">Relative</string>
+    <string name="doctor_login">Doctor</string>
+    <string name="admin_login">Admin</string>
+    <string name="elderly_login">Elderly</string>
 
 </resources>

@@ -2,13 +2,17 @@ package com.example.slothgoldencare.Reminder;
 
 //model class is used to set and get the data from the database
 
-public class Model {
-    String title, date, time;
+import java.util.Date;
 
-    public Model() {
+public class Reminder {
+    String elderlyDocId,title, time;
+    Date date;
+
+    public Reminder() {
     }
 
-    public Model(String title, String date, String time) {
+    public Reminder(String elderlyDocId,String title, Date date, String time) {
+        this.elderlyDocId = elderlyDocId;
         this.title = title;
         this.date = date;
         this.time = time;
@@ -22,11 +26,11 @@ public class Model {
         this.title = title;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -36,5 +40,13 @@ public class Model {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getElderlyDocId() {
+        return elderlyDocId;
+    }
+
+    public void setElderlyDocId(String elderlyDocId) {
+        this.elderlyDocId = elderlyDocId;
     }
 }

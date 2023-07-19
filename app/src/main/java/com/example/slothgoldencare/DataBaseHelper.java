@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.example.slothgoldencare.Reminder.Reminder;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -61,6 +62,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String ELD_ID = "ElderID";
     static final String REL_ID = "RelativeID";
     static final String RELATION = "Relation";
+
+    /*
+    Reminers Table info.
+     */
+    static final String REMINDER_TBL = "Reminders";
+    static final String REMINDER_ELD_ID = "ELderID";
+    static final String REMINDER_TITLE = "Title";
+    static final String REMINDER_DATE = "Date";
+    static final String REMINDER_TIME = "Time";
     /*
     creating the DB Tables Queries:
      */
@@ -93,7 +103,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             " );";
 
 
-
+    private static final String CREATE_DB_QUERY_REMINDER = "CREATE TABLE " + REMINDER_TBL + " ( " +
+            REMINDER_ELD_ID + " TEXT NOT NULL," +
+            REMINDER_TITLE + " TEXT NOT NULL, " +
+            REMINDER_DATE + " TEXT NOT NULL," +
+            REMINDER_TIME+ " TEXT NOT NULL" +
+            " );";
     private static final String CREATE_DB_QUERY_USER_ELDER = "CREATE TABLE " + ELD_REL_TBL + " ( " + ELD_ID + "INTEGER PRIMARY KEY, " + REL_ID + " INTEGER PRIMARY KEY, " +
             RELATION + " TEXT NOT NULL " + " );";
 
@@ -109,7 +124,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_DB_QUERY_ELDER);
         db.execSQL(CREATE_DB_QUERY_USER);
         db.execSQL(CREATE_DB_QUERY_ELD_REL);
-        db.execSQL(CREATE_REMINDER_QUERY);
+        db.execSQL(CREATE_DB_QUERY_REMINDER);
         FetchDataFromFirestore();
 
     }
@@ -401,7 +416,7 @@ This method connects to the DB and returns all the data in the Users TBL.
                 String dobString = cursor.getString(cursor.getColumnIndexOrThrow(ELDER_DOB));
                 String genderString = cursor.getString(cursor.getColumnIndexOrThrow(ELDER_GENDER));
                 Gender gender = Elder.GenderConvertor(genderString);
-                Date dob = convertStringToDate(dobString);
+                Date dob = parseDateString(dobString);
                 Elder elder = new Elder(id, name, phone,dob,gender,email,password);
                 elder.setDocId(docId);
 
@@ -568,10 +583,46 @@ this method updated the changed values of the Elder TBL fileds.
             Log.w(TAG,"Error fetching ElderlyRelative data from firestore to SQLite: "+e.getMessage().toString());
         });
     }
+    public void FetchRemindersFromFirestore(){
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        firestore.collection("Reminders").get().addOnSuccessListener(querySnapshot -> {
+            // Open connection to SQLite database
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            // Iterate over documents
+            for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                try {
+                    // Extract required fields from the document
+                    String docId = document.get("elderlyDocId").toString();
+                    String title = document.get("title").toString();
+                    Timestamp date = document.getTimestamp("date");
+                    String time = document.get("time").toString();
+
+                    // Execute the INSERT statement for the "Users" table
+                    String insertQuery = "INSERT INTO "+REMINDER_TBL+"("+REMINDER_ELD_ID+"," + REMINDER_TITLE + ", " + REMINDER_DATE + ", " + REMINDER_TIME + ") VALUES (?, ?, ?, ?)";
+                    SQLiteStatement statement = db.compileStatement(insertQuery);
+                    statement.bindString(1,docId);
+                    statement.bindString(2, title);
+                    statement.bindString(3, date.toDate().toString());
+                    statement.bindString(4, time);
+                    long rowId = statement.executeInsert();
+
+                }catch (Exception e){
+                    Log.w(TAG,"Specific Reminder data error : "+e.getMessage().toString());
+                }
+            }
+
+            // Close the database connection
+            db.close();
+        }).addOnFailureListener(e -> {
+            Log.w(TAG,"Error fetching Reminders data from firestore to SQLite: "+e.getMessage().toString());
+        });
+    }
     public void FetchDataFromFirestore(){
        FetchUsersDataFromFirestore();
        FetchElderliesDataFromFirestore();
        FetchElderlyRelativesDataFromFirestore();
+       FetchRemindersFromFirestore();
     }
 
     public Date convertStringToDate(String dobString){
@@ -585,29 +636,71 @@ this method updated the changed values of the Elder TBL fileds.
         return dob;
     }
 
-    public String addreminder(String title, String date, String time) {
+    public String addReminder(Reminder reminder) {
         SQLiteDatabase database = this.getReadableDatabase();
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put("title", title);                                                          //Inserts  data into sqllite database
-        contentValues.put("date", date);
-        contentValues.put("time", time);
+        contentValues.put(REMINDER_ELD_ID,reminder.getElderlyDocId());
+        contentValues.put(REMINDER_TITLE,reminder.getTitle());                                                          //Inserts  data into sqllite database
+        contentValues.put(REMINDER_DATE, reminder.getDate().toString());
+        contentValues.put(REMINDER_TIME, reminder.getTime());
 
-        float result = database.insert("tbl_reminder", null, contentValues);    //returns -1 if data successfully inserts into database
+        float result = database.insert(REMINDER_TBL, null, contentValues);    //returns -1 if data successfully inserts into database
 
         if (result == -1) {
             return "Failed";
         } else {
             return "Successfully inserted";
         }
-
     }
+
+    public List<Reminder> getReminderByElderlyDocId(String elderlyDocId) {
+        List<Reminder> reminders = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Define the WHERE clause to filter reminders by the given elderlyDocId
+        String selection = REMINDER_ELD_ID + " = ?";
+        String[] selectionArgs = {elderlyDocId};
+
+        Cursor cursor = db.query(REMINDER_TBL, null, selection, selectionArgs, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String tempElderlyDocId = cursor.getString(cursor.getColumnIndexOrThrow(REMINDER_ELD_ID));
+                String title = cursor.getString(cursor.getColumnIndexOrThrow(REMINDER_TITLE));
+                String dateString = cursor.getString(cursor.getColumnIndexOrThrow(REMINDER_DATE));
+                String time = cursor.getString(cursor.getColumnIndexOrThrow(REMINDER_TIME));
+                Date dob = parseDateString(dateString);
+
+                Reminder reminder = new Reminder(tempElderlyDocId, title, dob, time);
+                reminders.add(reminder);
+
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return reminders;
+    }
+
 
     public Cursor readallreminders() {
         SQLiteDatabase database = this.getWritableDatabase();
         String query = "select * from tbl_reminder order by id desc";                               //Sql query to  retrieve  data from the database
         Cursor cursor = database.rawQuery(query, null);
         return cursor;
+    }
+
+    public static Date parseDateString(String dateString) {
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+        try {
+            return sdf.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
 

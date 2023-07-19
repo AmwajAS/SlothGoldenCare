@@ -1,5 +1,6 @@
 package com.example.slothgoldencare.Reminder;
 
+import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -20,13 +21,19 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.slothgoldencare.DataBaseHelper;
+import com.example.slothgoldencare.Elder;
+import com.example.slothgoldencare.ElderSignupActivity;
 import com.example.slothgoldencare.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import static android.content.ContentValues.TAG;
 
 
 /**
@@ -41,6 +48,7 @@ public class ReminderActivity extends AppCompatActivity {
     Button mSubmitbtn, mDatebtn, mTimebtn;
     EditText mTitledit;
     String timeTonotify;
+    private DataBaseHelper dataBaseHelper;
 
     /**
      * This method is called when the activity is created.
@@ -51,8 +59,10 @@ public class ReminderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reminder);
 
+        dataBaseHelper = new DataBaseHelper(this);
+
         mTitledit = (EditText) findViewById(R.id.editTitle);
-        mDatebtn = (Button) findViewById(R.id.btnDate);                                             //assigned all the material reference to get and set data
+        mDatebtn =  findViewById(R.id.btnDate);                                             //assigned all the material reference to get and set data
         mTimebtn = (Button) findViewById(R.id.btnTime);
         mSubmitbtn = (Button) findViewById(R.id.btnSubmit);
 
@@ -80,7 +90,7 @@ public class ReminderActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String title = mTitledit.getText().toString().trim();                //access the data from the input field
-                String date = mDatebtn.getText().toString().trim();                 //access the date from the choose date button
+                String date = mDatebtn.getText().toString();                         //access the date from the choose date button
                 String time = mTimebtn.getText().toString().trim();                 //access the time from the choose time button
                 // Get the selected task frequency
                 if (checkEmptyFields(title, date, time)) {
@@ -156,14 +166,20 @@ public class ReminderActivity extends AppCompatActivity {
      * @param time  The reminder time
      */
     private void processinsert(String title, String date, String time) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Reminder reminder = new Reminder(FirebaseAuth.getInstance().getUid(),title, ElderSignupActivity.convertStringIntoDate(date),time);
+        db.collection("Reminders").add(reminder).addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                dataBaseHelper.addReminder(reminder);
+                Toast.makeText(this, R.string.reminder_add_success, Toast.LENGTH_SHORT).show();
+                if (checkPastDateTime(date, time)) {
+                    setAlarm(reminder);
+                    mTitledit.setText("");
+                }
+            }
+        });
 
-        String result = new DataBaseHelper(this).addreminder(title, date, time);
 
-        if (checkPastDateTime(date, time)) {
-            setAlarm(title, date, time);
-            mTitledit.setText("");
-            Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
-        }
 
     }
 
@@ -197,7 +213,8 @@ public class ReminderActivity extends AppCompatActivity {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                mDatebtn.setText(day + "-" + (month + 1) + "-" + year);                             //sets the selected date as test for button
+                String date = day + "/" + month + "/" + year;
+                mDatebtn.setText(date);                             //sets the selected date as test for button
             }
         }, year, month, day);
         datePickerDialog.show();
@@ -242,20 +259,20 @@ public class ReminderActivity extends AppCompatActivity {
      * Sets the alarm for the reminder.
      * Creates an alarm using AlarmManager and schedules a PendingIntent.
      *
-     * @param text The reminder text/event
-     * @param date The reminder date
-     * @param time The reminder time
+     * @param reminder title The reminder text/event
+     * @param reminder date The reminder date
+     * @param reminder time The reminder time
      */
-    private void setAlarm(String text, String date, String time) {
+    private void setAlarm(Reminder reminder) {
         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);                   //assigning alarm manager object to set alarm
 
         Intent intent = new Intent(getApplicationContext(), AlarmBroadcast.class);
-        intent.putExtra("event", text);                                                       //sending data to alarm class to create channel and notification
-        intent.putExtra("time", date);
-        intent.putExtra("date", time);
+        intent.putExtra("event", reminder.getTitle());                                                       //sending data to alarm class to create channel and notification
+        intent.putExtra("time", reminder.getDate());
+        intent.putExtra("date", reminder.getTime());
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
-        String dateandtime = date + " " + timeTonotify;
+        String dateandtime = reminder.getDate() + " " + timeTonotify;
         DateFormat formatter = new SimpleDateFormat("d-M-yyyy hh:mm");
         try {
             Date date1 = formatter.parse(dateandtime);
@@ -271,7 +288,6 @@ public class ReminderActivity extends AppCompatActivity {
         startActivity(intentBack);                                                                  //navigates from adding reminder activity to mainactivity
 
     }
-
 
     /**
      * Retrieves the selected task frequency from the RadioGroup.
