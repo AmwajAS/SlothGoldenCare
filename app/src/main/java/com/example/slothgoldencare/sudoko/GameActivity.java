@@ -1,5 +1,7 @@
 package com.example.slothgoldencare.sudoko;
 
+import static com.example.slothgoldencare.R.*;
+
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -25,22 +27,42 @@ public class GameActivity extends Activity implements OnClickListener {
     private static final String SCORE_KEY = "Score";
 
     private int score = 0;
+    private TextView scoreTextView;
+    PuzzleView puzzleView = new PuzzleView(this, this);
+
+
 
 
     @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.fragment_main);
-            View continueButton = findViewById(R.id.continue_button);
+            setContentView(layout.fragment_main);
+            View continueButton = findViewById(id.continue_button);
             continueButton.setOnClickListener(this);
-            View newButton = findViewById(R.id.new_button);
+            View newButton = findViewById(id.new_button);
             newButton.setOnClickListener(this);
-            View aboutButton = findViewById(R.id.about_button);
+            View aboutButton = findViewById(id.about_button);
             aboutButton.setOnClickListener(this);
-            View exitButton = findViewById(R.id.exit_button);
+            View exitButton = findViewById(id.exit_button);
             exitButton.setOnClickListener(this);
 
-        }
+//        scoreTextView = findViewById(R.id.score_text);
+//        scoreTextView.setText(getString(R.string.score_label, score));
+//        if (savedInstanceState != null) {
+//            score = savedInstanceState.getInt(SCORE_KEY);
+//            scoreTextView.setText(getString((R.string.score_label), score));
+//        }
+
+
+
+
+    }
+
+    public void updateScore(int score) {
+        this.score = score;
+        scoreTextView.setText(getString(R.string.score_label) + score);
+    }
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -76,7 +98,7 @@ public class GameActivity extends Activity implements OnClickListener {
         {
             switch(item.getItemId())
             {
-                case R.id.settings:
+                case id.settings:
                     startActivity(new Intent(this,Prefs.class));
                     return true;
             }
@@ -86,8 +108,8 @@ public class GameActivity extends Activity implements OnClickListener {
         private static final String TAG="Sudoku";
         private void openNewGameDialog(){
             new AlertDialog.Builder(this)
-                    .setTitle(R.string.new_game_title)
-                    .setItems(R.array.difficulty,
+                    .setTitle(string.new_game_title)
+                    .setItems(array.difficulty,
                             new DialogInterface.OnClickListener(){
                                 public void onClick(DialogInterface dialoginterface,
                                                     int i){
@@ -109,14 +131,14 @@ public class GameActivity extends Activity implements OnClickListener {
         {
             switch(v.getId())
             {
-                case R.id.about_button:
+                case id.about_button:
                     Intent i = new Intent(this, About.class);
                     startActivity(i);
                     break;
-                case R.id.new_button:
+                case id.new_button:
                     openNewGameDialog();
                     break;
-                case R.id.exit_button:
+                case id.exit_button:
                     finish();
                     break;
             }

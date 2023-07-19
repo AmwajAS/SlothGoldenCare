@@ -98,6 +98,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             RELATION + " TEXT NOT NULL " + " );";
 
 
+    public static final String CREATE_REMINDER_QUERY =  "create table tbl_reminder(id integer primary key autoincrement,title text,date text,time text)";
     public DataBaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
@@ -108,7 +109,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_DB_QUERY_ELDER);
         db.execSQL(CREATE_DB_QUERY_USER);
         db.execSQL(CREATE_DB_QUERY_ELD_REL);
+        db.execSQL(CREATE_REMINDER_QUERY);
         FetchDataFromFirestore();
+
     }
 
     @Override
@@ -582,5 +585,29 @@ this method updated the changed values of the Elder TBL fileds.
         return dob;
     }
 
+    public String addreminder(String title, String date, String time) {
+        SQLiteDatabase database = this.getReadableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("title", title);                                                          //Inserts  data into sqllite database
+        contentValues.put("date", date);
+        contentValues.put("time", time);
+
+        float result = database.insert("tbl_reminder", null, contentValues);    //returns -1 if data successfully inserts into database
+
+        if (result == -1) {
+            return "Failed";
+        } else {
+            return "Successfully inserted";
+        }
+
+    }
+
+    public Cursor readallreminders() {
+        SQLiteDatabase database = this.getWritableDatabase();
+        String query = "select * from tbl_reminder order by id desc";                               //Sql query to  retrieve  data from the database
+        Cursor cursor = database.rawQuery(query, null);
+        return cursor;
+    }
 }
 

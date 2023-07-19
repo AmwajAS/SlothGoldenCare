@@ -116,9 +116,21 @@
     <string name="previous">Previous</string>
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="score_label">score</string>
+    <string name="score_label">Score: </string>
+    <string name="todo_Label"> TO-DO LIST</string>
+    <string name="reminder_Label"> Add Reminder Here...</string>
+    <string name="task_Label"> Enter The Task</string>
+    <string name="task_date"> DATE</string>
+    <string name="task_time"> TIME</string>
+    <string name="task_one"> One-time</string>
+    <string name="task_daily"> Daily</string>
+    <string name="task_save"> SAVE</string>
+
+
+
 
     <string name="sqlite_adding_user_data_error">Problem Occurred adding User to Sqlite.</string>
     <string name="sqlite_adding_elderly_data_error">Problem Occurred adding User to Sqlite.</string>
+    <string name="todo">TODO</string>
 
 </resources>

@@ -2,28 +2,23 @@ package com.example.slothgoldencare.sudoko;
 
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Paint.FontMetrics;
 import android.graphics.Paint.Style;
-import android.graphics.Typeface;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.example.slothgoldencare.R;
 
 public class PuzzleView extends View {
     private static final String TAG = "Sudoku";
     private final Game game;
+    private final GameActivity gameActivity;
     private float width;
     private float height;
     private int selX;
@@ -32,13 +27,15 @@ public class PuzzleView extends View {
     private Paint scorePaint;
 
 
-    public PuzzleView(Context context) {
+    public PuzzleView(Context context, GameActivity gameActivity) {
         super(context);
         this.game = (Game) context;
+        this.gameActivity = gameActivity;
         setFocusable(true);
         setFocusableInTouchMode(true);
 
     }
+
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh){
@@ -214,14 +211,15 @@ public class PuzzleView extends View {
         invalidate(selRect);
     }
 
-    public void setSelectedTile(int tile){
-        if (game.setTileIfValid(selX, selY, tile)){
+    public void setSelectedTile(int tile) {
+        if (game.setTileIfValid(selX, selY, tile)) {
             invalidate();
-        }
-        else {
-            //Number is not valid for this tile
+            game.setScore(game.getScore() + 1);
+        } else {
+            // Number is not valid for this tile
             Log.d(TAG, "setSelectedTile: invalid: " + tile);
-            startAnimation(AnimationUtils.loadAnimation(game, R.anim.shake));
+            startAnimation(AnimationUtils.loadAnimation(gameActivity, R.anim.shake));
         }
     }
+
 }

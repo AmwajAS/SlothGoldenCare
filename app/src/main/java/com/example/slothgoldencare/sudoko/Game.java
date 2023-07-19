@@ -1,13 +1,10 @@
 package com.example.slothgoldencare.sudoko;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 
 import com.example.slothgoldencare.R;
 import android.app.Activity;
 import android.app.Dialog;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
@@ -20,9 +17,6 @@ public class Game extends Activity {
         return score;
     }
 
-    public void setScore(int score) {
-        this.score = score;
-    }
 
     public static final String KEY_DIFFICULTY = "org.example.sudoku.difficulty";
     public static final int DIFFICULTY_EASY = 0;
@@ -48,6 +42,19 @@ public class Game extends Activity {
 
     protected int[] getUsedTiles(int x,int y){
         return used[x][y];
+    }
+
+
+
+    private final GameActivity gameActivity;
+
+    public Game(GameActivity gameActivity) {
+        this.gameActivity = gameActivity;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+        gameActivity.updateScore(score);
     }
 
     private void calculateUsedTiles(){
@@ -166,7 +173,7 @@ public class Game extends Activity {
         int diff = getIntent().getIntExtra(KEY_DIFFICULTY, DIFFICULTY_EASY);
         puzzle = getPuzzle(diff);
         calculateUsedTiles();
-        puzzleView = new PuzzleView(this);
+        puzzleView = new PuzzleView(this, gameActivity);
         setContentView(puzzleView);
         puzzleView.requestFocus();
     }
@@ -201,5 +208,4 @@ public class Game extends Activity {
 
         return true;
     }
-
 }
