@@ -119,8 +119,8 @@ public class ReminderActivity extends AppCompatActivity {
      * Before the Processes of insertion of the reminder into the database.
      * Checks if the selected date and time are in the past.
      *
-     * @param date  The reminder date
-     * @param time  The reminder time
+     * @param date The reminder date
+     * @param time The reminder time
      */
 
     private boolean checkPastDateTime(String date, String time) {
@@ -159,7 +159,7 @@ public class ReminderActivity extends AppCompatActivity {
 
         String result = new DataBaseHelper(this).addreminder(title, date, time);
 
-        if(checkPastDateTime(date, time)){
+        if (checkPastDateTime(date, time)) {
             setAlarm(title, date, time);
             mTitledit.setText("");
             Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
