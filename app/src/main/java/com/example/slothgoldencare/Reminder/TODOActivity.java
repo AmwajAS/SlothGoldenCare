@@ -40,7 +40,6 @@ public class TODOActivity extends AppCompatActivity {
         setContentView(R.layout.activity_todoactivity);
         dataBaseHelper = new DataBaseHelper(this);
         dataholder = dataBaseHelper.getReminderByElderlyDocId(FirebaseAuth.getInstance().getUid());
-        Log.w(TAG,"TESTING THE SIZE :"+dataholder.size());
 
         txtCurrentDate = findViewById(R.id.txtCurrentDate);
 

@@ -26,6 +26,7 @@ public class Reminder {
         this.title = title;
     }
 
+
     public Date getDate() {
         return date;
     }

@@ -618,6 +618,7 @@ this method updated the changed values of the Elder TBL fileds.
             Log.w(TAG,"Error fetching Reminders data from firestore to SQLite: "+e.getMessage().toString());
         });
     }
+
     public void FetchDataFromFirestore(){
        FetchUsersDataFromFirestore();
        FetchElderliesDataFromFirestore();
