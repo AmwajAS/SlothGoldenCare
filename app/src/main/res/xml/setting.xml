@@ -6,7 +6,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/prefs_container"
-        android:name="com.example.slothgoldencare.Prefs$PrefsFragment"
+        android:name="com.example.slothgoldencare.sudoko.Prefs$PrefsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

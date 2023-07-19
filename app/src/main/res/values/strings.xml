@@ -125,6 +125,12 @@
     <string name="task_one"> One-time</string>
     <string name="task_daily"> Daily</string>
     <string name="task_save"> SAVE</string>
+    <string name="replay_label">Replay</string>
+    <string name="menu_label">Main menu</string>
+    <string name="confirm_exit">Are you sure want to exit?</string>
+    <string name="exit_yes_label">Yes</string>
+    <string name="exit_no_label">No</string>
+    <string name="win">Congratulations!     You WIN</string>
 
 
 
