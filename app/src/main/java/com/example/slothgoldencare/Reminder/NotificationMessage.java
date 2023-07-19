@@ -1,15 +1,16 @@
 package com.example.slothgoldencare.Reminder;
 
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
+
 import android.os.Bundle;
 import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
+
 
 import com.example.slothgoldencare.R;
 
-//this class creates the Reminder Notification Message
-
+/**
+ * The NotificationMessage class creates the Reminder Notification Message activity.
+ */
 public class NotificationMessage extends AppCompatActivity {
     TextView textView;
 
