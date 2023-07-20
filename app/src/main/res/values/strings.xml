@@ -144,5 +144,11 @@
     <string name="doctor_login">Doctor</string>
     <string name="admin_login">Admin</string>
     <string name="elderly_login">Elderly</string>
+    <string name="looking_for">What are you looking for?</string>
+    <string name="medical_services">Medical Services</string>
+    <string name="doctors">Doctors</string>
+    <string name="diagnosis">Diagnosis</string>
+    <string name="medicine">Medicine</string>
+    <string name="health_status">Health Status</string>
 
 </resources>

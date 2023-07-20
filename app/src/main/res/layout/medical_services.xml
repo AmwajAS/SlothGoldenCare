@@ -16,8 +16,9 @@
         android:layout_height="80dp"
         android:fontFamily="@font/sigmar_one"
         android:gravity="center"
-        android:text="Medical  Services"
-        android:textColor="@color/purple_500" />
+        android:text="@string/medical_services"
+        android:textColor="#143a84"
+        android:textSize="35sp" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageView"
@@ -38,8 +39,9 @@
         android:layout_marginTop="28dp"
         android:fontFamily="@font/sigmar_one"
         android:gravity="center"
-        android:text="Waht are you looking for?"
-        android:textColor="@color/purple_500"
+        android:text="@string/looking_for"
+        android:textColor="#143a84"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.519"
         app:layout_constraintStart_toStartOf="parent"
@@ -74,7 +76,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
-                app:cardBackgroundColor="#0091EA"
+                app:cardBackgroundColor="#143a84"
                 app:cardCornerRadius="6dp"
                 app:cardMaxElevation="6dp">
 
@@ -96,7 +98,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:fontFamily="@font/sigmar_one"
-                        android:text="Doctors"
+                        android:text="@string/doctors"
                         android:textColor="@color/white" />
                 </LinearLayout>
 
@@ -109,7 +111,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
-                app:cardBackgroundColor="#0091EA"
+                app:cardBackgroundColor="#143a84"
                 app:cardCornerRadius="6dp"
                 app:cardMaxElevation="6dp">
 
@@ -130,7 +132,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sigmar_one"
-                        android:text="Diagnosis "
+                        android:text="@string/diagnosis"
                         android:textColor="@color/white" />
                 </LinearLayout>
 
@@ -152,7 +154,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_weight="1"
-                app:cardBackgroundColor="#0091EA"
+                app:cardBackgroundColor="#143a84"
                 app:cardCornerRadius="6dp"
                 app:cardMaxElevation="6dp">
 
@@ -173,7 +175,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sigmar_one"
                         android:gravity="center"
-                        android:text="Medicine"
+                        android:text="@string/medicine"
                         android:textColor="@color/white" />
                 </LinearLayout>
 
@@ -187,7 +189,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_weight="1"
-                app:cardBackgroundColor="#0091EA"
+                app:cardBackgroundColor="#143a84"
                 app:cardCornerRadius="6dp"
                 app:cardMaxElevation="6dp">
 
@@ -209,7 +211,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:fontFamily="@font/sigmar_one"
-                        android:text="Health Status"
+                        android:text="@string/health_status"
                         android:textColor="#FFFFFF" />
 
                 </LinearLayout>
