@@ -1,6 +1,5 @@
 package com.example.slothgoldencare;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import android.widget.*;
@@ -11,8 +10,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.slothgoldencare.Model.Allergy;
+import com.example.slothgoldencare.Model.Diagnosis;
+import com.example.slothgoldencare.Model.Surgery;
 import com.google.firebase.auth.FirebaseAuth;
-import org.w3c.dom.Text;
 
 import java.util.List;
 

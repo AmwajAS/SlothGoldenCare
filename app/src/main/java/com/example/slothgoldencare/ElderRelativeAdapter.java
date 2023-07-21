@@ -9,6 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.slothgoldencare.Model.Elder;
+import com.example.slothgoldencare.Model.User;
+
 import java.util.ArrayList;
 
 

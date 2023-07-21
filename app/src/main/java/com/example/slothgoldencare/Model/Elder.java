@@ -1,14 +1,14 @@
-package com.example.slothgoldencare;
+package com.example.slothgoldencare.Model;
 
 
-import android.util.Log;
+import com.example.slothgoldencare.Gender;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class Elder extends User{
+public class Elder extends User {
 
     private Date DOB;
     private Gender gender;

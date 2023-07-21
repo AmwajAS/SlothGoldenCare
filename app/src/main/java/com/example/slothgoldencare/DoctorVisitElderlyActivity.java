@@ -1,13 +1,13 @@
 package com.example.slothgoldencare;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+
+import com.example.slothgoldencare.Model.Elder;
 
 public class DoctorVisitElderlyActivity  extends AppCompatActivity implements View.OnClickListener {
 
@@ -47,7 +47,7 @@ public class DoctorVisitElderlyActivity  extends AppCompatActivity implements Vi
         Intent i;
         switch (v.getId()) {
             case R.id.d1:
-                i = new Intent(this, cardView1InHomePage.class);
+                i = new Intent(this, MedicalServices.class);
                 startActivity(i);
                 break;
 

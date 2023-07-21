@@ -1,4 +1,4 @@
-package com.example.slothgoldencare;
+package com.example.slothgoldencare.Model;
 
 public class ElderRelative {
     String relativeId;

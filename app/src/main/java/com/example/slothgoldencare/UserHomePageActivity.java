@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.view.*;
 import android.widget.*;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -13,6 +12,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.slothgoldencare.Model.Elder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -89,7 +90,7 @@ public class UserHomePageActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         addBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), AddRelated.class);
+            Intent intent = new Intent(getApplicationContext(), AddRelatedActivity.class);
             startActivity(intent);
         });
 

@@ -1,6 +1,5 @@
 package com.example.slothgoldencare;
 
-import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -8,16 +7,17 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import com.example.slothgoldencare.Model.Allergy;
+import com.example.slothgoldencare.Model.Diagnosis;
+import com.example.slothgoldencare.Model.Elder;
+import com.example.slothgoldencare.Model.ElderRelative;
+import com.example.slothgoldencare.Model.Surgery;
+import com.example.slothgoldencare.Model.User;
 import com.example.slothgoldencare.Reminder.Reminder;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import org.jetbrains.annotations.NotNull;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -894,7 +894,7 @@ this method updated the changed values of the Elder TBL fileds.
     }
 
 
-    public Cursor readallreminders() {
+    public Cursor readAllReminders() {
         SQLiteDatabase database = this.getWritableDatabase();
         String query = "select * from tbl_reminder order by id desc";                               //Sql query to  retrieve  data from the database
         Cursor cursor = database.rawQuery(query, null);

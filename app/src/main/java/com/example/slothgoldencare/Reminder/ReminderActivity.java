@@ -1,6 +1,5 @@
 package com.example.slothgoldencare.Reminder;
 
-import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -21,7 +20,6 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.slothgoldencare.DataBaseHelper;
-import com.example.slothgoldencare.Elder;
 import com.example.slothgoldencare.ElderSignupActivity;
 import com.example.slothgoldencare.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,8 +30,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
-import static android.content.ContentValues.TAG;
 
 
 /**

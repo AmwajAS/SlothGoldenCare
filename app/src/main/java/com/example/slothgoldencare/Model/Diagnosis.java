@@ -1,4 +1,4 @@
-package com.example.slothgoldencare;
+package com.example.slothgoldencare.Model;
 
 public class Diagnosis {
     private String elderlyDocId;
