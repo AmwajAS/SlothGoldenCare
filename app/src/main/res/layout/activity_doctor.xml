@@ -14,7 +14,7 @@
                   android:textSize="20dp"
                   android:layout_height="wrap_content"
                   android:gravity="center_horizontal"
-                  android:text="Elderly"/>
+                  android:text="@string/elderly"/>
 
         <ListView
                 android:id="@+id/elderly_list"

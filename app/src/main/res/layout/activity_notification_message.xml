@@ -15,7 +15,7 @@
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="Snozz off" />
+            android:text="@string/snozz_off" />
 
         <ImageView
             android:id="@+id/icon"

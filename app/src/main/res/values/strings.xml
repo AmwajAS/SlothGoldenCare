@@ -151,4 +151,18 @@
     <string name="surgery">Surgeries</string>
     <string name="allergies">Allergies</string>
     <string name="title_activity_setteings">SetteingsActivity</string>
+    <string name="beloved_elder">ADD YOUR BELOVED ELDER</string>
+    <string name="add">ADD</string>
+    <string name="elderly">Elderly</string>
+    <string name="users">Users</string>
+    <string name="elderlies">Elderlies</string>
+    <string name="select_date">Select Date</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="snozz_off">Snozz off</string>
+    <string name="user_name">user name</string>
+    <string name="id2">ID:</string>
+    <string name="title">Title</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="surgery2">Surgery</string>
 </resources>

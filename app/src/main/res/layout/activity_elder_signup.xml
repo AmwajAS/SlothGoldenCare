@@ -141,7 +141,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:hint="Select Date"
+                    android:hint="@string/select_date"
                     android:inputType="date"
                     android:textColor="@android:color/black"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -196,7 +196,7 @@
             android:background="#143a84"
             android:fontFamily="@font/sigmar_one"
             android:textColor="#fff"
-            android:text="SIGN UP"
+            android:text="@string/sign_up"
             android:textAllCaps="false"
 />
 

@@ -18,13 +18,13 @@
                 android:layout_width="wrap_content"
                 android:textSize="20dp"
                 android:layout_height="wrap_content"
-                android:text="surgery"/>
+                android:text="@string/surgery2"/>
 
         <TextView
                 android:id="@+id/surgery_list_date"
                 android:layout_width="wrap_content"
                 android:textSize="20dp"
                 android:layout_height="wrap_content"
-                android:text="date"/>
+                android:text="@string/date"/>
     </LinearLayout>
 </LinearLayout>

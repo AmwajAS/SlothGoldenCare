@@ -21,7 +21,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:text="Title"
+                android:text="@string/title"
                 android:textSize="25dp"
                 android:textStyle="bold" />
 
@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:text="Date"
+                android:text="@string/date"
                 android:textSize="25dp"
                 android:textStyle="italic" />
 
@@ -39,7 +39,7 @@
                 android:id="@+id/txtTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Time"
+                android:text="@string/time"
                 android:textSize="30dp"
                 android:textStyle="italic" />
 
