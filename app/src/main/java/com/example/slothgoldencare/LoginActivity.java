@@ -30,7 +30,10 @@ public class LoginActivity extends AppCompatActivity {
     public static Elder elder;
     private FirebaseFirestore db;
     private FirebaseAuth auth;
-    private CheckBox relativeCheckBox;
+    private RadioButton relativeRadioBtn;
+    private RadioButton doctorRadioBtn;
+    private RadioButton adminRadioBtn;
+    private RadioGroup loginOptionRadio;
     private ProgressBar progressBar;
     private Task<QuerySnapshot> query;
 
@@ -45,7 +48,13 @@ public class LoginActivity extends AppCompatActivity {
         Button elderBtn = (Button) findViewById(R.id.elderBtn);
         Button userBtn = (Button) findViewById(R.id.userBtn);
         userid = (EditText) findViewById(R.id.userid);
-        relativeCheckBox = (CheckBox) findViewById(R.id.relative_login_checkbox);
+
+        //Login Radio Buttons and group
+        relativeRadioBtn = findViewById(R.id.relative_login_radio_button);
+        doctorRadioBtn = findViewById(R.id.doctor_login_radio_button);
+        adminRadioBtn = findViewById(R.id.admin_login_radio_button);
+        loginOptionRadio = findViewById(R.id.login_option_radio_group);
+
         Button loginBtn = (Button) findViewById(R.id.loginBtn);
         progressBar = findViewById(R.id.progress_bar_login);
         dbHelper = new DataBaseHelper(this);
@@ -57,15 +66,23 @@ public class LoginActivity extends AppCompatActivity {
                         //check if the id number / field is empty.
                         SimpleDialog.showAlertDialog(LoginActivity.this, R.string.alert_title_login, R.string.alert_message_idEmtpy);
 
-                    } else if (uid.equals("admin")) {
-                        Intent intent = new Intent(getApplicationContext(), AdministratorActivity.class);
-                        startActivity(intent);
-                        userid.setText("");
-
-                    } else {
+                    }else if (adminRadioBtn.isChecked()) {
+                        if(uid.equals("admin")){
+                            Intent intent = new Intent(getApplicationContext(), AdministratorActivity.class);
+                            startActivity(intent);
+                            userid.setText("");
+                        }
+                    }else if(doctorRadioBtn.isChecked()){
+                        if(uid.equals("doctor")){
+                            Intent intent = new Intent(getApplicationContext(), DoctorActivity.class);
+                            startActivity(intent);
+                            userid.setText("");
+                        }
+                    }
+                    else {
                         progressBar.setVisibility(View.VISIBLE);
                         if (checkIDValidation(uid)) {
-                            if(relativeCheckBox.isChecked()){
+                            if(relativeRadioBtn.isChecked()){
                                 query = db.collection("Users").whereEqualTo("id",uid).get();
                             }
                             else {
@@ -84,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
                                                     public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
                                                         if (task.isSuccessful()) {
                                                             progressBar.setVisibility(View.GONE);
-                                                            if(relativeCheckBox.isChecked()){
+                                                            if(relativeRadioBtn.isChecked()){
                                                                 Intent intent = new Intent(LoginActivity.this, UserHomePageActivity.class);
                                                                 intent.putExtra("userID", snapshot.get("id").toString());
                                                                 intent.putExtra("username", snapshot.get("username").toString());

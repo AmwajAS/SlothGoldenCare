@@ -7,52 +7,30 @@
     android:background="@drawable/dark_gradient"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:fontFamily="@font/sigmar_one"
-        android:gravity="center"
-        android:text="Your Health Status"
-        android:textColor="#3F51B5"
-        android:textSize="20sp" />
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/imageViewHealth"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        <Button
+            android:layout_width="wrap_content"
+            android:text="back"
+            android:id="@+id/back_btn"
+            android:layout_height="wrap_content"/>
 
-    <TextView
-        android:id="@+id/currentIllnesses"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:fontFamily="sans-serif-black"
-        android:text="Current Illnesses:  None" />
+        <TextView
+            android:id="@+id/list_title"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:fontFamily="@font/sigmar_one"
+            android:gravity="center"
+            android:text="Your Health Status"
+            android:textColor="#3F51B5"
+            android:textSize="20sp" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/previousIllnesses"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:fontFamily="sans-serif-black"
-        android:text="Previous Illnesses: Hypertension, Arthritis" />
-
-    <TextView
-        android:id="@+id/allergies"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:fontFamily="sans-serif-black"
-        android:text="Allergies: None " />
-
-    <TextView
-        android:id="@+id/surgicalHistory"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:fontFamily="sans-serif-black"
-        android:text="Surgical History: Knee replacement surgery in 2010" />
+    <ListView
+            android:id="@+id/health_status_list"
+            android:layout_width="match_parent" android:layout_height="match_parent">
+    </ListView>
 
 </LinearLayout>
