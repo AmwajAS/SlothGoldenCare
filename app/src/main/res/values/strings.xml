@@ -150,5 +150,7 @@
     <string name="diagnosis">Diagnosis</string>
     <string name="medicine">Medicine</string>
     <string name="health_status">Health Status</string>
+    <string name="surgery">Surgeries</string>
+    <string name="allergies">Allergies</string>
 
 </resources>

@@ -64,13 +64,33 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String RELATION = "Relation";
 
     /*
-    Reminers Table info.
+    Reminders Table info.
      */
     static final String REMINDER_TBL = "Reminders";
-    static final String REMINDER_ELD_ID = "ELderID";
+    static final String REMINDER_ELD_ID = "ElderID";
     static final String REMINDER_TITLE = "Title";
     static final String REMINDER_DATE = "Date";
     static final String REMINDER_TIME = "Time";
+
+    /*
+    Allergies Table info.
+     */
+    static final String ALLERGY_TBL = "Allergies";
+    static final String ALLERGY_ELD_ID = "ElderID";
+    static final String ALLERGY_TITLE = "Allergy";
+    /*
+    Diagnosis Table info.
+    */
+    static final String DIAGNOSIS_TBL = "Diagnosis";
+    static final String DIAGNOSIS_ELD_ID = "ElderID";
+    static final String DIAGNOSIS_TITLE = "Diagnosis";
+    /*
+    Diagnosis Table info.
+    */
+    static final String SURGERY_TBL = "Surgeries";
+    static final String SURGERY_ELD_ID = "ElderID";
+    static final String SURGERY_TITLE = "Surgery";
+    static final String SURGERY_DATE = "SurgeryDate";
     /*
     creating the DB Tables Queries:
      */
@@ -109,11 +129,21 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             REMINDER_DATE + " TEXT NOT NULL," +
             REMINDER_TIME+ " TEXT NOT NULL" +
             " );";
-    private static final String CREATE_DB_QUERY_USER_ELDER = "CREATE TABLE " + ELD_REL_TBL + " ( " + ELD_ID + "INTEGER PRIMARY KEY, " + REL_ID + " INTEGER PRIMARY KEY, " +
-            RELATION + " TEXT NOT NULL " + " );";
 
+    private static final String CREATE_DB_QUERY_ALLERGY = "CREATE TABLE " + ALLERGY_TBL + " ( " +
+            ALLERGY_ELD_ID + " TEXT NOT NULL," +
+            ALLERGY_TITLE + " TEXT NOT NULL " +
+            " );";
+    private static final String CREATE_DB_QUERY_DIAGNOSIS = "CREATE TABLE " + DIAGNOSIS_TBL + " ( " +
+            DIAGNOSIS_ELD_ID + " TEXT NOT NULL," +
+            DIAGNOSIS_TITLE + " TEXT NOT NULL " +
+            " );";
+    private static final String CREATE_DB_QUERY_SURGERY = "CREATE TABLE " + SURGERY_TBL + " ( " +
+            SURGERY_ELD_ID + " TEXT NOT NULL," +
+            SURGERY_TITLE + " TEXT NOT NULL, " +
+            SURGERY_DATE + " TEXT NOT NULL " +
+            " );";
 
-    public static final String CREATE_REMINDER_QUERY =  "create table tbl_reminder(id integer primary key autoincrement,title text,date text,time text)";
     public DataBaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
@@ -125,8 +155,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_DB_QUERY_USER);
         db.execSQL(CREATE_DB_QUERY_ELD_REL);
         db.execSQL(CREATE_DB_QUERY_REMINDER);
+        db.execSQL(CREATE_DB_QUERY_ALLERGY);
+        db.execSQL(CREATE_DB_QUERY_DIAGNOSIS);
+        db.execSQL(CREATE_DB_QUERY_SURGERY);
         FetchDataFromFirestore();
-
     }
 
     @Override
@@ -618,12 +650,104 @@ this method updated the changed values of the Elder TBL fileds.
             Log.w(TAG,"Error fetching Reminders data from firestore to SQLite: "+e.getMessage().toString());
         });
     }
+    public void FetchAllergiesFromFirestore(){
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        firestore.collection("Allergies").get().addOnSuccessListener(querySnapshot -> {
+            // Open connection to SQLite database
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            // Iterate over documents
+            for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                try {
+                    // Extract required fields from the document
+                    String docId = document.get("elderlyDocId").toString();
+                    String title = document.get("allergy").toString();
+
+                    // Execute the INSERT statement for the "Users" table
+                    String insertQuery = "INSERT INTO "+ALLERGY_TBL+"("+ALLERGY_ELD_ID+"," + ALLERGY_TITLE +") VALUES (?, ?)";
+                    SQLiteStatement statement = db.compileStatement(insertQuery);
+                    statement.bindString(1,docId);
+                    statement.bindString(2, title);
+                    long rowId = statement.executeInsert();
+                }catch (Exception e){
+                    Log.w(TAG,"Specific Allergy data error : "+e.getMessage().toString());
+                }
+            }
+            // Close the database connection
+            db.close();
+        }).addOnFailureListener(e -> {
+            Log.w(TAG,"Error fetching Allergies data from firestore to SQLite: "+e.getMessage().toString());
+        });
+    }
+    public void FetchDiagnosisFromFirestore(){
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        firestore.collection("Diagnosis").get().addOnSuccessListener(querySnapshot -> {
+            // Open connection to SQLite database
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            // Iterate over documents
+            for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                try {
+                    // Extract required fields from the document
+                    String docId = document.get("elderlyDocId").toString();
+                    String title = document.get("diagnosis").toString();
+
+                    // Execute the INSERT statement for the "Users" table
+                    String insertQuery = "INSERT INTO "+DIAGNOSIS_TBL+"("+DIAGNOSIS_ELD_ID+"," + DIAGNOSIS_TITLE +") VALUES (?, ?)";
+                    SQLiteStatement statement = db.compileStatement(insertQuery);
+                    statement.bindString(1,docId);
+                    statement.bindString(2, title);
+                    long rowId = statement.executeInsert();
+                }catch (Exception e){
+                    Log.w(TAG,"Specific Diagnosis data error : "+e.getMessage().toString());
+                }
+            }
+            // Close the database connection
+            db.close();
+        }).addOnFailureListener(e -> {
+            Log.w(TAG,"Error fetching diagnosis data from firestore to SQLite: "+e.getMessage().toString());
+        });
+    }
+    public void FetchSurgeriesFromFirestore(){
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        firestore.collection("Surgeries").get().addOnSuccessListener(querySnapshot -> {
+            // Open connection to SQLite database
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            // Iterate over documents
+            for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                try {
+                    // Extract required fields from the document
+                    String docId = document.get("elderlyDocId").toString();
+                    String title = document.get("surgery").toString();
+                    Timestamp date = document.getTimestamp("date");
+
+                    // Execute the INSERT statement for the "Users" table
+                    String insertQuery = "INSERT INTO "+SURGERY_TBL+"("+SURGERY_ELD_ID+"," + SURGERY_TITLE +","+SURGERY_DATE+") VALUES (?, ?, ?)";
+                    SQLiteStatement statement = db.compileStatement(insertQuery);
+                    statement.bindString(1,docId);
+                    statement.bindString(2, title);
+                    statement.bindString(3,date.toDate().toString());
+                    long rowId = statement.executeInsert();
+                }catch (Exception e){
+                    Log.w(TAG,"Specific Diagnosis data error : "+e.getMessage().toString());
+                }
+            }
+            // Close the database connection
+            db.close();
+        }).addOnFailureListener(e -> {
+            Log.w(TAG,"Error fetching diagnosis data from firestore to SQLite: "+e.getMessage().toString());
+        });
+    }
 
     public void FetchDataFromFirestore(){
        FetchUsersDataFromFirestore();
        FetchElderliesDataFromFirestore();
        FetchElderlyRelativesDataFromFirestore();
        FetchRemindersFromFirestore();
+       FetchAllergiesFromFirestore();
+       FetchDiagnosisFromFirestore();
+       FetchSurgeriesFromFirestore();
     }
 
     public Date convertStringToDate(String dobString){
@@ -684,6 +808,89 @@ this method updated the changed values of the Elder TBL fileds.
         db.close();
 
         return reminders;
+    }
+    public List<Allergy> getAllergiesByElderlyDocId(String elderlyDocId) {
+        List<Allergy> allergies = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Define the WHERE clause to filter reminders by the given elderlyDocId
+        String selection = ALLERGY_ELD_ID + " = ?";
+        String[] selectionArgs = {elderlyDocId};
+
+        Cursor cursor = db.query(ALLERGY_TBL, null, selection, selectionArgs, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String tempElderlyDocId = cursor.getString(cursor.getColumnIndexOrThrow(ALLERGY_ELD_ID));
+                String title = cursor.getString(cursor.getColumnIndexOrThrow(ALLERGY_TITLE));
+
+                Allergy allergy = new Allergy(tempElderlyDocId, title);
+                allergies.add(allergy);
+
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return allergies;
+    }
+    public List<Diagnosis> getDiagnosisByElderlyDocId(String elderlyDocId) {
+        List<Diagnosis> diagnosis = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Define the WHERE clause to filter reminders by the given elderlyDocId
+        String selection = DIAGNOSIS_ELD_ID + " = ?";
+        String[] selectionArgs = {elderlyDocId};
+
+        Cursor cursor = db.query(DIAGNOSIS_TBL, null, selection, selectionArgs, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String tempElderlyDocId = cursor.getString(cursor.getColumnIndexOrThrow(DIAGNOSIS_ELD_ID));
+                String title = cursor.getString(cursor.getColumnIndexOrThrow(DIAGNOSIS_TITLE));
+
+                Diagnosis diagnosisItem = new Diagnosis(tempElderlyDocId, title);
+                diagnosis.add(diagnosisItem);
+
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return diagnosis;
+    }
+    public List<Surgery> getSurgeriesByElderlyDocId(String elderlyDocId) {
+        List<Surgery> surgeries = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Define the WHERE clause to filter reminders by the given elderlyDocId
+        String selection = SURGERY_ELD_ID + " = ?";
+        String[] selectionArgs = {elderlyDocId};
+
+        Cursor cursor = db.query(SURGERY_TBL, null, selection, selectionArgs, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String tempElderlyDocId = cursor.getString(cursor.getColumnIndexOrThrow(SURGERY_ELD_ID));
+                String title = cursor.getString(cursor.getColumnIndexOrThrow(SURGERY_TITLE));
+                String dateString = cursor.getString(cursor.getColumnIndexOrThrow(SURGERY_DATE));
+                Date date = parseDateString(dateString);
+
+                Surgery surgery = new Surgery(tempElderlyDocId, title,date);
+                surgeries.add(surgery);
+
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return surgeries;
     }
 
 

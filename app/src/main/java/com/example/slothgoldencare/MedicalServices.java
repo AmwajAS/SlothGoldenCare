@@ -11,7 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 
 public class MedicalServices extends AppCompatActivity implements View.OnClickListener{
-    private CardView D1, D2, D3, D4;
+    private CardView D1, D2, D3, D4,D5;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,32 +20,50 @@ public class MedicalServices extends AppCompatActivity implements View.OnClickLi
         D2 = findViewById(R.id.d2);
         D3 = findViewById(R.id.d3);
         D4 = findViewById(R.id.d4);
+        D5 = findViewById(R.id.d5);
 
         D1.setOnClickListener(this);
         D2.setOnClickListener(this);
         D3.setOnClickListener(this);
         D4.setOnClickListener(this);
-
+        D5.setOnClickListener(this);
 
     }
 
     @Override
     public void onClick(View v) {
+        HealthStatusFragment healthStatusFragment;
         Intent i;
         switch (v.getId()) {
             case R.id.d1:
+                Bundle args1 = new Bundle();
                 replaceFragment(new DoctorsFragment());
                 break;
-            /*case R.id.d2:
-                replaceFragment();
-                break;*/
+            case R.id.d2:
+                Bundle args2 = new Bundle();
+                args2.putString("Button","diagnosis");
+                healthStatusFragment= HealthStatusFragment.newInstance(args2);
+                replaceFragment(healthStatusFragment);
+                break;
+            case R.id.d4:
+                Bundle args4 = new Bundle();
+                args4.putString("Button","allergies");
+                healthStatusFragment= HealthStatusFragment.newInstance(args4);
+                replaceFragment(healthStatusFragment);
+                break;
+            case R.id.d5:
+                Bundle args5 = new Bundle();
+                args5.putString("Button","surgeries");
+                healthStatusFragment= HealthStatusFragment.newInstance(args5);
+                replaceFragment(healthStatusFragment);
+                break;
 
         }
     }
-    private void replaceFragment(Fragment fragment){
+    private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.replace(R.id.MedicalServicesFrameLayout, fragment);
         fragmentTransaction.commit();
     }
 }

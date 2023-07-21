@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.slothgoldencare.Reminder.Reminder;
 import com.example.slothgoldencare.Reminder.TODOActivity;
 import com.example.slothgoldencare.sudoko.GameActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -84,7 +85,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
         Intent i;
         switch (v.getId()) {
             case R.id.d1:
-                i = new Intent(this, cardView1InHomePage.class);
+                i = new Intent(this, MedicalServices.class);
                 startActivity(i);
                 break;
             case R.id.d2:
