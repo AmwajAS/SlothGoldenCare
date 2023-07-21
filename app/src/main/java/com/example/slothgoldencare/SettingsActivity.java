@@ -1,52 +1,45 @@
-package com.example.slothgoldencare.sudoko;
-
+package com.example.slothgoldencare;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 
-import com.example.slothgoldencare.HomePageActivity;
-import com.example.slothgoldencare.ProfileActivity;
-import com.example.slothgoldencare.R;
-import com.example.slothgoldencare.SettingsActivity;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
+
+import com.example.slothgoldencare.databinding.ActivitySetteingsBinding;
+
+public class SettingsActivity extends AppCompatActivity {
 
 
-/**
- * The `About` class is an `Activity` class in Android that represents the screen
- * or UI component for displaying information about an application or any other relevant content.
- */
-public class About extends AppCompatActivity {
-
-    /**
-     * This method is called when the `About` activity is created.
-     * It initializes the activity and sets the content view to the layout defined in the `activity_about.xml` file.
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about);
-        bottomNavigationView();
+        setContentView(R.layout.activity_setteings);
 
+        bottomNavigationView();
     }
 
     /*
-    this method handle the selected items / buttons of the bottom navigation bar.
-     */
+        this method handle the selected items / buttons of the bottom navigation bar.
+         */
     public void bottomNavigationView() {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
-        bottomNavigationView.setSelectedItemId(R.id.current);
+        bottomNavigationView.setSelectedItemId(R.id.settings);
         Menu menu = bottomNavigationView.getMenu();
         MenuItem currentItem = menu.findItem(R.id.current);
         // Hiding the "current" menu item
         currentItem.setVisible(false);
-
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.home:

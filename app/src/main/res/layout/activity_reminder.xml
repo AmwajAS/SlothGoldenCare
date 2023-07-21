@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/puzzle_light"
     android:layout_height="match_parent"
+    android:background="@color/puzzle_light"
     android:gravity="center"
     android:orientation="vertical"
     app:backgroundTint="@null"
@@ -19,7 +19,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="384dp"
             android:background="@color/puzzle_hilite"
             android:orientation="vertical"
             app:backgroundTint="@null">
@@ -28,10 +28,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:text="@string/reminder_Label"
                 android:textSize="30dp"
-                android:textStyle="bold"
-                android:layout_margin="10dp"/>
+                android:textStyle="bold" />
 
 
             <EditText
@@ -67,7 +67,6 @@
 
             </LinearLayout>
 
-            <!-- Add this RadioGroup and RadioButtons below the existing views -->
             <RadioGroup
                 android:id="@+id/radioGroupFrequency"
                 android:layout_width="374dp"
@@ -85,10 +84,10 @@
                     android:id="@+id/radioButtonDaily"
                     android:layout_width="84dp"
                     android:layout_height="48dp"
+                    android:layout_marginStart="110dp"
                     android:text="@string/task_daily" />
 
             </RadioGroup>
-
 
 
             <Button
@@ -101,6 +100,28 @@
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="190dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/item_background"
+        android:elevation="2dp"
+        app:itemIconSize="30dp"
+        app:itemIconTint="@drawable/item_selector"
+        app:itemRippleColor="@android:color/transparent"
+        app:labelVisibilityMode="unlabeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/topView"
+        app:layout_constraintVertical_bias="0.954"
+        app:menu="@menu/bottom_nav_menu" />
 
 
 </LinearLayout>

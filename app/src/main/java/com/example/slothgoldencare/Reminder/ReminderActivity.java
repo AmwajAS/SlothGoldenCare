@@ -10,6 +10,8 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -21,7 +23,11 @@ import android.widget.Toast;
 
 import com.example.slothgoldencare.DataBaseHelper;
 import com.example.slothgoldencare.ElderSignupActivity;
+import com.example.slothgoldencare.HomePageActivity;
+import com.example.slothgoldencare.ProfileActivity;
 import com.example.slothgoldencare.R;
+import com.example.slothgoldencare.SettingsActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -58,7 +64,7 @@ public class ReminderActivity extends AppCompatActivity {
         dataBaseHelper = new DataBaseHelper(this);
 
         mTitledit = (EditText) findViewById(R.id.editTitle);
-        mDatebtn =  findViewById(R.id.btnDate);                                             //assigned all the material reference to get and set data
+        mDatebtn = findViewById(R.id.btnDate);                                             //assigned all the material reference to get and set data
         mTimebtn = (Button) findViewById(R.id.btnTime);
         mSubmitbtn = (Button) findViewById(R.id.btnSubmit);
 
@@ -67,7 +73,7 @@ public class ReminderActivity extends AppCompatActivity {
         radioButtonOneTime = findViewById(R.id.radioButtonOneTime);
         radioButtonDaily = findViewById(R.id.radioButtonDaily);
 
-
+        bottomNavigationView();
         mTimebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -163,9 +169,9 @@ public class ReminderActivity extends AppCompatActivity {
      */
     private void processinsert(String title, String date, String time) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Reminder reminder = new Reminder(FirebaseAuth.getInstance().getUid(),title, ElderSignupActivity.convertStringIntoDate(date),time);
+        Reminder reminder = new Reminder(FirebaseAuth.getInstance().getUid(), title, ElderSignupActivity.convertStringIntoDate(date), time);
         db.collection("Reminders").add(reminder).addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
+            if (task.isSuccessful()) {
                 dataBaseHelper.addReminder(reminder);
                 Toast.makeText(this, R.string.reminder_add_success, Toast.LENGTH_SHORT).show();
                 if (checkPastDateTime(date, time)) {
@@ -174,8 +180,6 @@ public class ReminderActivity extends AppCompatActivity {
                 }
             }
         });
-
-
 
 
     }
@@ -218,13 +222,13 @@ public class ReminderActivity extends AppCompatActivity {
     }
 
     /**
-     * Formats the given hour and minute into 12-hour format with AM/PM.
+     * This method converts the time into 12hr format and assigns am or pm
      *
      * @param hour   The selected hour
      * @param minute The selected minute
      * @return The formatted time string
      */
-    public String FormatTime(int hour, int minute) {                                                //this method converts the time into 12hr format and assigns am or pm
+    public String FormatTime(int hour, int minute) {
 
         String time;
         time = "";
@@ -300,4 +304,38 @@ public class ReminderActivity extends AppCompatActivity {
         }
         return "";
     }
+
+    /*
+   this method handle the selected items / buttons of the bottom navigation bar.
+    */
+    public void bottomNavigationView() {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
+        bottomNavigationView.setSelectedItemId(R.id.current);
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem currentItem = menu.findItem(R.id.current);
+        // Hiding the "current" menu item
+        currentItem.setVisible(false);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.home:
+                    replaceView(HomePageActivity.class);
+                    return true;
+                case R.id.settings:
+                    replaceView(SettingsActivity.class);
+                    return true;
+                case R.id.profile:
+                    replaceView(ProfileActivity.class);
+                    return true;
+            }
+            return false;
+        });
+    }
+
+    public void replaceView(Class classView) {
+        startActivity(new Intent(getApplicationContext(), classView));
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        finish();
+    }
+
+
 }

@@ -5,8 +5,14 @@ import static com.example.slothgoldencare.R.*;
 
 import android.os.Bundle;
 
+import com.example.slothgoldencare.HomePageActivity;
+import com.example.slothgoldencare.ProfileActivity;
 import com.example.slothgoldencare.R;
+import com.example.slothgoldencare.SettingsActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -30,7 +36,7 @@ public class GameActivity extends Activity implements OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(layout.fragment_main);
+        setContentView(layout.activity_game);
         //Set up click listeners for all the buttons
         View continueButton = findViewById(R.id.continue_button);
         continueButton.setOnClickListener(this);
@@ -40,6 +46,8 @@ public class GameActivity extends Activity implements OnClickListener {
         aboutButton.setOnClickListener(this);
         View exitButton = findViewById(R.id.exit_button);
         exitButton.setOnClickListener(this);
+
+        bottomNavigationView();
     }
 
     /**
@@ -110,4 +118,40 @@ public class GameActivity extends Activity implements OnClickListener {
         intent.putExtra(Game.KEY_DIFFICULTY, i);
         startActivity(intent);
     }
+
+    /*
+   this method handle the selected items / buttons of the bottom navigation bar.
+    */
+    public void bottomNavigationView() {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
+        bottomNavigationView.setSelectedItemId(R.id.current);
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem currentItem = menu.findItem(R.id.current);
+        // Hiding the "current" menu item
+        currentItem.setVisible(false);
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.home:
+                    replaceView(HomePageActivity.class);
+                    return true;
+                case R.id.settings:
+                    replaceView(SettingsActivity.class);
+                    return true;
+                case R.id.profile:
+                    replaceView(ProfileActivity.class);
+                    return true;
+            }
+            return false;
+        });
+    }
+
+    public void replaceView(Class classView) {
+        startActivity(new Intent(getApplicationContext(), classView));
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        finish();
+    }
+
+
+
 }

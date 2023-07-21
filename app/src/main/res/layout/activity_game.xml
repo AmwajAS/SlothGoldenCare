@@ -1,38 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#C4E6F0FF"
     android:layout_height="fill_parent"
     android:layout_width="fill_parent"
-    android:padding="30dip"
-    android:orientation="horizontal">
+    android:orientation="vertical">
+
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="520dp"
+        android:layout_marginTop="100dp"
         android:orientation="vertical"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:layout_gravity="center">
+        android:padding="30dip">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="25dip"
+            android:layout_marginBottom="50dip"
             android:text="@string/main_title"
-            android:textColor="#009688"
+            android:textColor="#143a84"
             android:textSize="34.5sp"
             android:textStyle="bold" />
+
         <Button
             android:id="@+id/continue_button"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:text="@string/continue_label" />
+
         <Button
             android:id="@+id/new_button"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-
             android:text="@string/new_game_label" />
+
         <Button
             android:id="@+id/about_button"
             android:layout_width="fill_parent"
@@ -40,12 +44,31 @@
             android:layout_marginBottom="10dp"
 
             android:text="@string/about_label" />
+
         <Button
             android:id="@+id/exit_button"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-
             android:text="@string/exit_label" />
+
+
     </LinearLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="0dp"
+        android:background="@drawable/item_background"
+        android:elevation="2dp"
+        app:itemIconSize="30dp"
+        app:itemIconTint="@drawable/item_selector"
+        app:itemRippleColor="@android:color/transparent"
+        app:labelVisibilityMode="unlabeled"
+        app:menu="@menu/bottom_nav_menu" />
 </LinearLayout>
