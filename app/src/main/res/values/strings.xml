@@ -134,8 +134,6 @@
     <string name="win">Congratulations!     You WIN</string>
 
 
-
-
     <string name="sqlite_adding_user_data_error">Problem Occurred adding User to Sqlite.</string>
     <string name="sqlite_adding_elderly_data_error">Problem Occurred adding User to Sqlite.</string>
     <string name="todo">TODO</string>
@@ -152,5 +150,5 @@
     <string name="health_status">Health Status</string>
     <string name="surgery">Surgeries</string>
     <string name="allergies">Allergies</string>
-
+    <string name="title_activity_setteings">SetteingsActivity</string>
 </resources>

@@ -14,19 +14,19 @@
         android:layout_centerHorizontal="true"
         android:padding="16dp"
         android:text="@string/todo_Label"
-        android:textColor="@android:color/black"
+        android:textColor="@color/mainColor"
         android:textSize="20sp"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/txtCurrentDate"
-        android:layout_width="170dp"
-        android:layout_height="wrap_content"
+        android:layout_width="174dp"
+        android:layout_height="41dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="50dp"
         android:layout_marginTop="52dp"
-        android:layout_marginEnd="116dp"
+        android:layout_marginEnd="112dp"
         android:padding="16dp"
         android:textColor="@android:color/black"
         android:textSize="18sp"
@@ -34,16 +34,14 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="369dp"
-        android:layout_height="647dp"
+        android:layout_width="376dp"
+        android:layout_height="473dp"
         android:layout_below="@id/txtCurrentDate"
         android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="28dp" />
 
-
-
-        android:layout_marginEnd="20dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/create_reminder"
@@ -52,9 +50,26 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginEnd="29dp"
+        android:layout_marginBottom="82dp"
+        android:contentDescription="@string/todo"
         android:src="@drawable/plus_icon"
-        android:contentDescription="@string/todo" />
+        app:backgroundTint="#143A84" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/item_background"
+        android:elevation="2dp"
+        app:itemIconSize="30dp"
+        app:itemIconTint="@drawable/item_selector"
+        app:itemRippleColor="@android:color/transparent"
+        app:labelVisibilityMode="unlabeled"
+        app:menu="@menu/bottom_nav_menu" />
 
 </RelativeLayout>

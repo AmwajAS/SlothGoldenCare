@@ -1,7 +1,6 @@
 package com.example.slothgoldencare.Reminder;
 
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,14 +8,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.slothgoldencare.DataBaseHelper;
-import com.example.slothgoldencare.Elder;
 import com.example.slothgoldencare.R;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.content.ContentValues.TAG;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.myviewholder> {
     List<Reminder> dataholder = new ArrayList<Reminder>();                                               //array list to hold the reminders

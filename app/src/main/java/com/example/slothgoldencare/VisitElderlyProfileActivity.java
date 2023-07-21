@@ -58,7 +58,7 @@ public class VisitElderlyProfileActivity  extends AppCompatActivity implements V
             case R.id.d5:
                 break;
             case R.id.d6:
-                i = new Intent(this, BottomNavigationBarActivity.class);
+                i = new Intent(this, SettingsActivity.class);
                 startActivity(i);
                 break;
             case R.id.d4:

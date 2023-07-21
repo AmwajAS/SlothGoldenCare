@@ -20,6 +20,10 @@
     <color name="score_color">#009688</color>
     <color name="blank_black">#6456648f</color>
     <color name="blank_background">#ffffffff</color>
+    <color name="grey">#d2d2d2</color>
+    <color name="mainColor">#143a84</color>
+
+
 </resources>
 
 

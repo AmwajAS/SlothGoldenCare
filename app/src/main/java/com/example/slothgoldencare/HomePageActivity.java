@@ -92,17 +92,6 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                 i = new Intent(this, TODOActivity.class);
                 startActivity(i);
                 break;
-            case R.id.d5:
-                progressDialog = new ProgressDialog(HomePageActivity.this);
-                progressDialog.setMessage("Loading..."); // Set your desired loading message
-                progressDialog.setCancelable(false); // Set whether the dialog can be canceled
-                progressDialog.show();
-                retrieveUserLocation();
-                break;
-            case R.id.d6:
-                i = new Intent(this, BottomNavigationBarActivity.class);
-                startActivity(i);
-                break;
             case R.id.d3:
                 i = new Intent(this, GameActivity.class);
                 startActivity(i);
@@ -111,6 +100,19 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                 i = new Intent(this, ContactsActivity.class);
                 startActivity(i);
                 break;
+            case R.id.d5:
+                progressDialog = new ProgressDialog(HomePageActivity.this);
+                progressDialog.setMessage("Loading..."); // Set your desired loading message
+                progressDialog.setCancelable(false); // Set whether the dialog can be canceled
+                progressDialog.show();
+                retrieveUserLocation();
+                break;
+            case R.id.d6:
+                i = new Intent(this, SettingsActivity.class);
+                startActivity(i);
+                break;
+
+
         }
     }
 

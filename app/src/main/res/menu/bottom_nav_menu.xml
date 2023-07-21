@@ -3,9 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/currentView"
-        android:icon="@drawable/baseline_square_24"
-        android:title="CurrentPage"
+        android:id="@+id/current"
+        android:icon="@drawable/selector_current_item"
+        android:title="@string/CurrentPage"
         />
     <item
         android:id="@+id/profile"
