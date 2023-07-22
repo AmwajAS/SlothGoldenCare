@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.slothgoldencare.Model.Elder;
+import com.example.slothgoldencare.Model.Gender;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -40,6 +42,8 @@ public class UserHomePageActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         username = findViewById(R.id.username);
         username.setText(auth.getCurrentUser().getDisplayName());
+
+        bottomNavigationView();
 
         //Relatives list (in progress)
         relatives = new ArrayList<>();
@@ -153,5 +157,39 @@ public class UserHomePageActivity extends AppCompatActivity {
         }
         return temp;
     }
+
+    /*
+      this method handle the selected items / buttons of the bottom navigation bar.
+       */
+    public void bottomNavigationView() {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
+        bottomNavigationView.setSelectedItemId(R.id.current);
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem currentItem = menu.findItem(R.id.current);
+        // Hiding the "current" menu item
+        currentItem.setVisible(false);
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.home:
+                    replaceView(UserHomePageActivity.class);
+                    return true;
+                case R.id.settings:
+                    replaceView(SettingsActivity.class);
+                    return true;
+                case R.id.profile:
+                    replaceView(VisitElderlyProfileActivity.class);
+                    return true;
+            }
+            return false;
+        });
+    }
+
+    public void replaceView(Class classView) {
+        startActivity(new Intent(getApplicationContext(), classView));
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        finish();
+    }
+
 
 }

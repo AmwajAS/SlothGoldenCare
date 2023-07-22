@@ -97,13 +97,13 @@ public class AddRelatedActivity extends AppCompatActivity implements AdapterView
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.home:
-                    replaceView(HomePageActivity.class);
+                    replaceView(UserHomePageActivity.class);
                     return true;
                 case R.id.settings:
                     replaceView(SettingsActivity.class);
                     return true;
                 case R.id.profile:
-                    replaceView(ProfileActivity.class);
+                    replaceView(VisitElderlyProfileActivity.class);
                     return true;
             }
             return false;
