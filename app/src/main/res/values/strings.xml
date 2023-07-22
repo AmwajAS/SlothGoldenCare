@@ -120,6 +120,10 @@
     <string name="todo_Label"> TO-DO LIST</string>
     <string name="reminder_Label"> Add Reminder Here...</string>
     <string name="reminder_add_success">Successfully Added Reminder</string>
+    <string name="info_add_success">Successfully Added Info</string>
+    <string name="info_add_fail">Failed Adding Info</string>
+    <string name="info_delete_success">Successfully Deleted Info</string>
+    <string name="info_delete_fail">Failed Deleting Info</string>
     <string name="task_Label"> Enter The Task</string>
     <string name="task_date"> DATE</string>
     <string name="task_time"> TIME</string>

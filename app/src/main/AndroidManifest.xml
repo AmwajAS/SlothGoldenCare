@@ -74,10 +74,13 @@
             android:exported="false" />
         <activity
             android:name=".AdministratorElderliesActivity"
-            android:exported="false" /> <!-- <activity android:name=".DoctorActivity" -->
-        <!-- android:exported="false"/> -->
-        <!-- <activity android:name=".DoctorVisitElderlyActivity" -->
-        <!-- android:exported="false"/> -->
+            android:exported="false" />
+         <activity
+             android:name=".DoctorActivity"
+             android:exported="false"/>
+        <activity
+             android:name=".DoctorVisitElderlyActivity"
+             android:exported="false"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">

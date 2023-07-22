@@ -212,7 +212,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         values.put(ELDER_DOB,elder.getDOB().toString());
         values.put(ELDER_GENDER,elder.getGender().toString());
 
-        long result = db.insert(USERS_TBL, null, values);
+        long result = db.insert(ELDER_TBL, null, values);
         return result != -1;
     }
 
@@ -776,6 +776,91 @@ this method updated the changed values of the Elder TBL fileds.
             return "Failed";
         } else {
             return "Successfully inserted";
+        }
+    }
+    public boolean addDiagnosis(Diagnosis diagnosis){
+        SQLiteDatabase database = this.getReadableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DIAGNOSIS_ELD_ID,diagnosis.getElderlyDocId());
+        contentValues.put(DIAGNOSIS_TITLE,diagnosis.getDiagnosis());                                                          //Inserts  data into sqllite database
+
+        float result = database.insert(DIAGNOSIS_TBL, null, contentValues);    //returns -1 if data successfully inserts into database
+
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    public boolean addAllergy(Allergy allergy){
+        SQLiteDatabase database = this.getReadableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(ALLERGY_ELD_ID,allergy.getElderlyDocId());
+        contentValues.put(ALLERGY_TITLE,allergy.getAllergy());                                                          //Inserts  data into sqllite database
+
+        float result = database.insert(ALLERGY_TBL, null, contentValues);    //returns -1 if data successfully inserts into database
+
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    public boolean addSurgery(Surgery surgery){
+        SQLiteDatabase database = this.getReadableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(SURGERY_ELD_ID,surgery.getElderlyDocId());
+        contentValues.put(SURGERY_TITLE,surgery.getSurgery());                                                          //Inserts  data into sqllite database
+        contentValues.put(SURGERY_DATE,surgery.getDate().toString());
+
+        float result = database.insert(SURGERY_TBL, null, contentValues);    //returns -1 if data successfully inserts into database
+
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    public boolean deleteDiagnosis(Diagnosis diagnosis) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String whereClause = ""+DIAGNOSIS_ELD_ID+" = ? AND "+DIAGNOSIS_TITLE+" = ?";
+        String[] whereArgs = {diagnosis.getElderlyDocId(), diagnosis.getDiagnosis()};
+        int result = db.delete(DIAGNOSIS_TBL, whereClause, whereArgs);
+        db.close();
+        if(result <= 0){
+            return false;
+
+        }else{
+            return true;
+        }
+    }
+    public boolean deleteAllergy(Allergy allergy) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String whereClause = ""+ALLERGY_ELD_ID+" = ? AND "+ALLERGY_TITLE+" = ?";
+        String[] whereArgs = {allergy.getElderlyDocId(), allergy.getAllergy()};
+        int result = db.delete(ALLERGY_TBL, whereClause, whereArgs);
+        db.close();
+        if(result <= 0){
+            return false;
+
+        }else{
+            return true;
+        }
+    }
+    public boolean deleteSurgery(Surgery surgery) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String whereClause = ""+SURGERY_ELD_ID+" = ? AND "+SURGERY_TITLE+" = ? AND "+SURGERY_DATE+" = ?";
+        String[] whereArgs = {surgery.getElderlyDocId(), surgery.getSurgery(),surgery.getDate().toString()};
+        int result = db.delete(SURGERY_TBL, whereClause, whereArgs);
+        db.close();
+        if(result <= 0){
+            return false;
+
+        }else{
+            return true;
         }
     }
 
