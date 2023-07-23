@@ -386,20 +386,28 @@ method to delete al data in User Tbl.
 this method take as an input Elder ID and delete it from the DB.
  */
 
-    public void deleteUserById(String userId) {
-        SQLiteDatabase db = getWritableDatabase();
-        String whereClause = "ID = ?";
-        String[] whereArgs = {String.valueOf(userId)};
-        int rowsDeleted = db.delete("ELDERS", whereClause, whereArgs);
+    public boolean deleteElderByDocId(String docId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String whereClause = DOCUMNET_ID+" = ?";
+        String[] whereArgs = {docId};
+        int result = db.delete(ELDER_TBL, whereClause, whereArgs);
         db.close();
 
-        // Optional: Check the number of rows deleted for verification
-        if (rowsDeleted > 0) {
-            // Rows deleted successfully
-        } else {
-            // No rows deleted or an error occurred
-        }
+        // If the result is greater than 0, the deletion was successful
+        return result > 0;
     }
+
+    public boolean deleteUserByDocId(String docId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String whereClause = DOCUMNET_ID+" = ?";
+        String[] whereArgs = {docId};
+        int result = db.delete(USERS_TBL, whereClause, whereArgs);
+        db.close();
+
+        // If the result is greater than 0, the deletion was successful
+        return result > 0;
+    }
+
 /*
 This method connects to the DB and returns all the data in the Users TBL.
  */
@@ -464,41 +472,42 @@ This method connects to the DB and returns all the data in the Users TBL.
 /*
 this method updated the changed values of the User TBL fileds.
  */
-    public void updateUserInfo(String userId, String newName, String newPhoneNumber) {
+    public boolean updateUserInfo(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
-
         ContentValues values = new ContentValues();
-        values.put("user_name", newName);
-        values.put("user_phone", newPhoneNumber);
 
-        String whereClause = "_ID = ?";
-        String[] whereArgs = {String.valueOf(userId)};
+        values.put(USER_ID, user.getID());
+        values.put(USER_NAME, user.getUsername());
+        values.put(USER_EMAIL, user.getEmail());
+        values.put(USER_PHONE, user.getPhoneNumber());
+        values.put(USER_PASSWORD, user.getPassword());
 
-        db.update("USERES", values, whereClause, whereArgs);
-
+        int rowsAffected = db.update(USERS_TBL, values, DOCUMNET_ID+"=?", new String[]{user.getDocId()});
         db.close();
+
+        return rowsAffected > 0;
     }
 
     /*
 this method updated the changed values of the Elder TBL fileds.
  */
 
-    public void updateElderInfo(String elderId, String newName, String newPhoneNumber, String newDateOfBirth,String newGender) {
+    public boolean updateElderlyInfo(Elder elder) {
         SQLiteDatabase db = this.getWritableDatabase();
-       Log.i(TAG, "This is the USER IN DB:" + elderId + newName + newPhoneNumber + newDateOfBirth +newGender);
-
         ContentValues values = new ContentValues();
-        values.put("name", newName);
-        values.put("phone", newPhoneNumber);
-        values.put("dateOfBirth", newDateOfBirth);
-        values.put("gender", newGender);
 
-        String whereClause = "ID = ?";
-        String[] whereArgs = {String.valueOf(elderId)};
+        values.put(ELDER_ID, elder.getID());
+        values.put(ELDER_NAME, elder.getUsername());
+        values.put(ELDER_EMAIL, elder.getEmail());
+        values.put(ELDER_PHONE, elder.getPhoneNumber());
+        values.put(ELDER_GENDER, elder.getGender().toString());
+        values.put(ELDER_DOB, elder.getDOB().toString());
+        values.put(ELDER_PASSWORD, elder.getPassword());
 
-        db.update("ELDERS", values, whereClause, whereArgs);
-
+        int rowsAffected = db.update(ELDER_TBL, values, DOCUMNET_ID+"=?", new String[]{elder.getDocId()});
         db.close();
+
+        return rowsAffected > 0;
     }
 
     public void FetchElderliesDataFromFirestore(){

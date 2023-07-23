@@ -10,7 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.slothgoldencare.Model.Elder;
 import com.example.slothgoldencare.Model.User;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,8 @@ public class AdministratorUsersActivity extends AppCompatActivity implements Vie
 
     private List<User> users;
     private DataBaseHelper dbHelper;
+    private FirebaseFirestore db;
+    private Button buttonAddUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +36,9 @@ public class AdministratorUsersActivity extends AppCompatActivity implements Vie
         //eldersList = findViewById(R.id.elderly_list);
         users = new ArrayList<>();
         users = dbHelper.getUsers();
+        buttonAddUser = findViewById(R.id.buttonAdd);
 
 
-        //users.add()
         ArrayAdapter<User> userAdapter = new ArrayAdapter<User>(this, R.layout.administrator_user_item, users) {
             @NonNull
             @Override
@@ -48,32 +52,14 @@ public class AdministratorUsersActivity extends AppCompatActivity implements Vie
                 if (convertView == null) {
                     convertView = LayoutInflater.from(getContext()).inflate(R.layout.administrator_user_item, parent, false);
                 }
-                LinearLayout editLayout = convertView.findViewById(R.id.user_edit);
-                EditText idText = convertView.findViewById(R.id.user_id_text);
-                EditText nameText = convertView.findViewById(R.id.user_name_text);
-                EditText phoneText = convertView.findViewById(R.id.user_phone_text);
+
                 // Set the username in the TextView
                 TextView userNameTextView = convertView.findViewById(R.id.user_name);
                 userNameTextView.setText(user.getUsername());
                 ImageButton deleteButton = convertView.findViewById(R.id.delete_user_btn);
                 ImageButton editButton = convertView.findViewById(R.id.edit_user_btn);
-                Button saveUserChanges = convertView.findViewById(R.id.save_user_changes);
-                saveUserChanges.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        user.setID(idText.getText().toString());
-                        user.setUsername(nameText.getText().toString());
-                        user.setPhoneNumber(phoneText.getText().toString());
-
-                        String newID = idText.getText().toString();
-                        String newName = nameText.getText().toString();
-                        String newPhone = phoneText.getText().toString();
 
 
-                        Toast.makeText(AdministratorUsersActivity.this, "User details changed successfully", Toast.LENGTH_SHORT).show();
-                        dbHelper.updateUserInfo(newID, newName, newPhone);
-                    }
-                });
 
 
                 // Set a click listener for the delete button
@@ -88,24 +74,74 @@ public class AdministratorUsersActivity extends AppCompatActivity implements Vie
                 editButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (editLayout.getVisibility() == View.VISIBLE) {
-                            editLayout.setVisibility(View.GONE);
-                        } else {
-                            editLayout.setVisibility(View.VISIBLE);
-                            idText.setText(user.getID());
-                            nameText.setText(user.getUsername());
-                            phoneText.setText(user.getPhoneNumber());
+                        ElderlyItemDialog elderlyItemDialog = new ElderlyItemDialog(getContext(), new ElderlyItemDialog.OnSaveChangesListener() {
+                            @Override
+                            public void onSaveChanges(Elder elder) {
 
-                            Toast.makeText(AdministratorUsersActivity.this, "User details changed successfully", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onSaveChanges(User user) {
+                                if(user != null){
+                                    db = FirebaseFirestore.getInstance();
+                                    db.collection("Users").document(user.getDocId()).update(
+                                            "id",user.getID(),
+                                            "username",user.getUsername(),
+                                            "phoneNumber",user.getPhoneNumber(),
+                                            "email",user.getEmail(),
+                                            "password",user.getPassword()
+                                    ).addOnCompleteListener(task -> {
+                                        if(task.isSuccessful()){
+                                            if(dbHelper.updateUserInfo(user)){
+                                                recreate();
+                                                Toast.makeText(getApplicationContext(),R.string.info_updated_success,Toast.LENGTH_LONG).show();
+                                            }else{
+                                                Toast.makeText(getApplicationContext(),R.string.info_updated_failed,Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+                                    });
+                                }
+                            }
 
 
-                        }
+                        }, ElderlyItemDialog.ItemType.USER);
+
+                        elderlyItemDialog.show();
+                        elderlyItemDialog.setEditTextValues(null,user);
                     }
                 });
                 return convertView;
             }
         };
         usersList.setAdapter(userAdapter);
+
+        buttonAddUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                ElderlyItemDialog elderlyItemDialog = new ElderlyItemDialog(getApplicationContext(), new ElderlyItemDialog.OnSaveChangesListener() {
+                    @Override
+                    public void onSaveChanges(User user) {
+                        //CHECK THIS SECTION!
+                        if(user != null){
+                            if(dbHelper.addUserData(user)){
+                                Toast.makeText(getApplicationContext(),R.string.info_add_success,Toast.LENGTH_LONG).show();
+                            }else{
+                                Toast.makeText(getApplicationContext(),R.string.info_add_fail,Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onSaveChanges(Elder elder) {
+
+                    }
+                }, ElderlyItemDialog.ItemType.USER);
+
+                elderlyItemDialog.show();
+                elderlyItemDialog.setEditTextValues(null,null);
+            }
+        });
     }
 
     @Override
@@ -119,6 +155,18 @@ public class AdministratorUsersActivity extends AppCompatActivity implements Vie
     }
 
     private void deleteUser(User user) {
-        dbHelper.deleteUserById(user.getID());
+        db = FirebaseFirestore.getInstance();
+        db.collection("Users").document(user.getDocId()).delete().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                if(dbHelper.deleteUserByDocId(user.getDocId())){
+                    Toast.makeText(getApplicationContext(),R.string.info_delete_success,Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(getApplicationContext(),R.string.info_delete_fail+" || "+"Problem in Sqlite.",Toast.LENGTH_LONG).show();
+                }
+            }else{
+                Toast.makeText(getApplicationContext(),R.string.info_delete_fail+" || "+task.getException().getMessage().toString(),Toast.LENGTH_LONG).show();
+            }
+
+        });
     }
 }
