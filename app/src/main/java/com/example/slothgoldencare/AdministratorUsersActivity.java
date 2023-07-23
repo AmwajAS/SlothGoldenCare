@@ -102,8 +102,6 @@ public class AdministratorUsersActivity extends AppCompatActivity implements Vie
                                     });
                                 }
                             }
-
-
                         }, ElderlyItemDialog.ItemType.USER);
 
                         elderlyItemDialog.show();
