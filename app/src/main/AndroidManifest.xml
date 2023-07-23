@@ -15,6 +15,9 @@
         android:theme="@style/Theme.SlothGoldenCare"
         tools:targetApi="31">
         <activity
+            android:name=".AboutUsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ProfileActivity"
             android:exported="false" />
         <activity
@@ -75,12 +78,12 @@
         <activity
             android:name=".AdministratorElderliesActivity"
             android:exported="false" />
-         <activity
-             android:name=".DoctorActivity"
-             android:exported="false"/>
         <activity
-             android:name=".DoctorVisitElderlyActivity"
-             android:exported="false"/>
+            android:name=".DoctorActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DoctorVisitElderlyActivity"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
