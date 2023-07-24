@@ -1,8 +1,6 @@
 package com.example.slothgoldencare.Model;
 
 
-import com.example.slothgoldencare.Gender;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;

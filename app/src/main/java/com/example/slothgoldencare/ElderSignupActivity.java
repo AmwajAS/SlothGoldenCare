@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.slothgoldencare.Model.Elder;
+import com.example.slothgoldencare.Model.Gender;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;

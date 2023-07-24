@@ -5,4 +5,11 @@
         <item>@string/medium_label</item>
         <item>@string/hard_label</item>
     </array>
+
+    <array name="Languages">
+        <item>Choose Your Language</item>
+        <item>@string/hebrew</item>
+        <item>@string/arabic</item>
+        <item>@string/english</item>
+    </array>
 </resources>

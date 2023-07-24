@@ -20,8 +20,8 @@
 
     <TextView
         android:id="@+id/txtCurrentDate"
-        android:layout_width="174dp"
-        android:layout_height="41dp"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="50dp"
@@ -38,7 +38,6 @@
         android:layout_height="473dp"
         android:layout_below="@id/txtCurrentDate"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="28dp" />
 

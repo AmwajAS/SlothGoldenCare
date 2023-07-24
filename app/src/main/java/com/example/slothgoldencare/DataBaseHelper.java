@@ -12,6 +12,7 @@ import com.example.slothgoldencare.Model.Allergy;
 import com.example.slothgoldencare.Model.Diagnosis;
 import com.example.slothgoldencare.Model.Elder;
 import com.example.slothgoldencare.Model.ElderRelative;
+import com.example.slothgoldencare.Model.Gender;
 import com.example.slothgoldencare.Model.Surgery;
 import com.example.slothgoldencare.Model.User;
 import com.example.slothgoldencare.Reminder.Reminder;

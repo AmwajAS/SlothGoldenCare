@@ -14,44 +14,47 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp">
 
             <TextView
                 android:id="@+id/txtTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:text="@string/title"
-                android:textSize="25dp"
+                android:textSize="25sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtDate"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:text="@string/date"
-                android:textSize="25dp"
+                android:textSize="25sp"
                 android:textStyle="italic" />
 
 
             <TextView
                 android:id="@+id/txtTime"
-                android:layout_width="wrap_content"
+                android:layout_width="279dp"
                 android:layout_height="wrap_content"
-                android:text="@string/time"
-                android:textSize="30dp"
+                android:textSize="30sp"
                 android:textStyle="italic" />
 
             <CheckBox
                 android:id="@+id/checkboxReminder"
-                android:layout_width="64dp"
-                android:layout_height="wrap_content"
+                android:layout_width="63dp"
+                android:layout_height="49dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="300dp"
                 android:padding="8dp"
-                android:scaleX="1.5"
-                android:scaleY="1.5" />
+                android:scaleX="2"
+                android:scaleY="2" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/mainColor" />
 
 
         </LinearLayout>
