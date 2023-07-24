@@ -199,9 +199,7 @@
     <string name="medication_reminders_des">Allow users to set medication reminders to ensure timely intake of medications.</string>
     <string name="title4">Contact Us</string>
     <string name="title4.1">Call works 24/7</string>
-    <string name="summary2">click to call Maccabi's Services</string>
+    <string name="summary2">click to call Maccabi s Services</string>
     <string name="title4.2">Visit our website</string>
-    <string name="summary3">click to visit Maccabi's web</string>
-
-
+    <string name="summary3">click to visit Maccabi s web</string>
 </resources>
