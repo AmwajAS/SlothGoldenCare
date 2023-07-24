@@ -1,0 +1,49 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutDateTime"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/dark_gradient"
+    android:orientation="vertical">
+
+    <!-- DatePicker for selecting the date -->
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="15dp"
+        android:fontFamily="@font/sigmar_one"
+        android:gravity="center"
+        android:text="@string/schedule_an_appointment"
+        android:textColor="#3D84BD"
+        android:textSize="25sp" />
+
+    <DatePicker
+        android:id="@+id/datePicker"
+        android:layout_width="403dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:id="@+id/textViewNext"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginBottom="25dp"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:text="@string/pick_time"
+        android:textColor="#000000"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/nextButton1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Next" />
+
+    <!-- TimePicker for selecting the time -->
+
+    <!-- Next Button -->
+</LinearLayout>

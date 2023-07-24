@@ -30,7 +30,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class HomePageActivity extends AppCompatActivity implements View.OnClickListener {
-    private CardView D1, D2, D3, D4, D5, D6;
+    private CardView D1, D2, D3, D4, D5, D6, D7, D8;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationCallback locationCallback;
     private ProgressDialog progressDialog;
@@ -57,6 +57,8 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
         D4 = findViewById(R.id.d4);
         D5 = findViewById(R.id.d5);
         D6 = findViewById(R.id.d6);
+        D7 = findViewById(R.id.d7);
+        D8 = findViewById(R.id.d8);
 
         D1.setOnClickListener(this);
         D2.setOnClickListener(this);
@@ -64,6 +66,8 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
         D4.setOnClickListener(this);
         D5.setOnClickListener(this);
         D6.setOnClickListener(this);
+        D7.setOnClickListener(this);
+        D8.setOnClickListener(this);
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         locationCallback = new LocationCallback() {
@@ -109,6 +113,10 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.d6:
                 i = new Intent(this, SettingsActivity.class);
+                startActivity(i);
+                break;
+            case R.id.d7:
+                i = new Intent(this, AppointmentSchedulingActivity.class);
                 startActivity(i);
                 break;
 
