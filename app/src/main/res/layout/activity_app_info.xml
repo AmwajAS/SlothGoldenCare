@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/FrameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:id="@+id/aboutUsLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/dark_gradient"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:fontFamily="@font/sigmar_one"
+            android:gravity="center"
+            android:text="App information"
+            android:textColor="#143a84"
+            android:textSize="30sp" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="115dp"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.514"
+            app:srcCompat="@drawable/older" />
+
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sigmar_one"
+            android:gravity="center"
+            android:text="Description of the main features in the app."
+            android:textColor="#143a84"
+            android:textSize="14sp"
+            tools:layout_height="50dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/dark_gradient"
+            android:orientation="vertical">
+
+            <!-- Family Members Section -->
+            <TextView
+                android:id="@+id/family_members_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Family Members"
+                android:textColor="#143a84"
+                android:textSize="20sp" />
+            <!-- Add Family Members description -->
+            <TextView
+                android:id="@+id/family_members_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif"
+                android:text="Invite and unite family members in providing exceptional care. Empower primary caretakers to invite family members, fostering a collaborative caregiving network. "
+                android:textColor="#143a84"
+                android:textSize="16dp" />
+            <!-- Health Services Section -->
+            <TextView
+                android:id="@+id/health_services_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Health Services"
+                android:textColor="#143a84"
+                android:textSize="20sp" />
+            <!-- Add Health Services description -->
+
+            <!-- Emergency Contacts Section -->
+            <TextView
+                android:id="@+id/health_services_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif"
+                android:text="Access professional medical assistance with ease. Connect directly to Maccabi Health Services, a trusted healthcare organization, for immediate help and support. "
+                android:textColor="#143a84"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/emergency_contacts_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Emergency Contacts"
+                android:textColor="#143a84"
+                android:textSize="20sp" />
+
+            <!-- Add emergency contacts description -->
+            <TextView
+                android:id="@+id/emergency_contacts_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif"
+                android:text="Enable users to add and manage emergency contacts who will be notified in case of an emergency."
+                android:textColor="#143a84"
+                android:textSize="16dp" />
+
+            <!-- Medication Reminders Section -->
+            <TextView
+                android:id="@+id/medication_reminders_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Medication Reminders"
+                android:textColor="#143a84"
+                android:textSize="20sp" />
+
+            <!-- Add medication reminders description -->
+            <TextView
+                android:id="@+id/medication_reminders_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif"
+                android:text="Allow users to set medication reminders to ensure timely intake of medications."
+                android:textColor="#143a84"
+                android:textSize="16sp" />
+
+
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="70dp"
+                app:srcCompat="@drawable/baseline_arrow_back_24" />
+        </LinearLayout>
+
+    </LinearLayout>
+</FrameLayout>

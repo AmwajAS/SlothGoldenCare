@@ -171,4 +171,37 @@
     <string name="date">Date</string>
     <string name="time">Time</string>
     <string name="surgery2">Surgery</string>
+
+<!--    for the setting page-->
+    <string name="title1">General</string>
+    <string name="title1.1">Dark Theme</string>
+    <string name="title2">About</string>
+    <string name="title2.1">Version</string>
+    <string name="summary1">1.0.0</string>
+    <string name="title2.2">About Us</string>
+    <string name="about_us1">Maccabi Health Services is a renowned healthcare organization committed to providing high-quality medical care and support to the community. With a deep understanding of the needs of elderly individuals and their caretakers, Maccabi Health Services has developed an
+        innovative app aimed at revolutionizing elderly care management.</string>
+    <string name="about_us2">The primary aim of this app is to empower primary caretakers in effectively monitoring the
+        activities of elderly people, ensuring their well-being, and fostering a sense of security.</string>
+    <string name="title3">Health and Support</string>
+    <string name="title3.1">App info</string>
+    <string name="app_info_title">App information</string>
+    <string name="app_info_sub_title">Description of the main features in the app.</string>
+    <string name="family_members">Family Members</string>
+    <string name="family_members_des">Invite and unite family members in providing exceptional care.
+        Empower primary caretakers to invite family members, fostering a collaborative caregiving network.</string>
+    <string name="health_services">Health Services</string>
+    <string name="health_services_des">Access professional medical assistance with ease. Connect directly
+        to Maccabi Health Services, a trusted healthcare organization, for immediate help and support.</string>
+    <string name="emergency_contacts">Emergency Contacts</string>
+    <string name="emergency_contacts_des">Enable users to add and manage emergency contacts who will be notified in case of an emergency.</string>
+    <string name="medication_reminders">Medication Reminders</string>
+    <string name="medication_reminders_des">Allow users to set medication reminders to ensure timely intake of medications.</string>
+    <string name="title4">Contact Us</string>
+    <string name="title4.1">Call works 24/7</string>
+    <string name="summary2">click to call Maccabi's Services</string>
+    <string name="title4.2">Visit our website</string>
+    <string name="summary3">click to visit Maccabi's web</string>
+
+
 </resources>

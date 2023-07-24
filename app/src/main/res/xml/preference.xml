@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
+<PreferenceScreen xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory
-        android:title="General">
+    <PreferenceCategory android:title="General">
         <SwitchPreference
-            android:key="theme_preferences"
             android:defaultValue="false"
-            android:title="Dark Theme">
-        </SwitchPreference>
+            android:key="theme_preferences"
+            android:title="Dark Theme"/>
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -16,8 +14,27 @@
             android:title="Version"
             android:summary="1.0.0"/>
         <Preference
-            android:key="contact_preference"
+            android:key="aboutUs_preference"
             android:title="About Us"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Help and Support">
+        <Preference
+            android:key="info_preference"
+            android:title="App info"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Contact Us">
+        <Preference
+            android:key="contact_preference"
+            android:title="Call works 24/7"
+            android:summary="click to call Maccabi's Services"/>
+        <Preference
+            android:key="contact_us_link_preference"
+            android:title="Visit our website"
+            android:summary="click to visit Maccabi's web"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

@@ -1,12 +1,14 @@
 package com.example.slothgoldencare;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.preference.Preference;
 import android.view.Menu;
 import android.view.MenuItem;
 
