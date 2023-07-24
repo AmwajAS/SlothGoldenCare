@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.example.slothgoldencare.Model.Elder;
+import com.example.slothgoldencare.Model.Gender;
 import com.example.slothgoldencare.Model.User;
 import com.example.slothgoldencare.R;
 

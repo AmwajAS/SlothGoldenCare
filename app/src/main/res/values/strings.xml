@@ -171,6 +171,14 @@
     <string name="date">Date</string>
     <string name="time">Time</string>
     <string name="surgery2">Surgery</string>
+    <string name="my_contacts">Contacts</string>
+
+    <!--   Language -->
+    <string name="lang">Please choose your language</string>
+    <string name="arabic">Arabic</string>
+    <string name="hebrew">Hebrew</string>
+    <string name="english">English</string>
+    <string name="russian">Russian</string>
 
     <!--    for the setting page-->
     <string name="title1">General</string>
@@ -179,7 +187,7 @@
     <string name="title2.1">Version</string>
     <string name="summary1">1.0.0</string>
     <string name="title2.2">About Us</string>
-    <string name="about_us1">Maccabi Health Services is a renowned healthcare organization committed to providing high-quality medical care and support to the community. With a deep understanding of the needs of elderly individuals and their caretakers, Maccabi Health Services has developed an
+    <string name="about_us1"> Maccabi Health Services is a renowned healthcare organization committed to providing high-quality medical care and support to the community. With a deep understanding of the needs of elderly individuals and their caretakers, Maccabi Health Services has developed an
         innovative app aimed at revolutionizing elderly care management.</string>
     <string name="about_us2">The primary aim of this app is to empower primary caretakers in effectively monitoring the
         activities of elderly people, ensuring their well-being, and fostering a sense of security.</string>
