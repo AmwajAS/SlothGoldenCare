@@ -357,6 +357,29 @@ This method check if the input ID is already exists in the DB, and return true i
         return null;
     }
 
+    public Doctor getDoctorById(String doctorId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(DOCTORS_TBL, null, DOCTOR_ID + "=?", new String[]{doctorId}, null, null, null);
+        if (cursor.moveToFirst()) {
+            String docId = cursor.getString(cursor.getColumnIndexOrThrow(DOCUMNET_ID));
+            String id = cursor.getString(cursor.getColumnIndexOrThrow(DOCTOR_ID));
+            String name = cursor.getString(cursor.getColumnIndexOrThrow(DOCTOR_NAME));
+            String phone = cursor.getString(cursor.getColumnIndexOrThrow(DOCTOR_PHONE));
+            String email = cursor.getString(cursor.getColumnIndexOrThrow(DOCTOR_EMAIL));
+            String password = cursor.getString(cursor.getColumnIndexOrThrow(DOCTOR_PASSWORD));
+            String specialization = cursor.getString(cursor.getColumnIndexOrThrow(DOCTOR_SPECIALIZATION));
+
+
+
+            // Create and return the Doctor object
+            Doctor doctor = new Doctor(id, name, phone, email, password, specialization);
+            doctor.setDocId(docId);
+            return doctor;
+        }
+        cursor.close();
+        // Return null if no matching elder found
+        return null;
+    }
 
     /*
    This method takes as a input a Elder ID and return the whole row - Elder object.

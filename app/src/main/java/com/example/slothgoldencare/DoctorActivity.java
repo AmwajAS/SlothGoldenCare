@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.slothgoldencare.Model.Elder;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,17 +23,30 @@ public class DoctorActivity extends AppCompatActivity{
     private List<Elder> elderlies;
     private ListView elderliesList;
     private SearchView searchView;
-
+    private TextView editTextUsername;
+    private String username;
+    private FirebaseAuth auth;
     private DataBaseHelper dbHelper;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor);
+
+        auth = FirebaseAuth.getInstance();
+        editTextUsername = findViewById(R.id.editTextUsername);
+        username = getIntent().getStringExtra("username");
+        userId = getIntent().getStringExtra("userID");
+
+        editTextUsername.setText(auth.getCurrentUser().getDisplayName());
+
         dbHelper = new DataBaseHelper(this);
         elderlies = new ArrayList<>();
         elderliesList = findViewById(R.id.elderly_list);
         elderlies = dbHelper.getElders();
+
+
 
         ArrayAdapter<Elder> elderAdapter = new ArrayAdapter<Elder>(this, R.layout.doctor_elderly_item, elderlies) {
             @NonNull

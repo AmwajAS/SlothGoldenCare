@@ -63,7 +63,6 @@ public class LoginActivity extends AppCompatActivity {
         Button loginBtn = (Button) findViewById(R.id.loginBtn);
         progressBar = findViewById(R.id.progress_bar_login);
         dbHelper = new DataBaseHelper(this);
-        //dbHelper.dropTable();
 
         loginBtn.setOnClickListener(v -> {
             String uid = userid.getText().toString();
@@ -77,14 +76,23 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(intent);
                     userid.setText("");
                 }
-           }
-               else {
+            }
+            else {
                 progressBar.setVisibility(View.VISIBLE);
                 if (checkIDValidation(uid)) {
                     if (relativeRadioBtn.isChecked()) {
                         query = db.collection("Users").whereEqualTo("id", uid).get();
                     }else if(doctorRadioBtn.isChecked()) {
                         query = db.collection("Doctors").whereEqualTo("id", uid).get();
+                        query.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                                Intent intent = new Intent(LoginActivity.this, DoctorActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
                     }else {
                         query = db.collection("Elderlies").whereEqualTo("id", uid).get();
                     }
@@ -109,14 +117,16 @@ public class LoginActivity extends AppCompatActivity {
                                                     startActivity(intent);
                                                     finish();
 
-                                                }else if(doctorRadioBtn.isChecked()){
-                                                    Intent intent = new Intent(LoginActivity.this, DoctorActivity.class);
-                                                   intent.putExtra("userID", snapshot.get("id").toString());
-                                                    intent.putExtra("username", snapshot.get("username").toString());
-                                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                    startActivity(intent);
-                                                    finish();
-                                                }else {
+                                                }
+//                                                else if(doctorRadioBtn.isChecked()){
+//                                                    Intent intent = new Intent(LoginActivity.this, DoctorActivity.class);
+//                                                    intent.putExtra("userID", snapshot.get("id").toString());
+//                                                    intent.putExtra("username", snapshot.get("username").toString());
+//                                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                                                    startActivity(intent);
+//                                                    finish();
+//                                                }
+                                                else {
                                                     Intent intent = new Intent(LoginActivity.this, HomePageActivity.class);
                                                     intent.putExtra("userID", snapshot.get("id").toString());
                                                     intent.putExtra("username", snapshot.get("username").toString());
@@ -166,7 +176,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-
     /*
     Since the Real Id Number consists of 9 digits Only, So in this method we check the Id Validation.
     9 numbers only between 0-9.
@@ -202,3 +211,4 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 }
+

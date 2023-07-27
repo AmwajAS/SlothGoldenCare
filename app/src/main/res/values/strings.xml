@@ -138,6 +138,8 @@
     <string name="exit_yes_label">Yes</string>
     <string name="exit_no_label">No</string>
     <string name="win">Congratulations!     You WIN</string>
+    elderliesList
+    <string name="elderliesList">Elderlies List</string>
 
 
     <string name="sqlite_adding_user_data_error">Problem Occurred adding User to Sqlite.</string>
