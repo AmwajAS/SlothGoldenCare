@@ -21,6 +21,15 @@
             android:name=".TimeActivity"
             android:exported="false" />
         <activity
+            android:name=".AdministratorDoctorsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CallContactActivity"
+            android:exported="false" />
+        <activity
+            android:name=".VideoCall.VideoCallActivity"
+            android:exported="false" />
+        <activity
             android:name=".AppointmentSchedulingActivity"
             android:exported="false" />
         <activity
@@ -63,12 +72,8 @@
             android:exported="false" />
         <activity
             android:name=".ContactsActivity"
-            android:exported="false" /> <!-- <activity -->
-        <!-- android:name=".SettingsFragment" -->
-        <!-- android:exported="false"/> -->
-        <!-- <activity -->
-        <!-- android:name=".ProfileFragment" -->
-        <!-- android:exported="false"/> -->
+            android:exported="false"
+            android:parentActivityName=".HomePageActivity" />
         <activity
             android:name=".ElderSignupActivity"
             android:exported="false" />

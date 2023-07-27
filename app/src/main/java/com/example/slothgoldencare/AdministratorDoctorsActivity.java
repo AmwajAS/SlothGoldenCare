@@ -141,11 +141,15 @@ public class AdministratorDoctorsActivity extends AppCompatActivity {
                             db = FirebaseFirestore.getInstance();
                             db.collection("Doctors").add(doctor).addOnCompleteListener(task -> {
                                 if(task.isSuccessful()){
+                                    Toast.makeText(getApplicationContext(),"added to firestore",Toast.LENGTH_LONG).show();
+
                                     if(dbHelper.addDoctorData(doctor)){
                                         Toast.makeText(getApplicationContext(),R.string.info_add_success,Toast.LENGTH_LONG).show();
                                     }else{
                                         Toast.makeText(getApplicationContext(),R.string.info_add_fail,Toast.LENGTH_LONG).show();
                                     }
+                                }else{
+                                    Toast.makeText(getApplicationContext(),"Not added to firestore",Toast.LENGTH_LONG).show();
                                 }
                             });
                         }

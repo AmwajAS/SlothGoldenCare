@@ -77,18 +77,15 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(intent);
                     userid.setText("");
                 }
-            } else if (doctorRadioBtn.isChecked()) {
-                if (uid.equals("doctor")) {
-                    Intent intent = new Intent(getApplicationContext(), DoctorActivity.class);
-                    startActivity(intent);
-                    userid.setText("");
-                }
-            } else {
+           }
+               else {
                 progressBar.setVisibility(View.VISIBLE);
                 if (checkIDValidation(uid)) {
                     if (relativeRadioBtn.isChecked()) {
                         query = db.collection("Users").whereEqualTo("id", uid).get();
-                    } else {
+                    }else if(doctorRadioBtn.isChecked()) {
+                        query = db.collection("Doctors").whereEqualTo("id", uid).get();
+                    }else {
                         query = db.collection("Elderlies").whereEqualTo("id", uid).get();
                     }
                     query.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -112,7 +109,14 @@ public class LoginActivity extends AppCompatActivity {
                                                     startActivity(intent);
                                                     finish();
 
-                                                } else {
+                                                }else if(doctorRadioBtn.isChecked()){
+                                                    Intent intent = new Intent(LoginActivity.this, DoctorActivity.class);
+                                                   intent.putExtra("userID", snapshot.get("id").toString());
+                                                    intent.putExtra("username", snapshot.get("username").toString());
+                                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                    startActivity(intent);
+                                                    finish();
+                                                }else {
                                                     Intent intent = new Intent(LoginActivity.this, HomePageActivity.class);
                                                     intent.putExtra("userID", snapshot.get("id").toString());
                                                     intent.putExtra("username", snapshot.get("username").toString());

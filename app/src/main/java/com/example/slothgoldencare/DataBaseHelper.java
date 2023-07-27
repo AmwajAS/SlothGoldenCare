@@ -130,7 +130,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             DOCTOR_SPECIALIZATION + " TEXT NOT NULL " +
             " );";
 
-
     private static final String CREATE_DB_QUERY_ELDER = "CREATE TABLE " + ELDER_TBL + " ( " +
             DOCUMNET_ID + " TEXT PRIMARY KEY, " +
             ELDER_ID + " INTEGER NOT NULL, " +
@@ -686,6 +685,7 @@ this method updated the changed values of the Elder TBL fileds.
     }
 
     // Fetch doctor data from Firestore and insert it into the SQLite database
+    // Fetch doctor data from Firestore and insert it into the SQLite database
     private void FetchDoctorsDataFromFirestore(){
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         firestore.collection("Doctors").get().addOnSuccessListener(querySnapshot -> {
@@ -696,18 +696,18 @@ this method updated the changed values of the Elder TBL fileds.
             for (DocumentSnapshot document : querySnapshot.getDocuments()) {
                 try {
                     // Extract required fields from the document
-                    String docId = document.getId().toString();
-                    String userId = document.getString("id").toString();
-                    String userName = document.getString("username").toString();
-                    String userPhone = document.getString("phoneNumber").toString();
-                    String userEmail = document.getString("email").toString();
-                    String userPassword = document.getString("password").toString();
-                    String specialization = document.getString("specialization").toString();
+                    String docId = document.getId(); // Use the automatically generated document ID
+                    String userId = document.getString("id");
+                    String userName = document.getString("username");
+                    String userPhone = document.getString("phoneNumber");
+                    String userEmail = document.getString("email");
+                    String userPassword = document.getString("password");
+                    String specialization = document.getString("specialization");
 
-                    // Execute the INSERT statement for the "Users" table
-                    String insertQuery = "INSERT INTO Doctors ("+DOCUMNET_ID+"," + DOCTOR_ID + ", " + DOCTOR_NAME  + ", " + DOCTOR_PHONE + ", " + DOCTOR_EMAIL + ", " + DOCTOR_PASSWORD + ", " + DOCTOR_SPECIALIZATION + ") VALUES (?, ?, ?, ?, ?, ?,?)";
+                    // Execute the INSERT statement for the "Doctors" table
+                    String insertQuery = "INSERT INTO Doctors (" + DOCUMNET_ID + ", " + DOCTOR_ID + ", " + DOCTOR_NAME + ", " + DOCTOR_PHONE + ", " + DOCTOR_EMAIL + ", " + DOCTOR_PASSWORD + ", " + DOCTOR_SPECIALIZATION + ") VALUES (?, ?, ?, ?, ?, ?, ?)";
                     SQLiteStatement statement = db.compileStatement(insertQuery);
-                    statement.bindString(1,docId);
+                    statement.bindString(1, docId);
                     statement.bindString(2, userId);
                     statement.bindString(3, userName);
                     statement.bindString(4, userPhone);
@@ -716,17 +716,18 @@ this method updated the changed values of the Elder TBL fileds.
                     statement.bindString(7, specialization);
                     long rowId = statement.executeInsert();
 
-                }catch (Exception e){
-                    Log.w(TAG,"Specific Doctors data error : "+e.getMessage().toString());
+                } catch (Exception e) {
+                    Log.w(TAG, "Specific Doctors data error: " + e.getMessage());
                 }
             }
 
             // Close the database connection
             db.close();
         }).addOnFailureListener(e -> {
-            Log.w(TAG,"Error fetching Doctors data from firestore to SQLite: "+e.getMessage().toString());
+            Log.w(TAG, "Error fetching Doctors data from Firestore to SQLite: " + e.getMessage());
         });
     }
+
 
     public void FetchElderlyRelativesDataFromFirestore(){
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
