@@ -33,6 +33,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Username" />
+    <TextView
+        android:id="@+id/specialization"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="specialization" />
+    <EditText
+        android:id="@+id/etspecialization"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="specialization" />
 
     <TextView
             android:layout_width="wrap_content"

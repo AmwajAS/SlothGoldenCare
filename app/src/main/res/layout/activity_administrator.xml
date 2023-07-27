@@ -21,5 +21,11 @@
                 android:layout_height="wrap_content"
                 android:text="@string/elderlies"/>
 
+        <Button
+            android:id="@+id/doctors_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Doctors" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

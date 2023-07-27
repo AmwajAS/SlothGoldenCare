@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.slothgoldencare.Model.Doctor;
 import com.example.slothgoldencare.Model.Elder;
 import com.example.slothgoldencare.Model.User;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -101,10 +102,15 @@ public class AdministratorElderliesActivity extends AppCompatActivity implements
 
                             }
 
+                            @Override
+                            public void onSaveChanges(Doctor doctor) {
+
+                            }
+
                         }, ElderlyItemDialog.ItemType.ELDER);
 
                         elderlyItemDialog.show();
-                        elderlyItemDialog.setEditTextValues(elder,null);
+                        elderlyItemDialog.setEditTextValues(elder,null,null);
                     }
                 });
 
@@ -116,16 +122,20 @@ public class AdministratorElderliesActivity extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
 
-                ElderlyItemDialog elderlyItemDialog = new ElderlyItemDialog(getApplicationContext(), new ElderlyItemDialog.OnSaveChangesListener() {
+                ElderlyItemDialog elderlyItemDialog = new ElderlyItemDialog(AdministratorElderliesActivity.this, new ElderlyItemDialog.OnSaveChangesListener() {
                     @Override
                     public void onSaveChanges(Elder elder) {
-                        //CHECK THIS SECTION!
                         if(elder != null){
-                            if(dbHelper.addElderData(elder)){
-                                Toast.makeText(getApplicationContext(),R.string.info_add_success,Toast.LENGTH_LONG).show();
-                            }else{
-                                Toast.makeText(getApplicationContext(),R.string.info_add_fail,Toast.LENGTH_LONG).show();
-                            }
+                            db = FirebaseFirestore.getInstance();
+                            db.collection("Elderlies").add(elder).addOnCompleteListener(task -> {
+                                if(task.isSuccessful()){
+                                    if(dbHelper.addElderData(elder)){
+                                        Toast.makeText(getApplicationContext(),R.string.info_add_success,Toast.LENGTH_LONG).show();
+                                    }else{
+                                        Toast.makeText(getApplicationContext(),R.string.info_add_fail,Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            });
                         }
                     }
 
@@ -133,10 +143,16 @@ public class AdministratorElderliesActivity extends AppCompatActivity implements
                     public void onSaveChanges(User user) {
 
                     }
+
+                    @Override
+                    public void onSaveChanges(Doctor doctor) {
+
+                    }
+
                 }, ElderlyItemDialog.ItemType.ELDER);
 
                 elderlyItemDialog.show();
-                elderlyItemDialog.setEditTextValues(null,null);
+                elderlyItemDialog.setEditTextValues(null, null, null);
             }
         });
     }

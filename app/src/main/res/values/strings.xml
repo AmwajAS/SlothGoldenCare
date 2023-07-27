@@ -210,7 +210,7 @@
     <string name="summary2">click to call Maccabi s Services</string>
     <string name="title4.2">Visit our website</string>
     <string name="summary3">click to visit Maccabi s web</string>
-<!--    for appointment scheduling-->
+    <!--    for appointment scheduling-->
     <string name="select_doctor_prompt">Select a Doctor</string>
     <string name="schedule_an_appointment">Schedule an appointment</string>
     <string name="pick_time">Click next to pick a time.</string>
@@ -220,6 +220,12 @@
     <string name="pick_doctors_title2">You Can add a note</string>
     <string name="doc_note">Your note</string>
     <string name="next_button">NEXT</string>
+
+
+    <!--   for Profile -->
+    New UserPhone:
+    <string name="NewPhone">New Phone Number:</string>
+    <string name="UserType">User Type:</string>
 
 
 </resources>

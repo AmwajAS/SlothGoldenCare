@@ -10,8 +10,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.slothgoldencare.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.myviewholder> {
     List<Reminder> dataholder = new ArrayList<Reminder>();                                               //array list to hold the reminders
@@ -33,6 +36,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.myviewholder> {
         holder.mDate.setText(dataholder.get(position).getDate().toString());
         holder.mTime.setText(dataholder.get(position).getTime());
     }
+
+
+
+//    // Set the current date to the TextView
+//    public String showDate(String date) {
+//        if (date != null) {
+//            SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
+//            return dateFormat.format(date);
+//        }
+//        return "";
+//    }
 
     @Override
     public int getItemCount() {

@@ -21,6 +21,8 @@ public class AdministratorActivity extends AppCompatActivity{
 
     private Button usersBtn;
     private Button elderliesBtn;
+    private Button doctorsBtn;
+
     DataBaseHelper dbHelper;
 
     @Override
@@ -29,8 +31,10 @@ public class AdministratorActivity extends AppCompatActivity{
         setContentView(R.layout.activity_administrator);
         dbHelper = new DataBaseHelper(this);
 
+
         usersBtn = findViewById(R.id.users_btn);
         elderliesBtn = findViewById(R.id.elderlies_btn);
+        doctorsBtn = findViewById(R.id.doctors_btn);
 
         usersBtn.setOnClickListener(v-> {
             Intent intent = new Intent(AdministratorActivity.this,AdministratorUsersActivity.class);
@@ -38,6 +42,10 @@ public class AdministratorActivity extends AppCompatActivity{
         });
         elderliesBtn.setOnClickListener(v-> {
             Intent intent = new Intent(AdministratorActivity.this,AdministratorElderliesActivity.class);
+            startActivity(intent);
+        });
+        doctorsBtn.setOnClickListener(v-> {
+            Intent intent = new Intent(AdministratorActivity.this,AdministratorDoctorsActivity.class);
             startActivity(intent);
         });
     }

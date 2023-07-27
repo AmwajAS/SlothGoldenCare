@@ -7,9 +7,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.slothgoldencare.Model.Allergy;
 import com.example.slothgoldencare.Model.Diagnosis;
+import com.example.slothgoldencare.Model.Doctor;
 import com.example.slothgoldencare.Model.Elder;
 import com.example.slothgoldencare.Model.ElderRelative;
 import com.example.slothgoldencare.Model.Gender;
@@ -19,6 +21,7 @@ import com.example.slothgoldencare.Reminder.Reminder;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -92,6 +95,19 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String SURGERY_ELD_ID = "ElderID";
     static final String SURGERY_TITLE = "Surgery";
     static final String SURGERY_DATE = "SurgeryDate";
+
+    /*
+    Doctors Table info.
+ */
+    static final String DOCTORS_TBL = "DOCTORS";
+    //private static final String COLUMN_ID = "rowID";
+    static final String DOCTOR_ID = "ID";
+    static final String DOCTOR_EMAIL = "user_email";
+    static final String DOCTOR_PASSWORD = "user_password";
+    static final String DOCTOR_NAME = "user_name";
+    static final String DOCTOR_PHONE = "user_phone";
+    static final String DOCTOR_SPECIALIZATION = "specialization";
+
     /*
     creating the DB Tables Queries:
      */
@@ -102,6 +118,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             USER_PASSWORD + " TEXT NOT NULL, " +
             USER_NAME + " TEXT NOT NULL, " +
             USER_PHONE + " TEXT NOT NULL UNIQUE" +
+            " );";
+
+    private static final String CREATE_DB_QUERY_DOCTOR = "CREATE TABLE " + DOCTORS_TBL + " ( " +
+            DOCUMNET_ID + " TEXT PRIMARY KEY, " +
+            DOCTOR_ID + " INTEGER NOT NULL, " +
+            DOCTOR_NAME + " TEXT NOT NULL, " +
+            DOCTOR_PHONE + " TEXT NOT NULL UNIQUE, " +
+            DOCTOR_EMAIL + " TEXT NOT NULL, " +
+            DOCTOR_PASSWORD + " TEXT NOT NULL, " +
+            DOCTOR_SPECIALIZATION + " TEXT NOT NULL " +
             " );";
 
 
@@ -159,6 +185,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_DB_QUERY_ALLERGY);
         db.execSQL(CREATE_DB_QUERY_DIAGNOSIS);
         db.execSQL(CREATE_DB_QUERY_SURGERY);
+        db.execSQL(CREATE_DB_QUERY_DOCTOR);
         FetchDataFromFirestore();
     }
 
@@ -214,6 +241,23 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         values.put(ELDER_GENDER,elder.getGender().toString());
 
         long result = db.insert(ELDER_TBL, null, values);
+        return result != -1;
+    }
+
+
+    public boolean addDoctorData(Doctor doctor) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(DOCUMNET_ID, doctor.getDocId());
+        values.put(DOCTOR_ID, doctor.getID());
+        values.put(DOCTOR_NAME, doctor.getUsername());
+        values.put(DOCTOR_PHONE, doctor.getPhoneNumber());
+        values.put(DOCTOR_EMAIL, doctor.getEmail());
+        values.put(DOCTOR_PASSWORD, doctor.getPassword());
+        values.put(DOCTOR_SPECIALIZATION, doctor.getSpecialization());
+
+        long result = db.insert(DOCTORS_TBL, null, values);
         return result != -1;
     }
 
@@ -470,6 +514,40 @@ This method connects to the DB and returns all the data in the Users TBL.
 
         return eldersList;
     }
+
+    /*
+     This method connects to the DB and returns all the data in the Doctors TBL.
+      */
+    public List<Doctor> getDoctors() {
+        List<Doctor> doctorsList = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(DOCTORS_TBL, null, null, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String docId = cursor.getString(cursor.getColumnIndexOrThrow(DOCUMNET_ID));
+                String id = cursor.getString(cursor.getColumnIndexOrThrow(DOCTOR_ID));
+                String name = cursor.getString(cursor.getColumnIndexOrThrow(DOCTOR_NAME));
+                String phone = cursor.getString(cursor.getColumnIndexOrThrow(DOCTOR_PHONE));
+                String email = cursor.getString(cursor.getColumnIndexOrThrow(DOCTOR_EMAIL));
+                String password = cursor.getString(cursor.getColumnIndexOrThrow(DOCTOR_PASSWORD));
+                String specialization = cursor.getString(cursor.getColumnIndexOrThrow(DOCTOR_SPECIALIZATION));
+                Doctor doctor = new Doctor(id, name, phone, email, password, specialization);
+                doctor.setDocId(docId);
+
+                doctorsList.add(doctor);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return doctorsList;
+    }
+
+
+
 /*
 this method updated the changed values of the User TBL fileds.
  */
@@ -506,6 +584,23 @@ this method updated the changed values of the Elder TBL fileds.
         values.put(ELDER_PASSWORD, elder.getPassword());
 
         int rowsAffected = db.update(ELDER_TBL, values, DOCUMNET_ID+"=?", new String[]{elder.getDocId()});
+        db.close();
+
+        return rowsAffected > 0;
+    }
+
+    public boolean updateDoctorsInfo(Doctor doctor) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(DOCTOR_ID, doctor.getID());
+        values.put(DOCTOR_NAME, doctor.getUsername());
+        values.put(DOCTOR_PHONE, doctor.getPhoneNumber());
+        values.put(DOCTOR_EMAIL, doctor.getEmail());
+        values.put(DOCTOR_PASSWORD, doctor.getPassword());
+        values.put(DOCTOR_SPECIALIZATION, doctor.getSpecialization());
+
+        int rowsAffected = db.update(DOCTORS_TBL, values, DOCUMNET_ID+"=?", new String[]{doctor.getDocId()});
         db.close();
 
         return rowsAffected > 0;
@@ -587,6 +682,49 @@ this method updated the changed values of the Elder TBL fileds.
             db.close();
         }).addOnFailureListener(e -> {
             Log.w(TAG,"Error fetching Users data from firestore to SQLite: "+e.getMessage().toString());
+        });
+    }
+
+    // Fetch doctor data from Firestore and insert it into the SQLite database
+    private void FetchDoctorsDataFromFirestore(){
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        firestore.collection("Doctors").get().addOnSuccessListener(querySnapshot -> {
+            // Open connection to SQLite database
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            // Iterate over documents
+            for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                try {
+                    // Extract required fields from the document
+                    String docId = document.getId().toString();
+                    String userId = document.getString("id").toString();
+                    String userName = document.getString("username").toString();
+                    String userPhone = document.getString("phoneNumber").toString();
+                    String userEmail = document.getString("email").toString();
+                    String userPassword = document.getString("password").toString();
+                    String specialization = document.getString("specialization").toString();
+
+                    // Execute the INSERT statement for the "Users" table
+                    String insertQuery = "INSERT INTO Doctors ("+DOCUMNET_ID+"," + DOCTOR_ID + ", " + DOCTOR_NAME  + ", " + DOCTOR_PHONE + ", " + DOCTOR_EMAIL + ", " + DOCTOR_PASSWORD + ", " + DOCTOR_SPECIALIZATION + ") VALUES (?, ?, ?, ?, ?, ?,?)";
+                    SQLiteStatement statement = db.compileStatement(insertQuery);
+                    statement.bindString(1,docId);
+                    statement.bindString(2, userId);
+                    statement.bindString(3, userName);
+                    statement.bindString(4, userPhone);
+                    statement.bindString(5, userEmail);
+                    statement.bindString(6, userPassword);
+                    statement.bindString(7, specialization);
+                    long rowId = statement.executeInsert();
+
+                }catch (Exception e){
+                    Log.w(TAG,"Specific Doctors data error : "+e.getMessage().toString());
+                }
+            }
+
+            // Close the database connection
+            db.close();
+        }).addOnFailureListener(e -> {
+            Log.w(TAG,"Error fetching Doctors data from firestore to SQLite: "+e.getMessage().toString());
         });
     }
 
@@ -753,6 +891,7 @@ this method updated the changed values of the Elder TBL fileds.
     public void FetchDataFromFirestore(){
        FetchUsersDataFromFirestore();
        FetchElderliesDataFromFirestore();
+       FetchDoctorsDataFromFirestore();
        FetchElderlyRelativesDataFromFirestore();
        FetchRemindersFromFirestore();
        FetchAllergiesFromFirestore();
@@ -1005,5 +1144,20 @@ this method updated the changed values of the Elder TBL fileds.
             return null;
         }
     }
+
+    public boolean deleteDoctorByDocId(String docId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String whereClause = DOCUMNET_ID+" = ?";
+        String[] whereArgs = {docId};
+        int result = db.delete(DOCTORS_TBL, whereClause, whereArgs);
+        db.close();
+
+        // If the result is greater than 0, the deletion was successful
+        if (result > 0){
+            Log.w(TAG,"Deleted: ");
+        }
+        return result > 0;
+    }
+
 }
 
