@@ -15,6 +15,12 @@
         android:theme="@style/Theme.SlothGoldenCare"
         tools:targetApi="31">
         <activity
+            android:name=".DoctorsNotesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TimeActivity"
+            android:exported="false" />
+        <activity
             android:name=".AppointmentSchedulingActivity"
             android:exported="false" />
         <activity
