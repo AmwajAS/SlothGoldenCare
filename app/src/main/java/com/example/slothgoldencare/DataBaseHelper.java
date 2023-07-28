@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.slothgoldencare.Model.Allergy;
+import com.example.slothgoldencare.Model.Appointment;
 import com.example.slothgoldencare.Model.Diagnosis;
 import com.example.slothgoldencare.Model.Doctor;
 import com.example.slothgoldencare.Model.Elder;
@@ -29,6 +30,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import java.text.SimpleDateFormat;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DBHelper";
@@ -108,6 +111,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String DOCTOR_PHONE = "user_phone";
     static final String DOCTOR_SPECIALIZATION = "specialization";
 
+      /*
+    Appointment Table info.
+ */
+    static final String APPOINTMENT_TBL = "Appointments";
+    static final String THE_DOCTOR_ID = "doctor_id";
+    static final String THE_ELDER_ID = "elder_id";
+    static final String APPOINTMENT_DATE = "date";
+    static final String NOTES = "notes";
+
+    private SimpleDateFormat sdf; //for the Timestamp firbase
+
     /*
     creating the DB Tables Queries:
      */
@@ -170,8 +184,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             SURGERY_DATE + " TEXT NOT NULL " +
             " );";
 
+    private static final String CREATE_DB_QUERY_APPOINTMENT = "CREATE TABLE " + APPOINTMENT_TBL + " ( " +
+            THE_DOCTOR_ID + " TEXT NOT NULL, " +
+            THE_ELDER_ID + " TEXT NOT NULL, " +
+            APPOINTMENT_DATE + " TEXT NOT NULL, " +
+            NOTES + " TEXT" +
+            " );";
+
     public DataBaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
+        sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     }
 
 
@@ -185,6 +207,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_DB_QUERY_DIAGNOSIS);
         db.execSQL(CREATE_DB_QUERY_SURGERY);
         db.execSQL(CREATE_DB_QUERY_DOCTOR);
+        db.execSQL(CREATE_DB_QUERY_APPOINTMENT);
         FetchDataFromFirestore();
     }
 
@@ -257,6 +280,18 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         values.put(DOCTOR_SPECIALIZATION, doctor.getSpecialization());
 
         long result = db.insert(DOCTORS_TBL, null, values);
+        return result != -1;
+    }
+    public boolean addAppointmentData(Appointment appointment) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(THE_DOCTOR_ID, appointment.getDoctorId());
+        values.put(THE_ELDER_ID, appointment.getElderId());
+        values.put(APPOINTMENT_DATE, sdf.format(appointment.getDate().toDate()));
+        values.put(NOTES, appointment.getNotes());
+
+        long result = db.insert(APPOINTMENT_TBL, null, values);
         return result != -1;
     }
 
@@ -568,7 +603,38 @@ This method connects to the DB and returns all the data in the Users TBL.
         return doctorsList;
     }
 
+    public List<Appointment> getAppointments() {
+        List<Appointment> appointmentsList = new ArrayList<>();
 
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(APPOINTMENT_TBL, null, null, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String doctorId = cursor.getString(cursor.getColumnIndexOrThrow(THE_DOCTOR_ID));
+                String elderId = cursor.getString(cursor.getColumnIndexOrThrow(THE_ELDER_ID));
+                String appointmentDateStr = cursor.getString(cursor.getColumnIndexOrThrow(APPOINTMENT_DATE));
+                String notes = cursor.getString(cursor.getColumnIndexOrThrow(NOTES));
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                Date appointmentDate = null;
+                try {
+                    appointmentDate = sdf.parse(appointmentDateStr);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                Timestamp timestamp = new Timestamp(appointmentDate);
+                Appointment appointment = new Appointment(timestamp, elderId, notes, doctorId);
+                appointmentsList.add(appointment);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return appointmentsList;
+    }
 
 /*
 this method updated the changed values of the User TBL fileds.
@@ -911,6 +977,47 @@ this method updated the changed values of the Elder TBL fileds.
             Log.w(TAG,"Error fetching diagnosis data from firestore to SQLite: "+e.getMessage().toString());
         });
     }
+    // Fetch appointment data from Firestore and insert it into the SQLite database
+    public void FetchAppointmentsFromFirestore() {
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        firestore.collection("Appointment").get().addOnSuccessListener(querySnapshot -> {
+            // Open connection to SQLite database
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            // Iterate over documents
+            for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                try {
+                    // Extract required fields from the document
+                    String doctorId = document.getString("doctorId");
+                    String elderId = document.getString("elderId");
+                    String notes = document.getString("notes");
+                    Timestamp appointmentDate = document.getTimestamp("date");
+
+                    // Convert Timestamp to string representation
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                    String appointmentDateStr = sdf.format(appointmentDate.toDate());
+
+                    // Execute the INSERT statement for the "Appointment" table
+                    String insertQuery = "INSERT INTO " + APPOINTMENT_TBL + " (" + THE_DOCTOR_ID + ", " + THE_ELDER_ID + ", " + APPOINTMENT_DATE + ", " + NOTES + ") VALUES (?, ?, ?, ?)";
+                    SQLiteStatement statement = db.compileStatement(insertQuery);
+                    statement.bindString(1, doctorId);
+                    statement.bindString(2, elderId);
+                    statement.bindString(3, appointmentDateStr);
+                    statement.bindString(4, notes);
+                    long rowId = statement.executeInsert();
+
+                } catch (Exception e) {
+                    Log.w(TAG, "Error inserting specific appointment data: " + e.getMessage());
+                }
+            }
+
+            // Close the database connection
+            db.close();
+        }).addOnFailureListener(e -> {
+            Log.w(TAG, "Error fetching appointments data from Firestore to SQLite: " + e.getMessage());
+        });
+    }
+
 
     public void FetchDataFromFirestore(){
        FetchUsersDataFromFirestore();
@@ -921,6 +1028,7 @@ this method updated the changed values of the Elder TBL fileds.
        FetchAllergiesFromFirestore();
        FetchDiagnosisFromFirestore();
        FetchSurgeriesFromFirestore();
+       FetchAppointmentsFromFirestore();
     }
 
     public Date convertStringToDate(String dobString){

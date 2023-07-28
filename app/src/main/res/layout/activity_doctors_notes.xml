@@ -33,16 +33,25 @@
     <Spinner
         android:id="@+id/doctorsSpinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:prompt="@string/select_doctor_prompt" />
+        android:layout_height="79dp"
+        android:layout_marginBottom="30dp" />
+
     <!-- EditText for adding notes -->
     <EditText
         android:id="@+id/notesEditText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="82dp"
         android:layout_marginBottom="16dp"
         android:hint="@string/doc_note"
+        android:inputType="textMultiLine"
+        tools:layout_marginBottom="30dp" />
+
+    <EditText
+        android:id="@+id/textViewId"
+        android:layout_width="match_parent"
+        android:layout_height="82dp"
+        android:layout_marginBottom="16dp"
+        android:hint="@string/elder_Id"
         android:inputType="textMultiLine"
         tools:layout_marginBottom="30dp" />
 
@@ -54,7 +63,4 @@
         android:layout_gravity="center_horizontal"
         android:text="Schedule" />
 
-    <!-- TimePicker for selecting the time -->
-
-    <!-- Next Button -->
 </LinearLayout>

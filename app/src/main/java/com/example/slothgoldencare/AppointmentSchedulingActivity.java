@@ -25,11 +25,10 @@ import androidx.appcompat.app.AppCompatActivity;
                     int year = datePicker.getYear();
                     int month = datePicker.getMonth() + 1; // Month is 0-based
                     int day = datePicker.getDayOfMonth();
-                    String selectedDate = year + "-" + month + "-" + day;
 
-                    // Start the next activity (TimeActivity) and pass the selected date as an extra
+                    // Start the next activity (TimeActivity) and pass the selected date and time as a Timestamp extra
                     Intent intent = new Intent(AppointmentSchedulingActivity.this, TimeActivity.class);
-                    intent.putExtra("selectedDate", selectedDate);
+                    intent.putExtra("selectedDate", year + "-" + month + "-" + day);
                     startActivity(intent);
                 }
             });
