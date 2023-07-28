@@ -222,6 +222,9 @@
     <string name="doc_note">Your note</string>
     <string name="elder_Id">Please Add you Id</string>
     <string name="next_button">NEXT</string>
+    <string name="Appointments_list_title">Your Appointments</string>
+    <string name="Appointments_list_button">Click to see Your appoitments</string>
+
 
 
     <!--   for Profile -->

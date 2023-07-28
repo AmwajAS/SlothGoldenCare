@@ -20,6 +20,15 @@ public class AppointmentSchedulingActivity extends AppCompatActivity {
 
             DatePicker datePicker = findViewById(R.id.datePicker);
             Button nextDateButton = findViewById(R.id.nextButton1);
+            Button listButton = findViewById(R.id.listButton);
+
+            listButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(AppointmentSchedulingActivity.this, AppointmentsListActivity.class);
+                    startActivity(intent);
+                }
+            });
             nextDateButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.slothgoldencare.Model.Allergy;
 import com.example.slothgoldencare.Model.Appointment;
@@ -22,7 +21,6 @@ import com.example.slothgoldencare.Reminder.Reminder;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,8 +28,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import java.text.SimpleDateFormat;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DBHelper";
@@ -115,7 +111,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     Appointment Table info.
  */
     static final String APPOINTMENT_TBL = "Appointments";
-    static final String THE_DOCTOR_ID = "doctor_id";
+    static final String THE_DOCTOR_NAME= "doctor";
     static final String THE_ELDER_ID = "elder_id";
     static final String APPOINTMENT_DATE = "date";
     static final String NOTES = "notes";
@@ -185,7 +181,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             " );";
 
     private static final String CREATE_DB_QUERY_APPOINTMENT = "CREATE TABLE " + APPOINTMENT_TBL + " ( " +
-            THE_DOCTOR_ID + " TEXT NOT NULL, " +
+            THE_DOCTOR_NAME + " TEXT NOT NULL, " +
             THE_ELDER_ID + " TEXT NOT NULL, " +
             APPOINTMENT_DATE + " TEXT NOT NULL, " +
             NOTES + " TEXT" +
@@ -286,7 +282,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put(THE_DOCTOR_ID, appointment.getDoctorId());
+        values.put(THE_DOCTOR_NAME, appointment.getDoctor());
         values.put(THE_ELDER_ID, appointment.getElderId());
         values.put(APPOINTMENT_DATE, sdf.format(appointment.getDate().toDate()));
         values.put(NOTES, appointment.getNotes());
@@ -611,7 +607,7 @@ This method connects to the DB and returns all the data in the Users TBL.
 
         if (cursor.moveToFirst()) {
             do {
-                String doctorId = cursor.getString(cursor.getColumnIndexOrThrow(THE_DOCTOR_ID));
+                String doctorId = cursor.getString(cursor.getColumnIndexOrThrow(THE_DOCTOR_NAME));
                 String elderId = cursor.getString(cursor.getColumnIndexOrThrow(THE_ELDER_ID));
                 String appointmentDateStr = cursor.getString(cursor.getColumnIndexOrThrow(APPOINTMENT_DATE));
                 String notes = cursor.getString(cursor.getColumnIndexOrThrow(NOTES));
@@ -998,7 +994,7 @@ this method updated the changed values of the Elder TBL fileds.
                     String appointmentDateStr = sdf.format(appointmentDate.toDate());
 
                     // Execute the INSERT statement for the "Appointment" table
-                    String insertQuery = "INSERT INTO " + APPOINTMENT_TBL + " (" + THE_DOCTOR_ID + ", " + THE_ELDER_ID + ", " + APPOINTMENT_DATE + ", " + NOTES + ") VALUES (?, ?, ?, ?)";
+                    String insertQuery = "INSERT INTO " + APPOINTMENT_TBL + " (" + THE_DOCTOR_NAME + ", " + THE_ELDER_ID + ", " + APPOINTMENT_DATE + ", " + NOTES + ") VALUES (?, ?, ?, ?)";
                     SQLiteStatement statement = db.compileStatement(insertQuery);
                     statement.bindString(1, doctorId);
                     statement.bindString(2, elderId);

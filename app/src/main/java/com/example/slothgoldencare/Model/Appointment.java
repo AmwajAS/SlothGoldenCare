@@ -6,13 +6,16 @@ public class Appointment {
     private Timestamp date;
     private String elderId;
     private String notes;
-    private String doctorId;
+    private String doctor;
 
-    public Appointment(Timestamp date, String elderId, String notes, String doctorId) {
+    public Appointment() {
+        // Required empty constructor for Firebase Firestore deserialization
+    }
+    public Appointment(Timestamp date, String elderId, String notes, String doctor) {
         this.date = date;
         this.elderId = elderId;
         this.notes = notes;
-        this.doctorId = doctorId;
+        this.doctor = doctor;
     }
 
     public Timestamp getDate() {
@@ -39,13 +42,11 @@ public class Appointment {
         this.notes = notes;
     }
 
-    public String getDoctorId() {
-        return doctorId;
+    public String getDoctor() {
+        return doctor;
     }
 
-    public void setDoctorId(String doctorId) {
-        this.doctorId = doctorId;
+    public void setDoctor(String doctor) {
+        this.doctor = doctor;
     }
-
-
 }
