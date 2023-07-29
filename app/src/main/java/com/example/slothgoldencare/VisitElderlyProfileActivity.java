@@ -69,6 +69,13 @@ public class VisitElderlyProfileActivity  extends AppCompatActivity implements V
                 break;
             case R.id.d2:
                 break;
+            case R.id.d3:
+                Bundle args3 = new Bundle();
+                args3.putString("Button","medicines");
+                args3.putString("elderlyDocId",elder.getDocId());
+                healthStatusFragment= HealthStatusRelativeFragment.newInstance(args3);
+                replaceFragment(healthStatusFragment);
+                break;
             case R.id.d4:
                 Bundle args4 = new Bundle();
                 args4.putString("Button","allergies");

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.example.slothgoldencare.Model.Allergy;
 import com.example.slothgoldencare.Model.Diagnosis;
+import com.example.slothgoldencare.Model.Medicine;
 import com.example.slothgoldencare.Model.Surgery;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -37,6 +38,7 @@ public class HealthStatusFragment extends Fragment {
     private List<Diagnosis> diagnosisList;
     private List<Surgery> surgeryList;
     private List<Allergy> allergyList;
+    private List<Medicine> medicineList;
     private TextView list_title;
     private Button backBtn;
 
@@ -128,6 +130,31 @@ public class HealthStatusFragment extends Fragment {
                     }
                 };
                 list.setAdapter(allergyAdapter);
+
+            }else if (value.equals("medicines")){
+                list_title.setText(R.string.medicine);
+                medicineList = dataBaseHelper.getMedicinesByElderlyDocId(FirebaseAuth.getInstance().getUid());
+
+                ArrayAdapter<Medicine> medicineAdapter = new ArrayAdapter<Medicine>(this.getContext(), R.layout.health_status_item_layout, medicineList) {
+                    @NonNull
+                    @Override
+                    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+
+
+                        // Get the user object for the current position
+                        Medicine medicine = getItem(position);
+
+                        // Inflate the list item layout
+                        if (convertView == null) {
+                            convertView = LayoutInflater.from(getContext()).inflate(R.layout.health_status_item_layout, parent, false);
+                        }
+                        TextView idText = convertView.findViewById(R.id.health_status_item);
+                        idText.setText(medicine.getMedicine());
+
+                        return convertView;
+                    }
+                };
+                list.setAdapter(medicineAdapter);
 
             }else if(value.equals("surgeries")){
                 list_title.setText(R.string.surgery);

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.example.slothgoldencare.Model.Allergy;
 import com.example.slothgoldencare.Model.Diagnosis;
+import com.example.slothgoldencare.Model.Medicine;
 import com.example.slothgoldencare.Model.Surgery;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -40,6 +41,7 @@ public class HealthStatusDoctorFragment extends Fragment {
     private List<Diagnosis> diagnosisList;
     private List<Surgery> surgeryList;
     private List<Allergy> allergyList;
+    private List<Medicine> medicineList;
     private TextView list_title;
     private Button backBtn;
     private Button addBtn;
@@ -47,6 +49,7 @@ public class HealthStatusDoctorFragment extends Fragment {
     private DataBaseHelper dataBaseHelper;
     private ArrayAdapter<Allergy> allergiesAdapter;
     private ArrayAdapter<Diagnosis> diagnosisAdapter;
+    private ArrayAdapter<Medicine> medicinesAdapter;
     private ArrayAdapter<Surgery> surgeriesAdapter;
     private FirebaseFirestore db;
 
@@ -101,6 +104,8 @@ public class HealthStatusDoctorFragment extends Fragment {
                 showAddItemDialog(AddItemDialog.ItemType.SURGERY);
             }else if(value.equals("allergies")){
                 showAddItemDialog(AddItemDialog.ItemType.ALLERGY);
+            }else if(value.equals("medicines")){
+                showAddItemDialog(AddItemDialog.ItemType.MEDICINE);
             }
 
         });
@@ -155,6 +160,51 @@ public class HealthStatusDoctorFragment extends Fragment {
                 };
                 list.setAdapter(diagnosisAdapter);
 
+            }else if(value.equals("medicines")){
+                list_title.setText(R.string.medicine);
+                medicineList = dataBaseHelper.getMedicinesByElderlyDocId(elderlyDocId);
+               medicinesAdapter = new ArrayAdapter<Medicine>(this.getContext(), R.layout.health_status_item_layout_doctor, medicineList) {
+                    @NonNull
+                    @Override
+                    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+
+                        // Get the user object for the current position
+                        Medicine medicine = getItem(position);
+                        // Inflate the list item layout
+                        if (convertView == null) {
+                            convertView = LayoutInflater.from(getContext()).inflate(R.layout.health_status_item_layout_doctor, parent, false);
+                        }
+
+                        TextView idText = convertView.findViewById(R.id.health_status_item);
+                        idText.setText(medicine.getMedicine());
+                        ImageButton deletBtn = convertView.findViewById(R.id.delete_btn);
+                        deletBtn.setOnClickListener(view->{
+                            db.collection("Medicines")
+                                    .whereEqualTo("medicine",medicine.getMedicine())
+                                    .whereEqualTo("elderlyDocId",medicine.getElderlyDocId())
+                                    .get().addOnCompleteListener(task -> {
+                                        if(task.isSuccessful()){
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                // Delete the matching document from Firestore
+                                                db.collection("Medicines").document(document.getId()).delete();
+                                                if(dataBaseHelper.deleteMedicine(medicine)){
+                                                    medicineList.remove(position);
+                                                    Toast.makeText(getContext(), R.string.info_delete_success, Toast.LENGTH_LONG).show();
+                                                    medicinesAdapter.notifyDataSetChanged();
+                                                }else{
+                                                    Toast.makeText(getContext(), R.string.info_delete_fail, Toast.LENGTH_LONG).show();
+                                                }
+                                            }
+                                        } else {
+                                            Toast.makeText(getContext(), task.getException().getMessage().toString(), Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                        });
+
+                        return convertView;
+                    }
+                };
+                list.setAdapter(medicinesAdapter);
             }else if(value.equals("allergies")){
                 list_title.setText(R.string.allergies);
                 allergyList = dataBaseHelper.getAllergiesByElderlyDocId(elderlyDocId);
@@ -308,6 +358,24 @@ public class HealthStatusDoctorFragment extends Fragment {
                             if(addCheck){
                                 allergyList.add(newAllergy);
                                 allergiesAdapter.notifyDataSetChanged();
+                                Toast.makeText(getContext(), R.string.info_add_success, Toast.LENGTH_LONG).show();
+                            }
+                            else{
+                                Toast.makeText(getContext(), R.string.info_add_fail, Toast.LENGTH_LONG).show();
+                            }
+                        }else{
+                            Toast.makeText(getContext(), task.getException().getMessage().toString(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }else if (itemType == AddItemDialog.ItemType.MEDICINE) {
+                    // Add the diagnosis to the diagnosisList
+                    Medicine newMedicine = new Medicine(elderlyDocId,itemName);
+                    db.collection("Medicines").add(newMedicine).addOnCompleteListener(task -> {
+                        if(task.isSuccessful()){
+                            boolean addCheck =  dataBaseHelper.addMedicine(newMedicine);
+                            if(addCheck){
+                                medicineList.add(newMedicine);
+                                medicinesAdapter.notifyDataSetChanged();
                                 Toast.makeText(getContext(), R.string.info_add_success, Toast.LENGTH_LONG).show();
                             }
                             else{

@@ -73,7 +73,6 @@ public class DoctorVisitElderlyActivity extends AppCompatActivity implements Vie
             startmyservice(doctorId);
             setVideoCall(elder.getID());
 
-
         });
     }
 
@@ -96,7 +95,7 @@ public class DoctorVisitElderlyActivity extends AppCompatActivity implements Vie
             case R.id.d3:
                 Bundle args3 = new Bundle();
                 args3.putString("elderly", elder.getDocId());
-                args3.putString("Button", "medicine");
+                args3.putString("Button", "medicines");
                 healthStatusFragment = HealthStatusDoctorFragment.newInstance(args3);
                 replaceFragment(healthStatusFragment);
                 break;

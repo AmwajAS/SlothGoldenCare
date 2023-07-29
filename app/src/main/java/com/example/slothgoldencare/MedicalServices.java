@@ -51,6 +51,12 @@ public class MedicalServices extends AppCompatActivity implements View.OnClickLi
                 healthStatusFragment= HealthStatusFragment.newInstance(args2);
                 replaceFragment(healthStatusFragment);
                 break;
+            case R.id.d3:
+                Bundle args3 = new Bundle();
+                args3.putString("Button","medicines");
+                healthStatusFragment= HealthStatusFragment.newInstance(args3);
+                replaceFragment(healthStatusFragment);
+                break;
             case R.id.d4:
                 Bundle args4 = new Bundle();
                 args4.putString("Button","allergies");
@@ -63,7 +69,6 @@ public class MedicalServices extends AppCompatActivity implements View.OnClickLi
                 healthStatusFragment= HealthStatusFragment.newInstance(args5);
                 replaceFragment(healthStatusFragment);
                 break;
-
         }
     }
     private void replaceFragment(Fragment fragment) {

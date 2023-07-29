@@ -14,7 +14,7 @@ import java.lang.reflect.Type;
 public class AddItemDialog extends Dialog {
 
     public enum ItemType {
-        SURGERY, DIAGNOSIS,ALLERGY
+        SURGERY, DIAGNOSIS,ALLERGY,MEDICINE
     }
 
     // Add more item types as needed
@@ -53,7 +53,7 @@ public class AddItemDialog extends Dialog {
             // Initialize the surgery-specific views and buttons
             editTextItemDate = findViewById(R.id.editTextItemDate);
             // Set up onClickListener for surgery-specific buttons...
-        } else if (itemType == ItemType.DIAGNOSIS || itemType == ItemType.ALLERGY) {
+        } else if (itemType == ItemType.DIAGNOSIS || itemType == ItemType.ALLERGY || itemType == ItemType.MEDICINE) {
             // For diagnoses, use the original layout
             setContentView(R.layout.dialog_add_item);
         }

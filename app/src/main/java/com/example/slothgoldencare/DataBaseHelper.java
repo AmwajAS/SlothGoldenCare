@@ -8,15 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
-import com.example.slothgoldencare.Model.Allergy;
-import com.example.slothgoldencare.Model.Appointment;
-import com.example.slothgoldencare.Model.Diagnosis;
-import com.example.slothgoldencare.Model.Doctor;
-import com.example.slothgoldencare.Model.Elder;
-import com.example.slothgoldencare.Model.ElderRelative;
-import com.example.slothgoldencare.Model.Gender;
-import com.example.slothgoldencare.Model.Surgery;
-import com.example.slothgoldencare.Model.User;
+import com.example.slothgoldencare.Model.*;
 import com.example.slothgoldencare.Reminder.Reminder;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -89,6 +81,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String DIAGNOSIS_TITLE = "Diagnosis";
     /*
     Diagnosis Table info.
+    */
+    static final String MEDICINE_TBL = "Medicines";
+    static final String MEDICINE_ELD_ID = "ElderID";
+    static final String MEDICINE_TITLE = "Medicine";
+    /*
+    Surgeries Table info.
     */
     static final String SURGERY_TBL = "Surgeries";
     static final String SURGERY_ELD_ID = "ElderID";
@@ -174,6 +172,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             DIAGNOSIS_ELD_ID + " TEXT NOT NULL," +
             DIAGNOSIS_TITLE + " TEXT NOT NULL " +
             " );";
+    private static final String CREATE_DB_QUERY_MEDICINE = "CREATE TABLE " + MEDICINE_TBL + " ( " +
+            MEDICINE_ELD_ID + " TEXT NOT NULL," +
+            MEDICINE_TITLE + " TEXT NOT NULL " +
+            " );";
     private static final String CREATE_DB_QUERY_SURGERY = "CREATE TABLE " + SURGERY_TBL + " ( " +
             SURGERY_ELD_ID + " TEXT NOT NULL," +
             SURGERY_TITLE + " TEXT NOT NULL, " +
@@ -204,6 +206,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_DB_QUERY_SURGERY);
         db.execSQL(CREATE_DB_QUERY_DOCTOR);
         db.execSQL(CREATE_DB_QUERY_APPOINTMENT);
+        db.execSQL(CREATE_DB_QUERY_MEDICINE);
         FetchDataFromFirestore();
     }
 
@@ -942,6 +945,35 @@ this method updated the changed values of the Elder TBL fileds.
             Log.w(TAG,"Error fetching diagnosis data from firestore to SQLite: "+e.getMessage().toString());
         });
     }
+    public void FetchMedicinesFromFirestore(){
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        firestore.collection("Medicines").get().addOnSuccessListener(querySnapshot -> {
+            // Open connection to SQLite database
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            // Iterate over documents
+            for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                try {
+                    // Extract required fields from the document
+                    String docId = document.get("elderlyDocId").toString();
+                    String title = document.get("medicine").toString();
+
+                    // Execute the INSERT statement for the "Users" table
+                    String insertQuery = "INSERT INTO "+MEDICINE_TBL+"("+MEDICINE_ELD_ID+"," + MEDICINE_TITLE +") VALUES (?, ?)";
+                    SQLiteStatement statement = db.compileStatement(insertQuery);
+                    statement.bindString(1,docId);
+                    statement.bindString(2, title);
+                    long rowId = statement.executeInsert();
+                }catch (Exception e){
+                    Log.w(TAG,"Specific Medicine data error : "+e.getMessage().toString());
+                }
+            }
+            // Close the database connection
+            db.close();
+        }).addOnFailureListener(e -> {
+            Log.w(TAG,"Error fetching medicines data from firestore to SQLite: "+e.getMessage().toString());
+        });
+    }
     public void FetchSurgeriesFromFirestore(){
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         firestore.collection("Surgeries").get().addOnSuccessListener(querySnapshot -> {
@@ -1023,6 +1055,7 @@ this method updated the changed values of the Elder TBL fileds.
        FetchRemindersFromFirestore();
        FetchAllergiesFromFirestore();
        FetchDiagnosisFromFirestore();
+       FetchMedicinesFromFirestore();
        FetchSurgeriesFromFirestore();
        FetchAppointmentsFromFirestore();
     }
@@ -1085,6 +1118,21 @@ this method updated the changed values of the Elder TBL fileds.
             return true;
         }
     }
+    public boolean addMedicine(Medicine medicine){
+        SQLiteDatabase database = this.getReadableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MEDICINE_ELD_ID,medicine.getElderlyDocId());
+        contentValues.put(MEDICINE_TITLE,medicine.getMedicine());                                                          //Inserts  data into sqllite database
+
+        float result = database.insert(MEDICINE_TBL, null, contentValues);    //returns -1 if data successfully inserts into database
+
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
     public boolean addSurgery(Surgery surgery){
         SQLiteDatabase database = this.getReadableDatabase();
 
@@ -1106,6 +1154,19 @@ this method updated the changed values of the Elder TBL fileds.
         String whereClause = ""+DIAGNOSIS_ELD_ID+" = ? AND "+DIAGNOSIS_TITLE+" = ?";
         String[] whereArgs = {diagnosis.getElderlyDocId(), diagnosis.getDiagnosis()};
         int result = db.delete(DIAGNOSIS_TBL, whereClause, whereArgs);
+        db.close();
+        if(result <= 0){
+            return false;
+
+        }else{
+            return true;
+        }
+    }
+    public boolean deleteMedicine(Medicine medicine) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String whereClause = ""+MEDICINE_ELD_ID+" = ? AND "+MEDICINE_TITLE+" = ?";
+        String[] whereArgs = {medicine.getElderlyDocId(), medicine.getMedicine()};
+        int result = db.delete(MEDICINE_TBL, whereClause, whereArgs);
         db.close();
         if(result <= 0){
             return false;
@@ -1198,6 +1259,8 @@ this method updated the changed values of the Elder TBL fileds.
 
         return allergies;
     }
+
+
     public List<Diagnosis> getDiagnosisByElderlyDocId(String elderlyDocId) {
         List<Diagnosis> diagnosis = new ArrayList<>();
 
@@ -1224,6 +1287,33 @@ this method updated the changed values of the Elder TBL fileds.
         db.close();
 
         return diagnosis;
+    }
+    public List<Medicine> getMedicinesByElderlyDocId(String elderlyDocId) {
+        List<Medicine> medicines = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Define the WHERE clause to filter reminders by the given elderlyDocId
+        String selection = MEDICINE_ELD_ID + " = ?";
+        String[] selectionArgs = {elderlyDocId};
+
+        Cursor cursor = db.query(MEDICINE_TBL, null, selection, selectionArgs, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String tempElderlyDocId = cursor.getString(cursor.getColumnIndexOrThrow(MEDICINE_ELD_ID));
+                String title = cursor.getString(cursor.getColumnIndexOrThrow(MEDICINE_TITLE));
+
+                Medicine medicineItem = new Medicine(tempElderlyDocId, title);
+                medicines.add(medicineItem);
+
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return medicines;
     }
     public List<Surgery> getSurgeriesByElderlyDocId(String elderlyDocId) {
         List<Surgery> surgeries = new ArrayList<>();
