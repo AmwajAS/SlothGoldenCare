@@ -54,6 +54,8 @@ public class DoctorsNotesActivity extends AppCompatActivity {
 //                checks
                 if (selectedDoctor.isEmpty()) {
                     Toast.makeText(DoctorsNotesActivity.this, "Please select a doctor", Toast.LENGTH_SHORT).show();
+                }if (notes.isEmpty()) {
+                    Toast.makeText(DoctorsNotesActivity.this, "Please enter your note to the doctor!", Toast.LENGTH_SHORT).show();
                 }
                 else if (elderId.isEmpty()) {
                     Toast.makeText(DoctorsNotesActivity.this, "Please enter your ID", Toast.LENGTH_SHORT).show();
@@ -102,7 +104,7 @@ public class DoctorsNotesActivity extends AppCompatActivity {
                 // The user clicked "OK," so dismiss the dialog
                 dialog.dismiss();
                 // Navigate to the desired activity using an Intent
-                Intent intent = new Intent(DoctorsNotesActivity.this, HomePageActivity.class);
+                Intent intent = new Intent(DoctorsNotesActivity.this, AppointmentsListActivity.class);
                 startActivity(intent);
             }
         });

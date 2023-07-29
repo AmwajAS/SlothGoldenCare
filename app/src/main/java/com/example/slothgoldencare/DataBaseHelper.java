@@ -108,7 +108,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
       /*
     Appointment Table info.
  */
-    static final String APPOINTMENT_TBL = "Appointments";
+    static final String APPOINTMENT_TBL = "Appointment";
     static final String THE_DOCTOR_NAME= "doctor";
     static final String THE_ELDER_ID = "elder_id";
     static final String APPOINTMENT_DATE = "date";
@@ -1020,11 +1020,9 @@ this method updated the changed values of the Elder TBL fileds.
                     String elderId = document.getString("elderId");
                     String notes = document.getString("notes");
                     Timestamp appointmentDate = document.getTimestamp("date");
-
                     // Convert Timestamp to string representation
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
                     String appointmentDateStr = sdf.format(appointmentDate.toDate());
-
                     // Execute the INSERT statement for the "Appointment" table
                     String insertQuery = "INSERT INTO " + APPOINTMENT_TBL + " (" + THE_DOCTOR_NAME + ", " + THE_ELDER_ID + ", " + APPOINTMENT_DATE + ", " + NOTES + ") VALUES (?, ?, ?, ?)";
                     SQLiteStatement statement = db.compileStatement(insertQuery);

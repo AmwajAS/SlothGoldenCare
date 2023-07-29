@@ -35,7 +35,7 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
     public void onBindViewHolder(@NonNull AppointmentViewHolder holder, int position) {
         Appointment appointment = appointmentsList.get(position);
         // Convert Timestamp to a formatted date string
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         String formattedDate = dateFormat.format(appointment.getDate().toDate());
         holder.doctorTextView.setText(appointment.getDoctor());
         holder.dateTextView.setText(formattedDate);
