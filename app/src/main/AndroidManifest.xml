@@ -98,12 +98,16 @@
         <activity
             android:name=".AdministratorElderliesActivity"
             android:exported="false" />
+        <activity android:name=".DoctorActivityMain"
+                  android:exported="false"/>
         <activity
             android:name=".DoctorActivity"
             android:exported="false" />
         <activity
             android:name=".DoctorVisitElderlyActivity"
             android:exported="false" />
+        <activity android:name=".DoctorActivityHealthTips"
+                  android:exported="false"/>
         <activity
             android:name=".MainActivity"
             android:exported="true" >
