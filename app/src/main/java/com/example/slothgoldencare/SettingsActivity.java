@@ -28,7 +28,6 @@ public class SettingsActivity extends AppCompatActivity {
         getFragmentManager().beginTransaction().add(R.id.fragment_container, new SettingsFragment()).commit();
         }
     }
-
     /*
         this method handle the selected items / buttons of the bottom navigation bar.
          */

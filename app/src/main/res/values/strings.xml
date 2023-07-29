@@ -232,5 +232,8 @@
     <string name="NewPhone">New Phone Number:</string>
     <string name="UserType">User Type:</string>
 
+    <string name="for_email">Edit your email</string>
+    <string name="for_phone">Edit your phone number</string>
+
 
 </resources>
