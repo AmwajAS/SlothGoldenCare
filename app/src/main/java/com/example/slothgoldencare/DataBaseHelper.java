@@ -1050,7 +1050,7 @@ this method take as an input Elder ID and delete it from the DB.
             for (DocumentSnapshot document : querySnapshot.getDocuments()) {
                 try {
                     // Extract required fields from the document
-                    String doctorId = document.getString("doctorId");
+                    String doctorId = document.getString("doctor");
                     String elderId = document.getString("elderId");
                     String notes = document.getString("notes");
                     Timestamp appointmentDate = document.getTimestamp("date");
@@ -1067,6 +1067,9 @@ this method take as an input Elder ID and delete it from the DB.
                     statement.bindString(3, appointmentDateStr);
                     statement.bindString(4, notes);
                     long rowId = statement.executeInsert();
+
+                    // Print the rowId for debugging
+//                    Log.d(TAG, "Inserted Row Id: " + rowId);
 
                 } catch (Exception e) {
                     Log.w(TAG, "Error inserting specific appointment data: " + e.getMessage());
