@@ -93,8 +93,10 @@ public class LoginActivity extends AppCompatActivity {
                     }
                     //check if log in as relative
                     else if (relativeRadioBtn.isChecked()) {
+                        boolean found = false;
                         for(User user : usersList){
                             if(user.getID().equals(uid)){
+                                found = true;
                                 //sign in with Authentication if user found
                                 auth.signInWithEmailAndPassword(user.getEmail(),user.getPassword()).addOnCompleteListener(task -> {
                                     if(task.isSuccessful()){
@@ -108,12 +110,16 @@ public class LoginActivity extends AppCompatActivity {
                                 });
                             }
                         }
-                        progressBar.setVisibility(View.GONE);
-                        Snackbar.make(getWindow().getDecorView(), R.string.alert_message_failed_sign_in, Snackbar.LENGTH_LONG).show();
+                        if (!found) {
+                            progressBar.setVisibility(View.GONE);
+                            Snackbar.make(getWindow().getDecorView(), R.string.alert_message_failed_sign_in, Snackbar.LENGTH_LONG).show();
+                        }
                     } else  {
+                        boolean found = false;
                         //if no radio is checked or elderly is checked then log in as elderly.
                         for(Elder elder : eldersList){
                             if(elder.getID().equals(uid)){
+                                found = true;
                                 //sign in with Authentication if user found
                                 auth.signInWithEmailAndPassword(elder.getEmail(),elder.getPassword()).addOnCompleteListener(task -> {
                                     //if successful, call UpdateUI function for elderly.
@@ -127,8 +133,10 @@ public class LoginActivity extends AppCompatActivity {
                                 });
                             }
                         }
-                        progressBar.setVisibility(View.GONE);
-                        Snackbar.make(getWindow().getDecorView(), R.string.alert_message_failed_sign_in, Snackbar.LENGTH_LONG).show();
+                        if (!found) {
+                            progressBar.setVisibility(View.GONE);
+                            Snackbar.make(getWindow().getDecorView(), R.string.alert_message_failed_sign_in, Snackbar.LENGTH_LONG).show();
+                        }
                     }
                 } else {
                     //ID not valid.
