@@ -46,9 +46,8 @@ public class AppointmentsPatientsListActivity extends AppCompatActivity {
     private void loadAppointmentsData() {
         String doctorId = getIntent().getStringExtra("doctorUid");
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-
         // Query the "Doctor" collection to get the doctor's data based on the "id" field
-        firestore.collection("Doctor").whereEqualTo("id", doctorId).get()
+        firestore.collection("Doctors").whereEqualTo("id", doctorId).get()
                 .addOnSuccessListener(querySnapshot -> {
                     if (!querySnapshot.isEmpty()) {
                         // There should be only one document with the specified doctorId
@@ -56,7 +55,7 @@ public class AppointmentsPatientsListActivity extends AppCompatActivity {
                             String doctorName = documentSnapshot.getString("username");
                             String specialization = documentSnapshot.getString("specialization");
                             String doctorFullNameAndSpecialization = doctorName + " - " + specialization;
-                            Log.d(TAG, "Doctor full name and specialization: " + doctorFullNameAndSpecialization);
+//                            Log.d(TAG, "Doctor full name and specialization: " + doctorFullNameAndSpecialization);
 
                             // If the user exists, query the "Appointment" collection to get their appointments
                             CollectionReference appointmentsRef = firestore.collection("Appointment");
