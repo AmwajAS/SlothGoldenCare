@@ -1,16 +1,19 @@
 package com.example.slothgoldencare.Model;
 
+import com.google.firebase.Timestamp;
+
 public class WorkAndPayment {
-    private String dateDay;
+    private Timestamp dateDay;
     private String doctorId;
     private String hours;
     private boolean isPaid;
-    private String paidDate;
+    private Timestamp paidDate;
 
     public WorkAndPayment() {
     }
-    // Constructor
-    public WorkAndPayment(String dateDay, String doctorId, String hours, boolean isPaid, String paidDate) {
+
+    // Constructor with all fields
+    public WorkAndPayment(Timestamp dateDay, String doctorId, String hours, boolean isPaid, Timestamp paidDate) {
         this.dateDay = dateDay;
         this.doctorId = doctorId;
         this.hours = hours;
@@ -18,11 +21,12 @@ public class WorkAndPayment {
         this.paidDate = paidDate;
     }
 
-    public String getDateDay() {
+    // Getters and Setters
+    public Timestamp getDateDay() {
         return dateDay;
     }
 
-    public void setDateDay(String dateDay) {
+    public void setDateDay(Timestamp dateDay) {
         this.dateDay = dateDay;
     }
 
@@ -47,14 +51,16 @@ public class WorkAndPayment {
     }
 
     public void setPaid(boolean paid) {
+
         isPaid = paid;
     }
 
-    public String getPaidDate() {
+    public Timestamp getPaidDate() {
         return paidDate;
     }
 
-    public void setPaidDate(String paidDate) {
+    public void setPaidDate(Timestamp paidDate) {
         this.paidDate = paidDate;
     }
+
 }

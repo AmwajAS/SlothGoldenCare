@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- item_appointment.xml -->
+<!-- res/layout/item_work_and_payment.xml -->
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -8,35 +8,44 @@
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/doctorTextView"
+        android:id="@+id/dateDayTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:textSize="18sp"/>
 
     <TextView
-        android:id="@+id/dateTextView"
+        android:id="@+id/doctorIdTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#000000"
         android:textSize="16sp"
         android:textStyle="bold"/>
 
-    <!-- Display the Elder ID -->
     <TextView
-        android:id="@+id/elderIdTextView"
+        android:id="@+id/hoursTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/isPaidTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/paidDateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textSize="16sp"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/notesTextView"
+    <Button
+        android:id="@+id/viewConfirmationButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        android:textStyle="bold"/>
-
+        android:text="View Confirmation of Payment"
+        android:visibility="gone"/>
 </LinearLayout>

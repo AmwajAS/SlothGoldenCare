@@ -55,6 +55,11 @@ public class DoctorActivityMain extends AppCompatActivity{
             intent.putExtra("doctorUid", doctorUid);
             startActivity(intent);
         });
+        workPayBtn.setOnClickListener(v-> {
+            Intent intent = new Intent(DoctorActivityMain.this, DoctorReportActivity.class);
+            intent.putExtra("doctorUid", doctorUid);
+            startActivity(intent);
+        });
     }
 
 }
