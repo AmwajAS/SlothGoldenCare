@@ -229,7 +229,6 @@
     <string name="Appointments_list_button">Click to see Your appoitments</string>
 
 
-
     <!--   for Profile -->
     New UserPhone:
     <string name="NewPhone">New Phone Number:</string>
@@ -237,6 +236,10 @@
 
     <string name="for_email">Edit your email</string>
     <string name="for_phone">Edit your phone number</string>
+
+
+    <string name="doc_appointments">MY APPOINTMENTS</string>
+    <string name="doc_work_pay">WORK AND PAYMENTS</string>
 
 
 </resources>

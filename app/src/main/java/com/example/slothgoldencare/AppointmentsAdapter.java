@@ -37,9 +37,10 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
         // Convert Timestamp to a formatted date string
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         String formattedDate = dateFormat.format(appointment.getDate().toDate());
-        holder.doctorTextView.setText(appointment.getDoctor());
-        holder.dateTextView.setText(formattedDate);
-        holder.notesTextView.setText(appointment.getNotes());
+        holder.doctorTextView.setText("Doctor: " + appointment.getDoctor());
+        holder.dateTextView.setText("Date and Time: " + formattedDate);
+        holder.elderIdTextView.setText("Elder Id: " + appointment.getElderId());
+        holder.notesTextView.setText("Notes: " + appointment.getNotes());
     }
 
     @Override
@@ -50,12 +51,14 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
     static class AppointmentViewHolder extends RecyclerView.ViewHolder {
         TextView doctorTextView;
         TextView dateTextView;
+        TextView elderIdTextView;
         TextView notesTextView;
 
         public AppointmentViewHolder(@NonNull View itemView) {
             super(itemView);
             doctorTextView = itemView.findViewById(R.id.doctorTextView);
             dateTextView = itemView.findViewById(R.id.dateTextView);
+            elderIdTextView = itemView.findViewById(R.id.elderIdTextView);
             notesTextView = itemView.findViewById(R.id.notesTextView);
         }
     }

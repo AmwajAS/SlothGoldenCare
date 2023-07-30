@@ -22,6 +22,8 @@ public class DoctorActivityMain extends AppCompatActivity{
 
     private Button healthTipsBtn;
     private Button elderliesBtn;
+    private Button appointmentsBtn;
+    private Button workPayBtn;
 
     DataBaseHelper dbHelper;
 
@@ -30,10 +32,13 @@ public class DoctorActivityMain extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor_main);
         dbHelper = new DataBaseHelper(this);
-
+        String doctorUid = getIntent().getStringExtra("doctorUid");
 
         elderliesBtn = findViewById(R.id.elderlies_btn);
         healthTipsBtn = findViewById(R.id.health_tips_btn);
+        appointmentsBtn = findViewById(R.id.appointments_button);
+        workPayBtn= findViewById(R.id.work_pay_button);
+
 
         elderliesBtn.setOnClickListener(v-> {
             Intent intent = new Intent(DoctorActivityMain.this, DoctorActivity.class);
@@ -42,6 +47,12 @@ public class DoctorActivityMain extends AppCompatActivity{
 
         healthTipsBtn.setOnClickListener(v-> {
             Intent intent = new Intent(DoctorActivityMain.this, DoctorActivityHealthTips.class);
+            startActivity(intent);
+        });
+
+        appointmentsBtn.setOnClickListener(v-> {
+            Intent intent = new Intent(DoctorActivityMain.this, AppointmentsPatientsListActivity.class);
+            intent.putExtra("doctorUid", doctorUid);
             startActivity(intent);
         });
     }
