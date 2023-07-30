@@ -27,5 +27,11 @@
             android:layout_height="wrap_content"
             android:text="@string/Doctors" />
 
+        <Button
+            android:id="@+id/payBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Payments" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

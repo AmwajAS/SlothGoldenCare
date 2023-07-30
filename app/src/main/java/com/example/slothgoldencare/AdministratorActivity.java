@@ -22,6 +22,7 @@ public class AdministratorActivity extends AppCompatActivity{
     private Button usersBtn;
     private Button elderliesBtn;
     private Button doctorsBtn;
+    private Button payBtn;
 
     DataBaseHelper dbHelper;
 
@@ -35,6 +36,7 @@ public class AdministratorActivity extends AppCompatActivity{
         usersBtn = findViewById(R.id.users_btn);
         elderliesBtn = findViewById(R.id.elderlies_btn);
         doctorsBtn = findViewById(R.id.doctors_btn);
+        payBtn = findViewById(R.id.payBtn);
 
         usersBtn.setOnClickListener(v-> {
             Intent intent = new Intent(AdministratorActivity.this,AdministratorUsersActivity.class);
@@ -46,6 +48,10 @@ public class AdministratorActivity extends AppCompatActivity{
         });
         doctorsBtn.setOnClickListener(v-> {
             Intent intent = new Intent(AdministratorActivity.this,AdministratorDoctorsActivity.class);
+            startActivity(intent);
+        });
+        payBtn.setOnClickListener(v-> {
+            Intent intent = new Intent(AdministratorActivity.this,ManageDoctorActivity.class);
             startActivity(intent);
         });
     }

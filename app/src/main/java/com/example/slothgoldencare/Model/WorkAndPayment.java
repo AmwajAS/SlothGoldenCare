@@ -51,7 +51,6 @@ public class WorkAndPayment {
     }
 
     public void setPaid(boolean paid) {
-
         isPaid = paid;
     }
 
