@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.provider.Settings;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -14,9 +15,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import java.util.List;
+import java.util.Random;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.slothgoldencare.Model.HealthTip;
 import com.example.slothgoldencare.Reminder.Reminder;
 import com.example.slothgoldencare.Reminder.TODOActivity;
 import com.example.slothgoldencare.sudoko.GameActivity;
@@ -29,15 +33,21 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HomePageActivity extends AppCompatActivity implements View.OnClickListener {
     private CardView D1, D2, D3, D4, D5, D6, D7, D8;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationCallback locationCallback;
     private ProgressDialog progressDialog;
     private TextView editTextUsername;
+    private ImageButton healthTipBut;
     private String username;
+    private List<HealthTip> healthTipList;
     private FirebaseAuth auth;
     private FirebaseFirestore db;
+    private DataBaseHelper dbHelper;
     private String userId;
 
     @Override
@@ -48,8 +58,21 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
         editTextUsername = findViewById(R.id.username);
         username = getIntent().getStringExtra("username");
         userId = getIntent().getStringExtra("userID");
+        healthTipList = new ArrayList<>();
+        dbHelper = new DataBaseHelper(this);
+        healthTipList = dbHelper.getHealthTips();
 
         editTextUsername.setText(auth.getCurrentUser().getDisplayName());
+
+        //Showing Health Tip when clicking on the icon health Tip.
+        healthTipBut = findViewById(R.id.health_tip_button);
+        healthTipBut.setOnClickListener(view -> {
+            Random random = new Random();
+            int listSize = healthTipList.size();
+            int randomIndex = random.nextInt(listSize);
+            HealthTip randomHealthTip = healthTipList.get(randomIndex);
+            showHealthTipContent(randomHealthTip);
+        });
 
         D1 = findViewById(R.id.d1);
         D2 = findViewById(R.id.d2);
@@ -181,6 +204,17 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
         intent.setData(Uri.fromParts("package", gamePackageName, null));
         startActivity(intent);
     }
+
+    private void showHealthTipContent(HealthTip healthTip) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(healthTip.getTitle());
+        builder.setMessage(healthTip.getContent());
+        builder.setPositiveButton("OK", null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+
 
 }
 

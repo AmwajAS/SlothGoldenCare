@@ -77,6 +77,7 @@
     <string name="Medications">Medications</string>
     <string name="DiagnosisAndTreatments">Diagnosis and Treatments</string>
     <string name="HeathStatus">Health Status</string>
+    <string name="health_tip">Health Tip</string>
     <string name="app_name2">Sudoku</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
