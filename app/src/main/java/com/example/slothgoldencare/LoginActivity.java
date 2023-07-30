@@ -2,32 +2,20 @@ package com.example.slothgoldencare;
 
 import android.content.res.Configuration;
 import android.util.Log;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-
+import com.example.slothgoldencare.Model.Doctor;
 import com.example.slothgoldencare.Model.Elder;
 import com.example.slothgoldencare.Model.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -35,17 +23,11 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText userid;
     DataBaseHelper dbHelper;
-    public static User user;
-    public static Elder elder;
-    private FirebaseFirestore db;
     private FirebaseAuth auth;
     private RadioButton relativeRadioBtn;
     private RadioButton doctorRadioBtn;
     private RadioButton adminRadioBtn;
-    private RadioGroup loginOptionRadio;
     private ProgressBar progressBar;
-    private Task<QuerySnapshot> query;
-
     private ImageButton langBtn;
     private PopupMenu popupMenu;
 
@@ -53,31 +35,37 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate() called");
+        //Firebase initialization
         auth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
+
         setContentView(R.layout.activity_login);
-        Button elderBtn = (Button) findViewById(R.id.elderBtn);
-        Button userBtn = (Button) findViewById(R.id.userBtn);
-        userid = (EditText) findViewById(R.id.userid);
-        langBtn = (ImageButton) findViewById(R.id.langBtn);
+
+        Button elderBtn =  findViewById(R.id.elderBtn);
+        Button userBtn =  findViewById(R.id.userBtn);
+        userid =  findViewById(R.id.userid);
+        langBtn =  findViewById(R.id.langBtn);
 
         //Login Radio Buttons and group
         relativeRadioBtn = findViewById(R.id.relative_login_radio_button);
         doctorRadioBtn = findViewById(R.id.doctor_login_radio_button);
         adminRadioBtn = findViewById(R.id.admin_login_radio_button);
-        loginOptionRadio = findViewById(R.id.login_option_radio_group);
 
-        Button loginBtn = (Button) findViewById(R.id.loginBtn);
+        Button loginBtn = findViewById(R.id.loginBtn);
         progressBar = findViewById(R.id.progress_bar_login);
-        dbHelper = new DataBaseHelper(this);
 
+        dbHelper = new DataBaseHelper(this);
+        //Saved lists of all the users.
+        List<User> usersList = dbHelper.getUsers();
+        List<Elder> eldersList = dbHelper.getElders();
+        List<Doctor> doctorsList = dbHelper.getDoctors();
+
+        //Log in button function.
         loginBtn.setOnClickListener(v -> {
             String uid = userid.getText().toString();
             if (uid.equals("")) {
                 //check if the id number / field is empty.
                 SimpleDialog.showAlertDialog(LoginActivity.this, R.string.alert_title_login, R.string.alert_message_idEmtpy);
-
+            //Check if log in as admin
             } else if (adminRadioBtn.isChecked()) {
                 if (uid.equals("admin")) {
                     Intent intent = new Intent(getApplicationContext(), AdministratorActivity.class);
@@ -86,60 +74,64 @@ public class LoginActivity extends AppCompatActivity {
                 }
             } else {
                 progressBar.setVisibility(View.VISIBLE);
+                //checking if id is valid
                 if (checkIDValidation(uid)) {
-                    if (relativeRadioBtn.isChecked()) {
-                        query = db.collection("Users").whereEqualTo("id", uid).get();
-                    } else if (doctorRadioBtn.isChecked()) {
-                        query = db.collection("Doctors").whereEqualTo("id", uid).get();
-                        query.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                    //checking if log in as doctor
+                    if (doctorRadioBtn.isChecked()) {
+                        for(Doctor doctor : doctorsList){
+                            if(doctor.getID().equals(uid)){
+                                progressBar.setVisibility(View.GONE);
                                 Intent intent = new Intent(LoginActivity.this, DoctorActivityMain.class);
                                 intent.putExtra("doctorUid", uid);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
                                 finish();
                             }
-                        });
-                    } else {
-                        query = db.collection("Elderlies").whereEqualTo("id", uid).get();
+                        }
+                        progressBar.setVisibility(View.GONE);
+                        Snackbar.make(getWindow().getDecorView(), R.string.alert_message_failed_sign_in, Snackbar.LENGTH_LONG).show();
                     }
-                    query.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                auth = FirebaseAuth.getInstance();
-                                List<DocumentSnapshot> documentSnapshot = task.getResult().getDocuments();
-                                if (!documentSnapshot.isEmpty()) {
-                                    DocumentSnapshot snapshot = documentSnapshot.get(0);
-                                    auth.signInWithEmailAndPassword(snapshot.get("email").toString(), snapshot.get("password").toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                        @Override
-                                        public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
-                                            if (task.isSuccessful()) {
-                                                progressBar.setVisibility(View.GONE);
-                                                if (relativeRadioBtn.isChecked()) {
-                                                    UpdateUI(null,auth.getUid());
-                                                }
-                                                else {
-                                                    UpdateUI(auth.getUid(),null);
-                                                }
-                                            } else {
-                                                progressBar.setVisibility(View.GONE);
-                                                Toast.makeText(LoginActivity.this, task.getException().getMessage().toString(), Toast.LENGTH_LONG).show();
-                                            }
-                                        }
-                                    });
-                                } else {
-                                    progressBar.setVisibility(View.GONE);
-                                    Toast.makeText(LoginActivity.this, R.string.alert_message_failed_sign_in, Toast.LENGTH_LONG).show();
-                                }
-                            } else {
-                                progressBar.setVisibility(View.GONE);
-                                Toast.makeText(LoginActivity.this, task.getException().getMessage().toString(), Toast.LENGTH_LONG).show();
+                    //check if log in as relative
+                    else if (relativeRadioBtn.isChecked()) {
+                        for(User user : usersList){
+                            if(user.getID().equals(uid)){
+                                //sign in with Authentication if user found
+                                auth.signInWithEmailAndPassword(user.getEmail(),user.getPassword()).addOnCompleteListener(task -> {
+                                    if(task.isSuccessful()){
+                                        //if successful, call UpdateUI function for relative.
+                                        progressBar.setVisibility(View.GONE);
+                                        UpdateUI(null,auth.getUid());
+                                    }else{
+                                        progressBar.setVisibility(View.GONE);
+                                        Snackbar.make(getWindow().getDecorView(), Objects.requireNonNull(Objects.requireNonNull(task.getException()).getMessage()), Snackbar.LENGTH_LONG).show();
+                                    }
+                                });
                             }
                         }
-                    });
+                        progressBar.setVisibility(View.GONE);
+                        Snackbar.make(getWindow().getDecorView(), R.string.alert_message_failed_sign_in, Snackbar.LENGTH_LONG).show();
+                    } else  {
+                        //if no radio is checked or elderly is checked then log in as elderly.
+                        for(Elder elder : eldersList){
+                            if(elder.getID().equals(uid)){
+                                //sign in with Authentication if user found
+                                auth.signInWithEmailAndPassword(elder.getEmail(),elder.getPassword()).addOnCompleteListener(task -> {
+                                    //if successful, call UpdateUI function for elderly.
+                                    if(task.isSuccessful()){
+                                        progressBar.setVisibility(View.GONE);
+                                        UpdateUI(auth.getUid(),null);
+                                    }else{
+                                        progressBar.setVisibility(View.GONE);
+                                        Snackbar.make(getWindow().getDecorView(), Objects.requireNonNull(Objects.requireNonNull(task.getException()).getMessage()), Snackbar.LENGTH_LONG).show();
+                                    }
+                                });
+                            }
+                        }
+                        progressBar.setVisibility(View.GONE);
+                        Snackbar.make(getWindow().getDecorView(), R.string.alert_message_failed_sign_in, Snackbar.LENGTH_LONG).show();
+                    }
                 } else {
+                    //ID not valid.
                     progressBar.setVisibility(View.GONE);
                     SimpleDialog.showAlertDialog(LoginActivity.this, R.string.alert_title_login, R.string.alert_message_idEmtpy);
                 }
@@ -156,14 +148,11 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         // Setting onClick behavior to the button
-        langBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showLanguageMenu();
-            }
-        });
+        langBtn.setOnClickListener(view -> showLanguageMenu());
     }
 
+    //On start function to check if there is a user already logged in
+    //and update the UI.
     @Override
     protected void onStart() {
         super.onStart();
@@ -176,39 +165,32 @@ public class LoginActivity extends AppCompatActivity {
             }else if (user != null){
                 UpdateUI(null,user.getDocId());
             }
-        }else{
-
         }
     }
+    //UpdateUI function that opens the relevant page.
     public void UpdateUI(String elderDocId, String userDocId){
         if(elderDocId != null){
             Intent intent = new Intent(LoginActivity.this, HomePageActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
-        }else if(userDocId != null){
+        }else if(userDocId != null) {
             Intent intent = new Intent(LoginActivity.this, UserHomePageActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
         }
+
     }
 
     /*
-        Since the Real Id Number consists of 9 digits Only, So in this method we check the Id Validation.
+        Since the Real ID Number consists of 9 digits Only, So in this method we check the ID Validation.
         9 numbers only between 0-9.
          */
     public boolean checkIDValidation(String idV) {
         return idV.matches("[0-9]{9}");
     }
 
-    public static User getUser() {
-        return user;
-    }
-
-    public static Elder getElder() {
-        return elder;
-    }
 
     /*
 
@@ -226,37 +208,31 @@ public class LoginActivity extends AppCompatActivity {
         // Inflating popup menu from popup_menu.xml file
         popupMenu.getMenuInflater().inflate(R.menu.language_menu, popupMenu.getMenu());
 
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                // Toast message on menu item clicked
-                String selectedLang = "";
+        popupMenu.setOnMenuItemClickListener(menuItem -> {
+            // Toast message on menu item clicked
+            String selectedLang = "";
 
-                if (menuItem.getTitle().equals("Hebrew")) {
-                    selectedLang = "iw";
+            if (menuItem.getTitle().equals("Hebrew")) {
+                selectedLang = "iw";
 
-                } else if (menuItem.getTitle().equals("Arabic")) {
-                    selectedLang = "ar";
+            } else if (menuItem.getTitle().equals("Arabic")) {
+                selectedLang = "ar";
 
-                } else if (menuItem.getTitle().equals("English")) {
-                    selectedLang = "en";
+            } else if (menuItem.getTitle().equals("English")) {
+                selectedLang = "en";
 
-                } else if (menuItem.getTitle().equals("Russian")) {
-                    selectedLang = "ru";
+            } else if (menuItem.getTitle().equals("Russian")) {
+                selectedLang = "ru";
 
-                }
-                changeLanguage(selectedLang);
-                return true;
             }
+            changeLanguage(selectedLang);
+            return true;
         });
 
         // Set the OnDismissListener to handle cleanup when the PopupMenu is dismissed
-        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
-            @Override
-            public void onDismiss(PopupMenu menu) {
-                // Do any necessary cleanup here (if required)
-                popupMenu = null; // Clear the reference to the PopupMenu
-            }
+        popupMenu.setOnDismissListener(menu -> {
+            // Do any necessary cleanup here (if required)
+            popupMenu = null; // Clear the reference to the PopupMenu
         });
 
         // Showing the popup menu
@@ -282,7 +258,7 @@ public class LoginActivity extends AppCompatActivity {
     This method is responsible for changing the language of the application.
     It takes a language code ("iw" for Hebrew, "ar" for Arabic, "en" for English and "ru" for Russian)
     as input and sets it as the default locale for the application context and the current activity.
-    Then, it calls the recreate() method to reload the activity, which will apply the language changes.
+    Then, it calls the re,create() method to reload the activity, which will apply the language changes.
      */
     private void changeLanguage(String languageCode) {
         Locale locale = new Locale(languageCode);

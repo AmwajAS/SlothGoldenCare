@@ -25,8 +25,6 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView phoneNumberTextView;
     private EditText emailEditText;
     private EditText phoneNumberEditText;
-    private Button editButton;
-    private Button logOutBtn;
     private Button saveButton;
     private FirebaseAuth auth;
     @Override
@@ -40,10 +38,11 @@ public class ProfileActivity extends AppCompatActivity {
         phoneNumberTextView = findViewById(R.id.phoneNumberTextView);
         emailEditText = findViewById(R.id.emailEditText);
         phoneNumberEditText = findViewById(R.id.phoneNumberEditText);
-        editButton = findViewById(R.id.editButton);
+        Button editButton = findViewById(R.id.editButton);
         saveButton = findViewById(R.id.saveButton);
-        logOutBtn = findViewById(R.id.log_out_btn);
+        Button logOutBtn = findViewById(R.id.log_out_btn);
 
+        //Logout button to sign out from authentication
         logOutBtn.setOnClickListener(view -> {
             auth = FirebaseAuth.getInstance();
             auth.signOut();
@@ -73,9 +72,7 @@ public class ProfileActivity extends AppCompatActivity {
                         phoneNumberTextView.setText(phoneNumber);
                     }
                 })
-                .addOnFailureListener(e -> {
-                    Log.d(TAG, "Error in loading the data." + userId);
-                });
+                .addOnFailureListener(e -> Log.d(TAG, "Error in loading the data." + userId));
         // Set click listener for Edit button
         editButton.setOnClickListener(v -> {
             // Hide TextViews and show EditTexts and Save button
@@ -109,9 +106,7 @@ public class ProfileActivity extends AppCompatActivity {
                         phoneNumberEditText.setVisibility(View.GONE);
                         saveButton.setVisibility(View.GONE);
                     })
-                    .addOnFailureListener(e -> {
-                        Log.d(TAG, "Error in updating the data." + userId);
-                    });
+                    .addOnFailureListener(e -> Log.d(TAG, "Error in updating the data." + userId));
         });
         bottomNavigationView();
     }

@@ -4,6 +4,7 @@ import android.telephony.SmsManager;
 
 public class SmsUtil {
 
+    //sending SMS via phone class
     public static void sendSms(String phoneNumber, String message) {
         try {
             SmsManager smsManager = SmsManager.getDefault();

@@ -15,31 +15,32 @@ import android.view.View;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MedicalServices extends AppCompatActivity implements View.OnClickListener{
-    private CardView D1, D2, D3, D4,D5;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.medical_services);
-        D1 = findViewById(R.id.d1);
-        D2 = findViewById(R.id.d2);
-        D3 = findViewById(R.id.d3);
-        D4 = findViewById(R.id.d4);
-        D5 = findViewById(R.id.d5);
 
-        D1.setOnClickListener(this);
-        D2.setOnClickListener(this);
-        D3.setOnClickListener(this);
-        D4.setOnClickListener(this);
-        D5.setOnClickListener(this);
+        //initializing card views with on click listeners
+        CardView d1 = findViewById(R.id.d1);
+        CardView d2 = findViewById(R.id.d2);
+        CardView d3 = findViewById(R.id.d3);
+        CardView d4 = findViewById(R.id.d4);
+        CardView d5 = findViewById(R.id.d5);
+
+        d1.setOnClickListener(this);
+        d2.setOnClickListener(this);
+        d3.setOnClickListener(this);
+        d4.setOnClickListener(this);
+        d5.setOnClickListener(this);
 
         bottomNavigationView();
 
     }
 
+    //depending on which one is clicked it sends a different args that can be handled in the fragment.
     @Override
     public void onClick(View v) {
         HealthStatusFragment healthStatusFragment;
-        Intent i;
         switch (v.getId()) {
             case R.id.d1:
                 Bundle args1 = new Bundle();
@@ -71,6 +72,8 @@ public class MedicalServices extends AppCompatActivity implements View.OnClickLi
                 break;
         }
     }
+
+    //replace fragment function
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -96,11 +99,6 @@ this method handle the selected items / buttons of the bottom navigation bar.
                 case R.id.home:
                     replaceView(HomePageActivity.class);
                     return true;
-//                case R.id.bottom_search:
-//                    startActivity(new Intent(getApplicationContext(), SearchActivity.class));
-//                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-//                    finish();
-//                    return true;
                 case R.id.settings:
                     replaceView(SettingsActivity.class);
                     return true;

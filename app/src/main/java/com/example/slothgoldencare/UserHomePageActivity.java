@@ -17,7 +17,6 @@ import com.example.slothgoldencare.Model.Elder;
 import com.example.slothgoldencare.Model.Gender;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,44 +24,38 @@ import java.util.List;
 
 public class UserHomePageActivity extends AppCompatActivity {
 
-    private Toolbar toolbar;
     private List<Elder> relatives;
-    private RecyclerView relativesList;
-    private Button addBtn,logOutBtn;
-    private TextView username;
     private FirebaseAuth auth;
-    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_home_page);
-        //Firebase parameters, authenticated user.
+        //authenticated user.
         auth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
-        username = findViewById(R.id.username);
+        TextView username = findViewById(R.id.username);
         username.setText(auth.getCurrentUser().getDisplayName());
 
-
         bottomNavigationView();
-        logOutBtn = findViewById(R.id.log_out_btn);
+        //Log out button to sign out of authentication
+        Button logOutBtn = findViewById(R.id.log_out_btn);
         logOutBtn.setOnClickListener(view -> {
             auth.signOut();
             Intent intent = new Intent(this.getApplicationContext(), LoginActivity.class);
             startActivity(intent);
         });
 
-        //Relatives list (in progress)
         relatives = new ArrayList<>();
         relatives = GetRelativeElderlies();
 
-        toolbar = findViewById(R.id.actBar);
-        addBtn = findViewById(R.id.addRelativeBtn);
-        relativesList = findViewById(R.id.relativesListView);
+        Toolbar toolbar = findViewById(R.id.actBar);
+        Button addBtn = findViewById(R.id.addRelativeBtn);
+        RecyclerView relativesList = findViewById(R.id.relativesListView);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         relativesList.setLayoutManager(layoutManager);
 
+        //Elderlies that are reletaive are shown in the bottom in a recycler view.
         RecyclerView.Adapter<ElderViewHolder> eldersAdapter = new RecyclerView.Adapter<ElderViewHolder>() {
 
             @NonNull
@@ -79,14 +72,11 @@ public class UserHomePageActivity extends AppCompatActivity {
                 holder.relativeName.setText(elder.getUsername());
 
                 //clicking on a specific elderly to show the profile.
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(view.getContext(), "Item clicked: " + elder.getUsername(), Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(UserHomePageActivity.this,VisitElderlyProfileActivity.class);
-                        intent.putExtra("elderlyId",elder.getID());
-                        startActivity(intent);
-                    }
+                holder.itemView.setOnClickListener(view -> {
+                    Toast.makeText(view.getContext(), "Elderly Clicked: " + elder.getUsername(), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(UserHomePageActivity.this,VisitElderlyProfileActivity.class);
+                    intent.putExtra("elderlyId",elder.getID());
+                    startActivity(intent);
                 });
             }
 
@@ -97,9 +87,8 @@ public class UserHomePageActivity extends AppCompatActivity {
         };
 
         relativesList.setAdapter(eldersAdapter);
-
         setSupportActionBar(toolbar);
-
+        //Add elderly to the list
         addBtn.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), AddRelatedActivity.class);
             startActivity(intent);

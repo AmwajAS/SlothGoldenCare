@@ -19,11 +19,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class AddRelatedActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private FirebaseFirestore db;
-    private FirebaseAuth auth;
-    private Button add_related_btn;
     private FirebaseUser currUser;
     private EditText related_id_text;
-    private ImageButton back_btn;
     private DataBaseHelper dataBaseHelper;
 
     @Override
@@ -32,9 +29,9 @@ public class AddRelatedActivity extends AppCompatActivity implements AdapterView
         setContentView(R.layout.activity_add_related);
         db = FirebaseFirestore.getInstance();
         dataBaseHelper = new DataBaseHelper(this);
-        auth = FirebaseAuth.getInstance();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
         currUser = auth.getCurrentUser();
-        add_related_btn = findViewById(R.id.addEldBtn);
+        Button add_related_btn = findViewById(R.id.addEldBtn);
         related_id_text = findViewById(R.id.related_id);
         bottomNavigationView();
 
@@ -62,11 +59,9 @@ public class AddRelatedActivity extends AppCompatActivity implements AdapterView
                 db.collection("ElderlyRelative").add(elderRelative).addOnSuccessListener(documentReference -> {
                     elderRelative.setDocId(documentReference.getId());
                     if(dataBaseHelper.addElderRelative(elderRelative)) {
-                        Toast.makeText(AddRelatedActivity.this, "Added User " + elder.getUsername() + " Successfuly", Toast.LENGTH_LONG).show();
+                        Toast.makeText(AddRelatedActivity.this, "Added User " + elder.getUsername() + " Successfully", Toast.LENGTH_LONG).show();
                     }
-                }).addOnFailureListener(e -> {
-                    Toast.makeText(AddRelatedActivity.this,e.getMessage().toString(), Toast.LENGTH_LONG).show();
-                });
+                }).addOnFailureListener(e -> Toast.makeText(AddRelatedActivity.this, e.getMessage(), Toast.LENGTH_LONG).show());
 
             }
         });

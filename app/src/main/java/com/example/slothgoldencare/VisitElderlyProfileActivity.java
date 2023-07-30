@@ -15,12 +15,7 @@ import com.example.slothgoldencare.Model.Elder;
 
 public class VisitElderlyProfileActivity  extends AppCompatActivity implements View.OnClickListener {
 
-    private String elderlyId;
-    private DataBaseHelper dataBaseHelper;
-    private TextView editTextUsername;
-    private CardView D1, D2, D3, D4, D5, D6;
     private  Elder elder;
-    private Button backBtn;
 
 
     @Override
@@ -28,32 +23,30 @@ public class VisitElderlyProfileActivity  extends AppCompatActivity implements V
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visit_elderly_profile);
 
-        //statring variables
-        elderlyId = getIntent().getStringExtra("elderlyId");
-        dataBaseHelper = new DataBaseHelper(this);
+        //starting variables
+        String elderlyId = getIntent().getStringExtra("elderlyId");
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(this);
         elder = dataBaseHelper.getElderById(elderlyId);
-        backBtn = findViewById(R.id.back_btn);
-        backBtn.setOnClickListener(view -> {
-            this.finish();
-        });
+        Button backBtn = findViewById(R.id.back_btn);
+        backBtn.setOnClickListener(view -> this.finish());
 
         //edit layout
-        editTextUsername = findViewById(R.id.username);
+        TextView editTextUsername = findViewById(R.id.username);
         editTextUsername.setText(elder.getUsername());
 
-        D1 = findViewById(R.id.d1);
-        D2 = findViewById(R.id.d2);
-        D3 = findViewById(R.id.d3);
-        D4 = findViewById(R.id.d4);
-        D5 = findViewById(R.id.d5);
-        D6 = findViewById(R.id.d6);
+        CardView d1 = findViewById(R.id.d1);
+        CardView d2 = findViewById(R.id.d2);
+        CardView d3 = findViewById(R.id.d3);
+        CardView d4 = findViewById(R.id.d4);
+        CardView d5 = findViewById(R.id.d5);
+        CardView d6 = findViewById(R.id.d6);
 
-        D1.setOnClickListener(this);
-        D2.setOnClickListener(this);
-        D3.setOnClickListener(this);
-        D4.setOnClickListener(this);
-        D5.setOnClickListener(this);
-        D6.setOnClickListener(this);
+        d1.setOnClickListener(this);
+        d2.setOnClickListener(this);
+        d3.setOnClickListener(this);
+        d4.setOnClickListener(this);
+        d5.setOnClickListener(this);
+        d6.setOnClickListener(this);
 
     }
 

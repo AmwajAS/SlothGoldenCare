@@ -19,31 +19,17 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HealthStatusFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+//This fragment shows the health status depends on which you choose.
 public class HealthStatusFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-    private ListView list;
     private List<Diagnosis> diagnosisList;
     private List<Surgery> surgeryList;
     private List<Allergy> allergyList;
     private List<Medicine> medicineList;
-    private TextView list_title;
-    private Button backBtn;
 
-
-    private ImageView imageViewHealth;
 
     public HealthStatusFragment() {
         // Required empty public constructor
@@ -59,8 +45,9 @@ public class HealthStatusFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            // TODO: Rename and change types of parameters
+            String mParam1 = getArguments().getString(ARG_PARAM1);
+            String mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -68,20 +55,22 @@ public class HealthStatusFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_health_status, container, false);
-        list = view.findViewById(R.id.health_status_list);
-        list_title = view.findViewById(R.id.list_title);
+        ListView list = view.findViewById(R.id.health_status_list);
+        TextView list_title = view.findViewById(R.id.list_title);
 
         // back btn to remove the replaced view to the main one.
-        backBtn = view.findViewById(R.id.back_btn);
+        Button backBtn = view.findViewById(R.id.back_btn);
         backBtn.setOnClickListener(view1 -> {
             requireActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
             requireActivity().getSupportFragmentManager().popBackStack();
         });
 
+        //When creating this fragment, args is sent which has the values of the health status item.
         DataBaseHelper dataBaseHelper = new DataBaseHelper(this.getContext());
         Bundle args = getArguments();
         if(args != null){
             String value = args.getString("Button");
+            //if value is diagnosis then fill the list with diagnosis
             if(value.equals("diagnosis")){
                 list_title.setText(R.string.diagnosis);
                 diagnosisList = dataBaseHelper.getDiagnosisByElderlyDocId(FirebaseAuth.getInstance().getUid());
@@ -107,6 +96,7 @@ public class HealthStatusFragment extends Fragment {
                 list.setAdapter(diagnosisAdapter);
 
             }else if(value.equals("allergies")){
+                //if value is allergies then fill the list with allergies
                 list_title.setText(R.string.allergies);
                 allergyList = dataBaseHelper.getAllergiesByElderlyDocId(FirebaseAuth.getInstance().getUid());
 
@@ -132,6 +122,7 @@ public class HealthStatusFragment extends Fragment {
                 list.setAdapter(allergyAdapter);
 
             }else if (value.equals("medicines")){
+                //if value is medicines then fill the list with medicines
                 list_title.setText(R.string.medicine);
                 medicineList = dataBaseHelper.getMedicinesByElderlyDocId(FirebaseAuth.getInstance().getUid());
 
@@ -157,6 +148,7 @@ public class HealthStatusFragment extends Fragment {
                 list.setAdapter(medicineAdapter);
 
             }else if(value.equals("surgeries")){
+                //if value is surgeries then fill the list with surgeries
                 list_title.setText(R.string.surgery);
                 surgeryList = dataBaseHelper.getSurgeriesByElderlyDocId(FirebaseAuth.getInstance().getUid());
 
