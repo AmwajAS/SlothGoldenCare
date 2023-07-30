@@ -149,4 +149,8 @@
     <string name="UserType">نوع المستخدم:</string>
     <string name="for_email">تعديل البريد الإلكتروني الخاص بك</string>
     <string name="for_phone">قم بتعديل رقم هاتفك</string>
+    <string name="health_tip">نصيحة صحية</string>
+    <string name="Appointment_Scheduling_CV">جدولة المواعيد</string>
+    <string name="doc_appointments">المواعيد الخاصة بي</string>
+    <string name="doc_work_pay">العمل والمدفوعات</string>
 </resources>

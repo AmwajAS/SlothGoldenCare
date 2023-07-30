@@ -149,4 +149,8 @@
     <string name="UserType">סוג משתמש:</string>
     <string name="for_email">ערוך את האימייל שלך</string>
     <string name="for_phone">ערוך את מספר הטלפון שלך</string>
+    <string name="doc_appointments">המינויים שלי</string>
+    <string name="doc_work_pay">עבודה ותשלומים</string>
+    <string name="health_tip">טיפ בריאות</string>
+    <string name="Appointment_Scheduling_CV">זימון פגישות</string>
 </resources>

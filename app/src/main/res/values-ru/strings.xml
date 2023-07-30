@@ -149,4 +149,8 @@
     <string name="UserType">Тип пользователя:</string>
     <string name="for_email">Изменить адрес электронной почты</string>
     <string name="for_phone">Изменить свой номер телефона</string>
+    <string name="health_tip">Совет для здоровья</string>
+    <string name="Appointment_Scheduling_CV">Назначение</string>
+    <string name="doc_appointments">МОИ НАЗНАЧЕНИЯ</string>
+    <string name="doc_work_pay">РАБОТА И ОПЛАТА</string>
 </resources>

@@ -112,7 +112,7 @@
     <string name="hello_second_fragment" translatable="false">Hello second fragment. Arg: %1$s</string>
     <string name="score_label" translatable="false">Score: </string>
     <string name="todo_Label"> TO-DO LIST</string>
-    <string name="reminder_Label"> Add Reminder Here...</string>
+    <string name="reminder_Label"> Add Reminder Here…</string>
     <string name="reminder_add_success">Successfully Added Reminder</string>
     <string name="info_add_success">Successfully Added Info</string>
     <string name="info_add_fail">Failed Adding Info</string>
