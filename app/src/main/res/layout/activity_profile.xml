@@ -7,6 +7,13 @@
     android:background="@drawable/dark_gradient"
     tools:context=".ProfileActivity"
     tools:layout_gravity="center">
+    <Button
+        android:id="@+id/log_out_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LOG OUT"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
 
     <LinearLayout

@@ -124,14 +124,6 @@ public class LoginActivity extends AppCompatActivity {
                                                     finish();
 
                                                 }
-//                                                else if(doctorRadioBtn.isChecked()){
-//                                                    Intent intent = new Intent(LoginActivity.this, DoctorActivity.class);
-//                                                    intent.putExtra("userID", snapshot.get("id").toString());
-//                                                    intent.putExtra("username", snapshot.get("username").toString());
-//                                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                                                    startActivity(intent);
-//                                                    finish();
-//                                                }
                                                 else {
                                                     Intent intent = new Intent(LoginActivity.this, HomePageActivity.class);
                                                     intent.putExtra("userID", snapshot.get("id").toString());

@@ -28,7 +28,7 @@ public class UserHomePageActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private List<Elder> relatives;
     private RecyclerView relativesList;
-    private Button addBtn;
+    private Button addBtn,logOutBtn;
     private TextView username;
     private FirebaseAuth auth;
     private FirebaseFirestore db;
@@ -43,7 +43,14 @@ public class UserHomePageActivity extends AppCompatActivity {
         username = findViewById(R.id.username);
         username.setText(auth.getCurrentUser().getDisplayName());
 
+
         bottomNavigationView();
+        logOutBtn = findViewById(R.id.log_out_btn);
+        logOutBtn.setOnClickListener(view -> {
+            auth.signOut();
+            Intent intent = new Intent(this.getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
+        });
 
         //Relatives list (in progress)
         relatives = new ArrayList<>();
@@ -178,11 +185,13 @@ public class UserHomePageActivity extends AppCompatActivity {
                     replaceView(SettingsActivity.class);
                     return true;
                 case R.id.profile:
-                    replaceView(VisitElderlyProfileActivity.class);
                     return true;
             }
             return false;
         });
+
+        MenuItem profileItem = menu.findItem(R.id.profile);
+        profileItem.setVisible(false);
     }
 
     public void replaceView(Class classView) {

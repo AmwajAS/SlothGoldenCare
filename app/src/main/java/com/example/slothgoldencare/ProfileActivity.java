@@ -26,7 +26,9 @@ public class ProfileActivity extends AppCompatActivity {
     private EditText emailEditText;
     private EditText phoneNumberEditText;
     private Button editButton;
+    private Button logOutBtn;
     private Button saveButton;
+    private FirebaseAuth auth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +42,14 @@ public class ProfileActivity extends AppCompatActivity {
         phoneNumberEditText = findViewById(R.id.phoneNumberEditText);
         editButton = findViewById(R.id.editButton);
         saveButton = findViewById(R.id.saveButton);
+        logOutBtn = findViewById(R.id.log_out_btn);
+
+        logOutBtn.setOnClickListener(view -> {
+            auth = FirebaseAuth.getInstance();
+            auth.signOut();
+            Intent intent = new Intent(this.getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
+        });
 
         // Set initial visibility
         emailTextView.setVisibility(View.VISIBLE);
