@@ -648,6 +648,39 @@ this method take as an input Elder ID and delete it from the DB.
 
         return doctorsList;
     }
+    //Getting all the relatives for a specific Elderly.
+    public List<User> GetRelativesByElderly(String id){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        List<User> relatives = new ArrayList<>();
+        // Assuming you have a valid SQLiteDatabase object named "db"
+
+        String query = "SELECT * FROM "+ELD_REL_TBL+" INNER JOIN "+USERS_TBL+" ON "+ELD_REL_TBL+"."+REL_ID+" = "+USERS_TBL+"."+DOCUMNET_ID+
+                " WHERE "+ELD_ID+" = ?";
+        String[] selectionArgs = {id};
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                // Extract data from the cursor for each matching row
+                String documentId = cursor.getString(cursor.getColumnIndexOrThrow(DOCUMNET_ID));
+                String userId = cursor.getString(cursor.getColumnIndexOrThrow(USER_ID));
+                String name = cursor.getString(cursor.getColumnIndexOrThrow(USER_NAME));
+                String email = cursor.getString(cursor.getColumnIndexOrThrow(USER_EMAIL));
+                String password = cursor.getString(cursor.getColumnIndexOrThrow(USER_PASSWORD));
+                String phone = cursor.getString(cursor.getColumnIndexOrThrow(USER_PHONE));
+
+                User user = new User(userId,name,phone,email,password);
+                user.setDocId(documentId);
+                relatives.add(user);
+
+            } while (cursor.moveToNext());
+        }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+        return relatives;
+    }
     public List<HealthTip> getHealthTips() {
         List<HealthTip> healthTipsList = new ArrayList<>();
 

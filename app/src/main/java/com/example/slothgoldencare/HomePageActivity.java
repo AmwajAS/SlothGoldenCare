@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.provider.Settings;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -15,12 +16,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
-import java.util.List;
-import java.util.Random;
+
+import java.util.*;
+
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.slothgoldencare.Model.HealthTip;
+import com.example.slothgoldencare.Model.User;
 import com.example.slothgoldencare.Reminder.Reminder;
 import com.example.slothgoldencare.Reminder.TODOActivity;
 import com.example.slothgoldencare.sudoko.GameActivity;
@@ -30,11 +33,15 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 public class HomePageActivity extends AppCompatActivity implements View.OnClickListener {
     private CardView D1, D2, D3, D4, D5, D6, D7;
@@ -47,6 +54,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     private List<HealthTip> healthTipList;
     private FirebaseAuth auth;
     private FirebaseFirestore db;
+    private List<User> relativesArrayList;
     private DataBaseHelper dbHelper;
     private String userId;
 
@@ -61,6 +69,10 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
         healthTipList = new ArrayList<>();
         dbHelper = new DataBaseHelper(this);
         healthTipList = dbHelper.getHealthTips();
+
+        relativesArrayList = new ArrayList<>();
+
+        relativesArrayList = dbHelper.GetRelativesByElderly(auth.getUid());
 
         editTextUsername.setText(auth.getCurrentUser().getDisplayName());
 
@@ -149,7 +161,6 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                 && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fusedLocationProviderClient.requestLocationUpdates(createLocationRequest(), locationCallback, null);
         } else {
-
             Toast.makeText(this, "Location permission not granted", Toast.LENGTH_SHORT).show();
             showPermissionDeniedDialog();
         }
@@ -167,10 +178,28 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
         double latitude = location.latitude;
         double longitude = location.longitude;
         // Perform the necessary operations to save the location
-        progressDialog.dismiss();
         Toast.makeText(this, "Location saved - Lat: " + latitude + ", Lng: " + longitude, Toast.LENGTH_SHORT).show();
+        sendLocationToRelatives(location);
         onStop();
     }
+
+    //Sending the location to the relatives via phone number
+    private void sendLocationToRelatives(LatLng location) {
+        // Iterate through the ArrayList of relatives
+        for (User relative : relativesArrayList) {
+            // Check if the relative has a phone number
+            if (relative.getPhoneNumber() != null && !relative.getPhoneNumber().isEmpty()) {
+                String mapLink = "https://maps.google.com/maps?q=" + location.latitude + "," + location.longitude;
+                String smsMessage = auth.getCurrentUser().getDisplayName()+" Sent An Emergency Location : Click on the link to view the location on the map: " + mapLink;
+                SmsUtil.sendSms(relative.getPhoneNumber(), smsMessage);
+            }
+        }
+        Snackbar.make(getWindow().getDecorView(),"Messages sent!",Snackbar.LENGTH_LONG).show();
+        progressDialog.dismiss();
+    }
+
+
+
 
     @Override
     protected void onStop() {
