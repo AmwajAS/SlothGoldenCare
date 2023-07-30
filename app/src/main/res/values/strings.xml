@@ -213,6 +213,8 @@
     <string name="summary2">click to call Maccabi s Services</string>
     <string name="title4.2">Visit our website</string>
     <string name="summary3">click to visit Maccabi s web</string>
+
+    <string name="Appointment_Scheduling_CV">Appointment Scheduling</string>
     <!--    for appointment scheduling-->
     <string name="schedule_an_appointment">Schedule an appointment</string>
     <string name="pick_time">Click next to pick a time.</string>
