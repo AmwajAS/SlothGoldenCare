@@ -1,5 +1,7 @@
 package com.example.slothgoldencare;
 
+import android.content.res.Configuration;
+import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +26,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Locale;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -43,10 +46,13 @@ public class LoginActivity extends AppCompatActivity {
     private Task<QuerySnapshot> query;
 
     private ImageButton langBtn;
+    private PopupMenu popupMenu;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate() called");
         db = FirebaseFirestore.getInstance();
         setContentView(R.layout.activity_login);
         Button elderBtn = (Button) findViewById(R.id.elderBtn);
@@ -76,13 +82,12 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(intent);
                     userid.setText("");
                 }
-            }
-            else {
+            } else {
                 progressBar.setVisibility(View.VISIBLE);
                 if (checkIDValidation(uid)) {
                     if (relativeRadioBtn.isChecked()) {
                         query = db.collection("Users").whereEqualTo("id", uid).get();
-                    }else if(doctorRadioBtn.isChecked()) {
+                    } else if (doctorRadioBtn.isChecked()) {
                         query = db.collection("Doctors").whereEqualTo("id", uid).get();
                         query.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
@@ -93,7 +98,7 @@ public class LoginActivity extends AppCompatActivity {
                                 finish();
                             }
                         });
-                    }else {
+                    } else {
                         query = db.collection("Elderlies").whereEqualTo("id", uid).get();
                     }
                     query.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -192,22 +197,96 @@ public class LoginActivity extends AppCompatActivity {
         return elder;
     }
 
+    /*
+
+    This method is responsible for showing the language selection menu as a PopupMenu when
+     the language button (langBtn) is clicked. It inflates the menu layout (R.menu.language_menu)
+     and handles the click events for each menu item to determine the selected language.
+     When a language is selected, it calls the changeLanguage() method to update the app's locale.
+     */
     private void showLanguageMenu() {
+        Log.d(TAG, "showLanguageMenu() called"); // Add this log message
+
         // Initializing the popup menu and giving the reference as current context
-        PopupMenu popupMenu = new PopupMenu(LoginActivity.this, langBtn);
+        popupMenu = new PopupMenu(LoginActivity.this, langBtn);
 
         // Inflating popup menu from popup_menu.xml file
         popupMenu.getMenuInflater().inflate(R.menu.language_menu, popupMenu.getMenu());
+
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 // Toast message on menu item clicked
-                Toast.makeText(LoginActivity.this, "You Clicked " + menuItem.getTitle(), Toast.LENGTH_SHORT).show();
+                String selectedLang = "";
+
+                if (menuItem.getTitle().equals("Hebrew")) {
+                    selectedLang = "iw";
+
+                } else if (menuItem.getTitle().equals("Arabic")) {
+                    selectedLang = "ar";
+
+                } else if (menuItem.getTitle().equals("English")) {
+                    selectedLang = "en";
+
+                } else if (menuItem.getTitle().equals("Russian")) {
+                    selectedLang = "ru";
+
+                }
+                changeLanguage(selectedLang);
                 return true;
             }
         });
+
+        // Set the OnDismissListener to handle cleanup when the PopupMenu is dismissed
+        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+            @Override
+            public void onDismiss(PopupMenu menu) {
+                // Do any necessary cleanup here (if required)
+                popupMenu = null; // Clear the reference to the PopupMenu
+            }
+        });
+
         // Showing the popup menu
         popupMenu.show();
+    }
+
+    /*
+
+    This is a method from the AppCompatActivity class that we have overridden. It gets called when the activity is being destroyed.
+    we are checking if the PopupMenu (popupMenu) is still showing and dismiss it to avoid any memory leaks.
+     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // Dismiss the PopupMenu if it is still showing
+        if (popupMenu != null) {
+            popupMenu.dismiss();
+        }
+    }
+
+    /*
+    This method is responsible for changing the language of the application.
+    It takes a language code ("iw" for Hebrew, "ar" for Arabic, "en" for English and "ru" for Russian)
+    as input and sets it as the default locale for the application context and the current activity.
+    Then, it calls the recreate() method to reload the activity, which will apply the language changes.
+     */
+    private void changeLanguage(String languageCode) {
+        Locale locale = new Locale(languageCode);
+        Log.d(TAG, "changeLanguage() called with languageCode: " + languageCode); // Add this log message
+        Locale.setDefault(locale);
+
+        Configuration configuration = new Configuration();
+        configuration.setLocale(locale);
+
+        // Update the configuration for the application context
+        getApplicationContext().getResources().updateConfiguration(configuration, getApplicationContext().getResources().getDisplayMetrics());
+
+        // Update the configuration for the current activity
+        getResources().updateConfiguration(configuration, getResources().getDisplayMetrics());
+
+        // Reload the activity to apply language changes
+        recreate();
     }
 
 }

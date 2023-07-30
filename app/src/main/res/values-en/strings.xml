@@ -1,6 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">SlothGoldenCare</string>
-    <string name="title_activity_register" translatable="false">RegisterActivity</string>
     <string name="prompt_email">Email</string>
     <string name="name">Name</string>
     <string name="not_elderly">Not an elderly?</string>
@@ -11,19 +11,11 @@
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">Welcome</string>
     <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >3 characters</string>
-    <string name="login_failed">"Login failed"</string>
-    <string name="title_activity_home_page" translatable="false">homePageActivity</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="invalid_password">Password must be more than 3 characters</string>
+    <string name="login_failed">Login failed</string>
     <string name="alert_dialog_two_buttons_title">Are you sure?</string>
     <string name="alert_dialog_ok">OK</string>
-    <string name="alert_dialog_hide" translatable="false">Hide</string>
-    <string name="alert_dialog_something" translatable="false">Something</string>
     <string name="alert_dialog_cancel">Cancel</string>
-    <string name="alert_dialog_progress_text2" translatable="false">145/305 KB</string>
-    <string name="select_dialog" translatable="false">Header title</string>
-    <string name="select_dialog_show" translatable="false">List dialog</string>
     <string name="dialog_message">delete?</string>
     <string name="dialog_title">Confirm</string>
     <string name="ok">OK</string>
@@ -31,7 +23,7 @@
     <string name="yes">yes</string>
     <string name="no">no</string>
     <string name="alert_title">Sign-up</string>
-    <string name="alert_title_signup">sign-up</string>
+    <string name="alert_title_signup">Sign-up</string>
     <string name="alert_message_id">ID Number consists of 9 Digits Only.</string>
     <string name="alert_message_id_exists">ID Number already exists.</string>
     <string name="alert_message_phone">Phone Number Must be 10 digits and starts with \'05\'</string>
@@ -41,78 +33,38 @@
     <string name="elderSignup">SIGNUP FOR ELDER</string>
     <string name="userSignup">SIGNUP FOR Relative</string>
     <string name="id">ID</string>
-    <string name="alert_title_login" translatable="false">Login</string>
     <string name="alert_message_idEmtpy">Please Enter your ID number</string>
     <string name="alert_message_failed_sign_in">Incorrect ID, try again.</string>
     <string name="alert_message_failed">Failed To Login, Please make sure to sign-up First</string>
-    <string name="alert_title_conf" translatable="false">ID Confirmation</string>
-    <string name="alert_message_IDConf" translatable="false">Whenever you Sign up, You CANT update or change your ID number, Make sure its
-        Correct
-    </string>
     <string name="Health">Health</string>
     <string name="Todo">To-Do</string>
     <string name="Games">Games</string>
     <string name="Settings">Settings</string>
     <string name="Contacts">Contacts</string>
     <string name="Tracking">Tracker</string>
-    <string name="Delete" translatable="false">Delete</string>
-    <string name="Star" translatable="false">Star</string>
     <string name="ADD">ADD</string>
     <string name="UserPhone">Phone Number</string>
-
-    <string-array name="Relation">
-        <item>Choose Your Relation</item>
-        <item>Father</item>
-        <item>Mother</item>
-        <item>Grandfather</item>
-        <item>Grandmother</item>
-        <item>Other</item>
-    </string-array>
-
-    <string name="CurrentPage" translatable="false">CurrentPage</string>
     <string name="Home">Home</string>
     <string name="Profile">Profile</string>
-
     <string name="Doctors">Doctors</string>
     <string name="Medications">Medications</string>
     <string name="DiagnosisAndTreatments">Diagnosis and Treatments</string>
     <string name="HeathStatus">Health Status</string>
-    <string name="health_tip">Health Tip</string>
     <string name="app_name2">Sudoku</string>
-    <string name="hello_world" translatable="false">Hello world!</string>
-    <string name="action_settings" translatable="false">Settings</string>
-    <string name="main_title" translatable="false">Android Sudoku</string>
     <string name="continue_label">Continue</string>
     <string name="new_game_label">New Game</string>
     <string name="about_label">About</string>
     <string name="exit_label">Exit</string>
-    <string name="about_title" translatable="false">About Android Sudoku</string>
     <string name="about_text">Sudoku is a logic-based number placement puzzle. Starting with a partially completed 9x9 grid, the objective is to fill the grid so that each trow, each column, and each of the 3x3 boxes (also called <i>blocks</i>) contains the digits to 9 exactly once.</string>
-    <string name="settings_label" translatable="false">Settings...</string>
-    <string name="settings_title" translatable="false">Sudoku settings</string>
-    <string name="settings_shortcut" translatable="false">s</string>
-    <string name="music_title" translatable="false">Music</string>
-    <string name="music_summary" translatable="false">Play background music</string>
-    <string name="hints_title" translatable="false">Hints</string>
-    <string name="hints_summary" translatable="false">Show hints during play</string>
     <string name="new_game_title">Difficulty</string>
     <string name="easy_label">Easy</string>
     <string name="medium_label">Medium</string>
     <string name="hard_label">Hard</string>
     <string name="game_title">Game</string>
-    <string name="no_moves_label" translatable="false">No moves</string>
-    <string name="keypad_title" translatable="false">Keypad</string>
-    <string name="title_activity_game" translatable="false">GameActivity</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label" translatable="false">First Fragment</string>
-    <string name="second_fragment_label" translatable="false">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-    <string name="hello_first_fragment" translatable="false">Hello first fragment</string>
-    <string name="hello_second_fragment" translatable="false">Hello second fragment. Arg: %1$s</string>
-    <string name="score_label" translatable="false">Score: </string>
-    <string name="todo_Label"> TO-DO LIST</string>
-    <string name="reminder_Label"> Add Reminder Here...</string>
+    <string name="todo_Label">" TO-DO LIST"</string>
+    <string name="reminder_Label">" Add Reminder Here…"</string>
     <string name="reminder_add_success">Successfully Added Reminder</string>
     <string name="info_add_success">Successfully Added Info</string>
     <string name="info_add_fail">Failed Adding Info</string>
@@ -120,26 +72,17 @@
     <string name="info_updated_success">Successfully Updated Info</string>
     <string name="info_updated_failed">Failed Updating Info</string>
     <string name="info_delete_fail">Failed Deleting Info</string>
-    <string name="task_Label"> Enter The Task</string>
-    <string name="task_date" translatable="false"> DATE</string>
-    <string name="task_time" translatable="false"> TIME</string>
-    <string name="task_one" translatable="false"> One-time</string>
-    <string name="task_daily" translatable="false"> Daily</string>
-    <string name="task_save"> SAVE</string>
+    <string name="task_Label">" Enter The Task"</string>
+    <string name="task_save">SAVE</string>
     <string name="replay_label">Replay</string>
-    <string name="menu_label" translatable="false">Main menu</string>
     <string name="confirm_exit">Are you sure want to exit?</string>
     <string name="exit_yes_label">Yes</string>
     <string name="exit_no_label">No</string>
     <string name="win">Congratulations!     You WIN</string>
-    elderliesList
     <string name="elderliesList">Elderlies List</string>
-
-
     <string name="sqlite_adding_user_data_error">Problem Occurred adding User to Sqlite.</string>
     <string name="sqlite_adding_elderly_data_error">Problem Occurred adding User to Sqlite.</string>
     <string name="todo">TODO</string>
-
     <string name="relative_login">Relative</string>
     <string name="doctor_login">Doctor</string>
     <string name="admin_login">Admin</string>
@@ -152,15 +95,10 @@
     <string name="health_status">Health Status</string>
     <string name="surgery">Surgeries</string>
     <string name="allergies">Allergies</string>
-    <string name="title_activity_setteings" translatable="false">SetteingsActivity</string>
     <string name="beloved_elder">ADD YOUR BELOVED ELDER</string>
     <string name="add">ADD</string>
-    <string name="elderly" translatable="false">Elderly</string>
-    <string name="users" translatable="false">Users</string>
-    <string name="elderlies" translatable="false">Elderlies</string>
     <string name="select_date">Select Date</string>
     <string name="sign_up">SIGN UP</string>
-    <string name="snozz_off" translatable="false">Snozz off</string>
     <string name="user_name">user name</string>
     <string name="id2">ID:</string>
     <string name="title">Title</string>
@@ -168,31 +106,25 @@
     <string name="time">Time</string>
     <string name="surgery2">Surgery</string>
     <string name="my_contacts">Contacts</string>
-
-    <!--   Language -->
     <string name="lang">Please choose your language</string>
     <string name="arabic">Arabic</string>
     <string name="hebrew">Hebrew</string>
     <string name="english">English</string>
     <string name="russian">Russian</string>
-
-    <!--    for the setting page-->
     <string name="title1">General</string>
-    <string name="title1.1" translatable="false">Dark Theme</string>
     <string name="title2">About</string>
     <string name="title2.1">Version</string>
-    <string name="summary1" translatable="false">1.0.0</string>
     <string name="title2.2">About Us</string>
-    <string name="about_us1"> Maccabi Health Services is a renowned healthcare organization committed to providing high-quality medical care and support to the community. With a deep understanding of the needs of elderly individuals and their caretakers, Maccabi Health Services has developed aninnovative app aimed at revolutionizing elderly care management.</string>
-    <string name="about_us2">The primary aim of this app is to empower primary caretakers in effectively monitoring the         activities of elderly people, ensuring their well-being, and fostering a sense of security.</string>
+    <string name="about_us1">" Maccabi Health Services is a renowned healthcare organization committed to providing high-quality medical care and support to the community. With a deep understanding of the needs of elderly individuals and their caretakers, Maccabi Health Services has developed an innovative app aimed at revolutionizing elderly care management."</string>
+    <string name="about_us2">The primary aim of this app is to empower primary caretakers in effectively monitoring the activities of elderly people, ensuring their well-being, and fostering a sense of security.</string>
     <string name="title3">Health and Support</string>
     <string name="title3.1">App info</string>
     <string name="app_info_title">App information</string>
     <string name="app_info_sub_title">Description of the main features in the app.</string>
     <string name="family_members">Family Members</string>
-    <string name="family_members_des">Invite and unite family members in providing exceptional care. Empower primary caretakers to invite family members, fostering a collaborative caregiving network.</string>
+    <string name="family_members_des">Invite and unite family members in providing exceptional care.</string>
     <string name="health_services">Health Services</string>
-    <string name="health_services_des">Access professional medical assistance with ease. Connect directly         to Maccabi Health Services, a trusted healthcare organization, for immediate help and support.</string>
+    <string name="health_services_des">Access professional medical assistance with ease. Connect directly  to Maccabi Health Services, a trusted healthcare organization, for immediate help and support.</string>
     <string name="emergency_contacts">Emergency Contacts</string>
     <string name="emergency_contacts_des">Enable users to add and manage emergency contacts who will be notified in case of an emergency.</string>
     <string name="medication_reminders">Medication Reminders</string>
@@ -202,9 +134,6 @@
     <string name="summary2">click to call Maccabi s Services</string>
     <string name="title4.2">Visit our website</string>
     <string name="summary3">click to visit Maccabi s web</string>
-
-    <string name="Appointment_Scheduling_CV">Appointment Scheduling</string>
-    <!--    for appointment scheduling-->
     <string name="schedule_an_appointment">Schedule an appointment</string>
     <string name="pick_time">Click next to pick a time.</string>
     <string name="pick_time_title">Time Picker</string>
@@ -216,19 +145,8 @@
     <string name="next_button">NEXT</string>
     <string name="Appointments_list_title">Your Appointments</string>
     <string name="Appointments_list_button">Click to see Your appoitments</string>
-
-
-    <!--   for Profile -->
-    New UserPhone:
     <string name="NewPhone">New Phone Number:</string>
     <string name="UserType">User Type:</string>
-
     <string name="for_email">Edit your email</string>
     <string name="for_phone">Edit your phone number</string>
-
-
-    <string name="doc_appointments">MY APPOINTMENTS</string>
-    <string name="doc_work_pay">WORK AND PAYMENTS</string>
-
-
 </resources>

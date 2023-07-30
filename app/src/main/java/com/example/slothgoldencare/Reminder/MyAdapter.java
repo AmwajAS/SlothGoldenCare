@@ -32,21 +32,27 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.myviewholder> {
 
     @Override
     public void onBindViewHolder(@NonNull myviewholder holder, int position) {
-        holder.mTitle.setText(dataholder.get(position).getTitle());//Binds the single reminder objects to recycler view
-        holder.mDate.setText(dataholder.get(position).getDate().toString());
+        holder.mTitle.setText(dataholder.get(position).getTitle());
+
+        // Get the date from the Reminder object
+        Date date = dataholder.get(position).getDate();
+
+        // Check if the date is not null before formatting and setting it to the TextView
+        if (date != null) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
+            String formattedDate = dateFormat.format(date);
+            holder.mDate.setText(formattedDate);
+        } else {
+            // Use the current date when the Date object is null
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
+            String currentDate = dateFormat.format(new Date());
+            holder.mDate.setText(currentDate);
+        }
+
         holder.mTime.setText(dataholder.get(position).getTime());
     }
 
 
-
-//    // Set the current date to the TextView
-//    public String showDate(String date) {
-//        if (date != null) {
-//            SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
-//            return dateFormat.format(date);
-//        }
-//        return "";
-//    }
 
     @Override
     public int getItemCount() {
