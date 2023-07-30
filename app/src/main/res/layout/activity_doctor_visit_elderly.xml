@@ -11,6 +11,13 @@
         android:layout_height="match_parent"
         android:background="@drawable/dark_gradient"
         tools:context=".HomePageActivity">
+        <Button
+                android:id="@+id/back_btn"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Back"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"/>
 
 
         <com.zegocloud.uikit.prebuilt.call.invite.widget.ZegoSendCallInvitationButton

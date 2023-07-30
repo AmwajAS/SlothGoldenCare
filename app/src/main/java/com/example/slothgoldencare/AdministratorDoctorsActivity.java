@@ -1,5 +1,7 @@
 package com.example.slothgoldencare;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -75,38 +77,74 @@ public class AdministratorDoctorsActivity extends AppCompatActivity {
                 deleteButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        doctors.remove(doctor);
-                        deleteDoctor(doctor);
-                        notifyDataSetChanged();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        builder.setTitle("Confirm Delete");
+                        builder.setMessage("Are you sure you want to delete this doctor?");
+                        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                doctors.remove(doctor);
+                                deleteDoctor(doctor);
+                                notifyDataSetChanged();
+                            }
+                        });
+                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
                     }
                 });
+
                 editButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         ElderlyItemDialog elderlyItemDialog = new ElderlyItemDialog(getContext(), new ElderlyItemDialog.OnSaveChangesListener() {
                             @Override
                             public void onSaveChanges(Doctor doctor) {
-                                if(doctor != null){
-                                    db = FirebaseFirestore.getInstance();
-                                    db.collection("Doctors").document(doctor.getDocId()).update(
-                                            "id",doctor.getID(),
-                                            "username",doctor.getUsername(),
-                                            "phoneNumber",doctor.getPhoneNumber(),
-                                            "email",doctor.getEmail(),
-                                            "password",doctor.getPassword(),
-                                            "specialization", doctor.getSpecialization()
-                                    ).addOnCompleteListener(task -> {
-                                        if(task.isSuccessful()){
-                                            if(dbHelper.updateDoctorsInfo(doctor)){
-                                                recreate();
-                                                Toast.makeText(getApplicationContext(),R.string.info_updated_success,Toast.LENGTH_LONG).show();
-                                            }else{
-                                                Toast.makeText(getApplicationContext(),R.string.info_updated_failed,Toast.LENGTH_LONG).show();
-                                            }
+                                if (doctor != null) {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                                    builder.setTitle("Confirm Update");
+                                    builder.setMessage("Are you sure you want to update this doctor's information?");
+                                    builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            db = FirebaseFirestore.getInstance();
+                                            db.collection("Doctors").document(doctor.getDocId()).update(
+                                                    "id", doctor.getID(),
+                                                    "username", doctor.getUsername(),
+                                                    "phoneNumber", doctor.getPhoneNumber(),
+                                                    "email", doctor.getEmail(),
+                                                    "password", doctor.getPassword(),
+                                                    "specialization", doctor.getSpecialization()
+                                            ).addOnCompleteListener(task -> {
+                                                if (task.isSuccessful()) {
+                                                    if (dbHelper.updateDoctorsInfo(doctor)) {
+                                                        recreate();
+                                                        Toast.makeText(getApplicationContext(), R.string.info_updated_success, Toast.LENGTH_LONG).show();
+                                                    } else {
+                                                        Toast.makeText(getApplicationContext(), R.string.info_updated_failed, Toast.LENGTH_LONG).show();
+                                                    }
+                                                }
+                                            });
                                         }
                                     });
+                                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+
+                                    AlertDialog alertDialog = builder.create();
+                                    alertDialog.show();
                                 }
                             }
+
 
                             @Override
                             public void onSaveChanges(Elder elder) {

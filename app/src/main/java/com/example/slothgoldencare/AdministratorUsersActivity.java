@@ -1,5 +1,7 @@
 package com.example.slothgoldencare;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,11 +69,29 @@ public class AdministratorUsersActivity extends AppCompatActivity implements Vie
                 deleteButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        users.remove(user);
-                        deleteUser(user);
-                        notifyDataSetChanged();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        builder.setTitle("Confirm Deletion");
+                        builder.setMessage("Are you sure you want to delete this user?");
+                        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                users.remove(user);
+                                deleteUser(user);
+                                notifyDataSetChanged();
+                            }
+                        });
+                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
                     }
                 });
+
                 editButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -83,24 +103,41 @@ public class AdministratorUsersActivity extends AppCompatActivity implements Vie
 
                             @Override
                             public void onSaveChanges(User user) {
-                                if(user != null){
-                                    db = FirebaseFirestore.getInstance();
-                                    db.collection("Users").document(user.getDocId()).update(
-                                            "id",user.getID(),
-                                            "username",user.getUsername(),
-                                            "phoneNumber",user.getPhoneNumber(),
-                                            "email",user.getEmail(),
-                                            "password",user.getPassword()
-                                    ).addOnCompleteListener(task -> {
-                                        if(task.isSuccessful()){
-                                            if(dbHelper.updateUserInfo(user)){
-                                                recreate();
-                                                Toast.makeText(getApplicationContext(),R.string.info_updated_success,Toast.LENGTH_LONG).show();
-                                            }else{
-                                                Toast.makeText(getApplicationContext(),R.string.info_updated_failed,Toast.LENGTH_LONG).show();
-                                            }
+                                if (user != null) {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                                    builder.setTitle("Confirm Update");
+                                    builder.setMessage("Are you sure you want to update this user's information?");
+                                    builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            db = FirebaseFirestore.getInstance();
+                                            db.collection("Users").document(user.getDocId()).update(
+                                                    "id", user.getID(),
+                                                    "username", user.getUsername(),
+                                                    "phoneNumber", user.getPhoneNumber(),
+                                                    "email", user.getEmail(),
+                                                    "password", user.getPassword()
+                                            ).addOnCompleteListener(task -> {
+                                                if (task.isSuccessful()) {
+                                                    if (dbHelper.updateUserInfo(user)) {
+                                                        recreate();
+                                                        Toast.makeText(getApplicationContext(), R.string.info_updated_success, Toast.LENGTH_LONG).show();
+                                                    } else {
+                                                        Toast.makeText(getApplicationContext(), R.string.info_updated_failed, Toast.LENGTH_LONG).show();
+                                                    }
+                                                }
+                                            });
                                         }
                                     });
+                                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+
+                                    AlertDialog alertDialog = builder.create();
+                                    alertDialog.show();
                                 }
                             }
 

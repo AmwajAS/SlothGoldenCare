@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +30,7 @@ public class DoctorVisitElderlyActivity extends AppCompatActivity implements Vie
     private DataBaseHelper dataBaseHelper;
     private TextView editTextUsername;
     private CardView D1, D2, D3, D4, D5;
+    private Button backBtn;
     private Elder elder;
     private ZegoSendCallInvitationButton callBtn;
     private FirebaseAuth auth;
@@ -73,6 +75,11 @@ public class DoctorVisitElderlyActivity extends AppCompatActivity implements Vie
             startmyservice(doctorId);
             setVideoCall(elder.getID());
 
+        });
+
+        backBtn = findViewById(R.id.back_btn);
+        backBtn.setOnClickListener(view -> {
+            this.finish();
         });
     }
 

@@ -1,5 +1,7 @@
 package com.example.slothgoldencare;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import android.widget.*;
@@ -132,28 +134,46 @@ public class HealthStatusDoctorFragment extends Fragment {
                         TextView idText = convertView.findViewById(R.id.health_status_item);
                         idText.setText(diagnosis.getDiagnosis());
                         ImageButton deletBtn = convertView.findViewById(R.id.delete_btn);
-                        deletBtn.setOnClickListener(view->{
-                            db.collection("Diagnosis")
-                                    .whereEqualTo("diagnosis",diagnosis.getDiagnosis())
-                                    .whereEqualTo("elderlyDocId",diagnosis.getElderlyDocId())
-                                    .get().addOnCompleteListener(task -> {
-                                        if(task.isSuccessful()){
-                                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                                // Delete the matching document from Firestore
-                                                db.collection("Diagnosis").document(document.getId()).delete();
-                                                if(dataBaseHelper.deleteDiagnosis(diagnosis)){
-                                                    diagnosisList.remove(position);
-                                                    Toast.makeText(getContext(), R.string.info_delete_success, Toast.LENGTH_LONG).show();
-                                                    diagnosisAdapter.notifyDataSetChanged();
-                                                }else{
-                                                    Toast.makeText(getContext(), R.string.info_delete_fail, Toast.LENGTH_LONG).show();
+                        deletBtn.setOnClickListener(view -> {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            builder.setTitle("Confirm Delete");
+                            builder.setMessage("Are you sure you want to delete this diagnosis?");
+                            builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    db.collection("Diagnosis")
+                                            .whereEqualTo("diagnosis", diagnosis.getDiagnosis())
+                                            .whereEqualTo("elderlyDocId", diagnosis.getElderlyDocId())
+                                            .get().addOnCompleteListener(task -> {
+                                                if (task.isSuccessful()) {
+                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                        // Delete the matching document from Firestore
+                                                        db.collection("Diagnosis").document(document.getId()).delete();
+                                                        if (dataBaseHelper.deleteDiagnosis(diagnosis)) {
+                                                            diagnosisList.remove(position);
+                                                            Toast.makeText(getContext(), R.string.info_delete_success, Toast.LENGTH_LONG).show();
+                                                            diagnosisAdapter.notifyDataSetChanged();
+                                                        } else {
+                                                            Toast.makeText(getContext(), R.string.info_delete_fail, Toast.LENGTH_LONG).show();
+                                                        }
+                                                    }
+                                                } else {
+                                                    Toast.makeText(getContext(), task.getException().getMessage().toString(), Toast.LENGTH_LONG).show();
                                                 }
-                                            }
-                                        } else {
-                                            Toast.makeText(getContext(), task.getException().getMessage().toString(), Toast.LENGTH_LONG).show();
-                                        }
-                                    });
+                                            });
+                                }
+                            });
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+
+                            AlertDialog alertDialog = builder.create();
+                            alertDialog.show();
                         });
+
 
                         return convertView;
                     }
@@ -178,28 +198,46 @@ public class HealthStatusDoctorFragment extends Fragment {
                         TextView idText = convertView.findViewById(R.id.health_status_item);
                         idText.setText(medicine.getMedicine());
                         ImageButton deletBtn = convertView.findViewById(R.id.delete_btn);
-                        deletBtn.setOnClickListener(view->{
-                            db.collection("Medicines")
-                                    .whereEqualTo("medicine",medicine.getMedicine())
-                                    .whereEqualTo("elderlyDocId",medicine.getElderlyDocId())
-                                    .get().addOnCompleteListener(task -> {
-                                        if(task.isSuccessful()){
-                                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                                // Delete the matching document from Firestore
-                                                db.collection("Medicines").document(document.getId()).delete();
-                                                if(dataBaseHelper.deleteMedicine(medicine)){
-                                                    medicineList.remove(position);
-                                                    Toast.makeText(getContext(), R.string.info_delete_success, Toast.LENGTH_LONG).show();
-                                                    medicinesAdapter.notifyDataSetChanged();
-                                                }else{
-                                                    Toast.makeText(getContext(), R.string.info_delete_fail, Toast.LENGTH_LONG).show();
+                        deletBtn.setOnClickListener(view -> {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            builder.setTitle("Confirm Delete");
+                            builder.setMessage("Are you sure you want to delete this medicine?");
+                            builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    db.collection("Medicines")
+                                            .whereEqualTo("medicine", medicine.getMedicine())
+                                            .whereEqualTo("elderlyDocId", medicine.getElderlyDocId())
+                                            .get().addOnCompleteListener(task -> {
+                                                if (task.isSuccessful()) {
+                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                        // Delete the matching document from Firestore
+                                                        db.collection("Medicines").document(document.getId()).delete();
+                                                        if (dataBaseHelper.deleteMedicine(medicine)) {
+                                                            medicineList.remove(position);
+                                                            Toast.makeText(getContext(), R.string.info_delete_success, Toast.LENGTH_LONG).show();
+                                                            medicinesAdapter.notifyDataSetChanged();
+                                                        } else {
+                                                            Toast.makeText(getContext(), R.string.info_delete_fail, Toast.LENGTH_LONG).show();
+                                                        }
+                                                    }
+                                                } else {
+                                                    Toast.makeText(getContext(), task.getException().getMessage().toString(), Toast.LENGTH_LONG).show();
                                                 }
-                                            }
-                                        } else {
-                                            Toast.makeText(getContext(), task.getException().getMessage().toString(), Toast.LENGTH_LONG).show();
-                                        }
-                                    });
+                                            });
+                                }
+                            });
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+
+                            AlertDialog alertDialog = builder.create();
+                            alertDialog.show();
                         });
+
 
                         return convertView;
                     }
@@ -225,28 +263,46 @@ public class HealthStatusDoctorFragment extends Fragment {
                         TextView idText = convertView.findViewById(R.id.health_status_item);
                         idText.setText(allergy.getAllergy());
                         ImageButton deletBtn = convertView.findViewById(R.id.delete_btn);
-                        deletBtn.setOnClickListener(view->{
-                            db.collection("Allergies")
-                                    .whereEqualTo("allergy",allergy.getAllergy())
-                                    .whereEqualTo("elderlyDocId",allergy.getElderlyDocId())
-                                    .get().addOnCompleteListener(task -> {
-                                        if(task.isSuccessful()){
-                                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                                // Delete the matching document from Firestore
-                                                db.collection("Allergies").document(document.getId()).delete();
-                                                if(dataBaseHelper.deleteAllergy(allergy)){
-                                                   allergyList.remove(position);
-                                                    Toast.makeText(getContext(), R.string.info_delete_success, Toast.LENGTH_LONG).show();
-                                                    allergiesAdapter.notifyDataSetChanged();
-                                                }else{
-                                                    Toast.makeText(getContext(), R.string.info_delete_fail, Toast.LENGTH_LONG).show();
+                        deletBtn.setOnClickListener(view -> {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            builder.setTitle("Confirm Delete");
+                            builder.setMessage("Are you sure you want to delete this allergy?");
+                            builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    db.collection("Allergies")
+                                            .whereEqualTo("allergy", allergy.getAllergy())
+                                            .whereEqualTo("elderlyDocId", allergy.getElderlyDocId())
+                                            .get().addOnCompleteListener(task -> {
+                                                if (task.isSuccessful()) {
+                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                        // Delete the matching document from Firestore
+                                                        db.collection("Allergies").document(document.getId()).delete();
+                                                        if (dataBaseHelper.deleteAllergy(allergy)) {
+                                                            allergyList.remove(position);
+                                                            Toast.makeText(getContext(), R.string.info_delete_success, Toast.LENGTH_LONG).show();
+                                                            allergiesAdapter.notifyDataSetChanged();
+                                                        } else {
+                                                            Toast.makeText(getContext(), R.string.info_delete_fail, Toast.LENGTH_LONG).show();
+                                                        }
+                                                    }
+                                                } else {
+                                                    Toast.makeText(getContext(), task.getException().getMessage().toString(), Toast.LENGTH_LONG).show();
                                                 }
-                                            }
-                                        } else {
-                                            Toast.makeText(getContext(), task.getException().getMessage().toString(), Toast.LENGTH_LONG).show();
-                                        }
-                                    });
+                                            });
+                                }
+                            });
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+
+                            AlertDialog alertDialog = builder.create();
+                            alertDialog.show();
                         });
+
 
                         return convertView;
                     }
@@ -275,29 +331,47 @@ public class HealthStatusDoctorFragment extends Fragment {
                         idText.setText(surgery.getSurgery());
                         dateText.setText(surgery.getDate().toString());
                         ImageButton deletBtn = convertView.findViewById(R.id.delete_btn);
-                        deletBtn.setOnClickListener(view->{
-                            db.collection("Surgeries")
-                                    .whereEqualTo("surgery",surgery.getSurgery())
-                                    .whereEqualTo("elderlyDocId",surgery.getElderlyDocId())
-                                    .whereEqualTo("date",surgery.getDate())
-                                    .get().addOnCompleteListener(task -> {
-                                        if(task.isSuccessful()){
-                                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                                // Delete the matching document from Firestore
-                                                db.collection("Surgeries").document(document.getId()).delete();
-                                                if(dataBaseHelper.deleteSurgery(surgery)){
-                                                    surgeryList.remove(position);
-                                                    Toast.makeText(getContext(), R.string.info_delete_success, Toast.LENGTH_LONG).show();
-                                                    surgeriesAdapter.notifyDataSetChanged();
-                                                }else{
-                                                    Toast.makeText(getContext(), R.string.info_delete_fail, Toast.LENGTH_LONG).show();
+                        deletBtn.setOnClickListener(view -> {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            builder.setTitle("Confirm Delete");
+                            builder.setMessage("Are you sure you want to delete this surgery?");
+                            builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    db.collection("Surgeries")
+                                            .whereEqualTo("surgery", surgery.getSurgery())
+                                            .whereEqualTo("elderlyDocId", surgery.getElderlyDocId())
+                                            .whereEqualTo("date", surgery.getDate())
+                                            .get().addOnCompleteListener(task -> {
+                                                if (task.isSuccessful()) {
+                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                        // Delete the matching document from Firestore
+                                                        db.collection("Surgeries").document(document.getId()).delete();
+                                                        if (dataBaseHelper.deleteSurgery(surgery)) {
+                                                            surgeryList.remove(position);
+                                                            Toast.makeText(getContext(), R.string.info_delete_success, Toast.LENGTH_LONG).show();
+                                                            surgeriesAdapter.notifyDataSetChanged();
+                                                        } else {
+                                                            Toast.makeText(getContext(), R.string.info_delete_fail, Toast.LENGTH_LONG).show();
+                                                        }
+                                                    }
+                                                } else {
+                                                    Toast.makeText(getContext(), task.getException().getMessage().toString(), Toast.LENGTH_LONG).show();
                                                 }
-                                            }
-                                        } else {
-                                            Toast.makeText(getContext(), task.getException().getMessage().toString(), Toast.LENGTH_LONG).show();
-                                        }
-                                    });
+                                            });
+                                }
+                            });
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+
+                            AlertDialog alertDialog = builder.create();
+                            alertDialog.show();
                         });
+
 
                         return convertView;
                     }

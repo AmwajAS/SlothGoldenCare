@@ -1,5 +1,7 @@
 package com.example.slothgoldencare;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -63,39 +65,75 @@ public class AdministratorElderliesActivity extends AppCompatActivity implements
                 deleteButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        elders.remove(elder);
-                        deleteUser(elder);
-                        notifyDataSetChanged();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        builder.setTitle("Confirm Deletion");
+                        builder.setMessage("Are you sure you want to delete this entry?");
+                        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                elders.remove(elder);
+                                deleteUser(elder);
+                                notifyDataSetChanged();
+                            }
+                        });
+                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
                     }
                 });
+
                 editButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         ElderlyItemDialog elderlyItemDialog = new ElderlyItemDialog(getContext(), new ElderlyItemDialog.OnSaveChangesListener() {
                             @Override
                             public void onSaveChanges(Elder elder) {
-                                if(elder != null){
-                                    db = FirebaseFirestore.getInstance();
-                                    db.collection("Elderlies").document(elder.getDocId()).update(
-                                            "id",elder.getID(),
-                                            "username",elder.getUsername(),
-                                            "phoneNumber",elder.getPhoneNumber(),
-                                            "email",elder.getEmail(),
-                                            "password",elder.getPassword(),
-                                            "gender",elder.getGender().toString(),
-                                            "dob",elder.getDOB()
-                                    ).addOnCompleteListener(task -> {
-                                        if(task.isSuccessful()){
-                                            if(dbHelper.updateElderlyInfo(elder)){
-                                                recreate();
-                                                Toast.makeText(getApplicationContext(),R.string.info_updated_success,Toast.LENGTH_LONG).show();
-                                            }else{
-                                                Toast.makeText(getApplicationContext(),R.string.info_updated_failed,Toast.LENGTH_LONG).show();
-                                            }
+                                if (elder != null) {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                                    builder.setTitle("Confirm Update");
+                                    builder.setMessage("Are you sure you want to update this entry?");
+                                    builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            db = FirebaseFirestore.getInstance();
+                                            db.collection("Elderlies").document(elder.getDocId()).update(
+                                                    "id", elder.getID(),
+                                                    "username", elder.getUsername(),
+                                                    "phoneNumber", elder.getPhoneNumber(),
+                                                    "email", elder.getEmail(),
+                                                    "password", elder.getPassword(),
+                                                    "gender", elder.getGender().toString(),
+                                                    "dob", elder.getDOB()
+                                            ).addOnCompleteListener(task -> {
+                                                if (task.isSuccessful()) {
+                                                    if (dbHelper.updateElderlyInfo(elder)) {
+                                                        recreate();
+                                                        Toast.makeText(getApplicationContext(), R.string.info_updated_success, Toast.LENGTH_LONG).show();
+                                                    } else {
+                                                        Toast.makeText(getApplicationContext(), R.string.info_updated_failed, Toast.LENGTH_LONG).show();
+                                                    }
+                                                }
+                                            });
                                         }
                                     });
+                                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+
+                                    AlertDialog alertDialog = builder.create();
+                                    alertDialog.show();
                                 }
                             }
+
 
                             @Override
                             public void onSaveChanges(User user) {
