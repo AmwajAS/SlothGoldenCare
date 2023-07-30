@@ -587,6 +587,28 @@ this method take as an input Elder ID and delete it from the DB.
 
         return userList;
     }
+
+    public List<ElderRelative> getElderlyRelatives() {
+        List<ElderRelative> elderRelativeList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(ELD_REL_TBL, null, null, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String eldId = cursor.getString(cursor.getColumnIndexOrThrow(ELD_ID));
+                String relId = cursor.getString(cursor.getColumnIndexOrThrow(REL_ID));
+                String relation = cursor.getString(cursor.getColumnIndexOrThrow(RELATION));
+
+                ElderRelative elderRelative = new ElderRelative(relId,eldId,relation);
+                elderRelativeList.add(elderRelative);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return elderRelativeList;
+    }
     /*
     This method connects to the DB and returns all the data in the Elders TBL.
      */

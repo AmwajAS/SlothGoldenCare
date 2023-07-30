@@ -12,9 +12,12 @@ import android.view.View;
 import com.example.slothgoldencare.Model.Elder;
 import com.example.slothgoldencare.Model.ElderRelative;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.List;
 
 public class AddRelatedActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -35,8 +38,7 @@ public class AddRelatedActivity extends AppCompatActivity implements AdapterView
         related_id_text = findViewById(R.id.related_id);
         bottomNavigationView();
 
-        //back button
-
+        List<ElderRelative> elderRelativeList = dataBaseHelper.getElderlyRelatives();
         //relation spinner
         Spinner spinner = findViewById(R.id.relation);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.Relation, android.R.layout.simple_spinner_item);
@@ -52,17 +54,21 @@ public class AddRelatedActivity extends AppCompatActivity implements AdapterView
             Elder elder = dataBaseHelper.getElderById(relatedID);
             if(elder == null){
                 //if null show fit text
-                Toast.makeText(AddRelatedActivity.this,R.string.alert_message_failed_sign_in, Toast.LENGTH_LONG).show();
+                Snackbar.make(getWindow().getDecorView(),R.string.alert_message_failed_sign_in, Snackbar.LENGTH_LONG).show();
             }else{
-                //if exists, adding. STILL NEED TO ADD IN DATABASE.
+                //if exists, adding.
                 ElderRelative elderRelative = new ElderRelative(currUser.getUid(),elder.getDocId(),spinner.getSelectedItem().toString());
-                db.collection("ElderlyRelative").add(elderRelative).addOnSuccessListener(documentReference -> {
-                    elderRelative.setDocId(documentReference.getId());
-                    if(dataBaseHelper.addElderRelative(elderRelative)) {
-                        Toast.makeText(AddRelatedActivity.this, "Added User " + elder.getUsername() + " Successfully", Toast.LENGTH_LONG).show();
-                    }
-                }).addOnFailureListener(e -> Toast.makeText(AddRelatedActivity.this, e.getMessage(), Toast.LENGTH_LONG).show());
-
+                if(!elderRelativeList.contains(elderRelative)) {
+                    db.collection("ElderlyRelative").add(elderRelative).addOnSuccessListener(documentReference -> {
+                        elderRelative.setDocId(documentReference.getId());
+                        if (dataBaseHelper.addElderRelative(elderRelative)) {
+                            Snackbar.make(getWindow().getDecorView(), "Added User " + elder.getUsername() + " Successfully", Snackbar.LENGTH_LONG).show();
+                        }
+                    }).addOnFailureListener(e -> Toast.makeText(AddRelatedActivity.this, e.getMessage(), Toast.LENGTH_LONG).show());
+                }
+                else{
+                    Snackbar.make(getWindow().getDecorView(), "This elderly is already in your list!", Snackbar.LENGTH_LONG).show();
+                }
             }
         });
     }
