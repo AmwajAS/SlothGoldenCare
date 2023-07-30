@@ -11,15 +11,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.preference.Preference;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class SettingsActivity extends AppCompatActivity {
-
-
+private FirebaseAuth auth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setteings);
         bottomNavigationView();
+        auth = FirebaseAuth.getInstance();
 
         if(findViewById(R.id.fragment_container)!=null){
             if(savedInstanceState!=null){
@@ -32,6 +33,8 @@ public class SettingsActivity extends AppCompatActivity {
         this method handle the selected items / buttons of the bottom navigation bar.
          */
     public void bottomNavigationView() {
+        DataBaseHelper dbHelper = new DataBaseHelper(this);
+
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
         bottomNavigationView.setSelectedItemId(R.id.settings);
         Menu menu = bottomNavigationView.getMenu();
@@ -41,13 +44,21 @@ public class SettingsActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.home:
-                    replaceView(HomePageActivity.class);
+                    if(dbHelper.getElderByDocumentId(auth.getUid()) != null){
+                        replaceView(HomePageActivity.class);
+                    }else if(dbHelper.getUserByDocumentId(auth.getUid()) != null){
+                        replaceView(UserHomePageActivity.class);
+                    }
                     return true;
                 case R.id.settings:
                     replaceView(SettingsActivity.class);
                     return true;
                 case R.id.profile:
-                    replaceView(ProfileActivity.class);
+                    if(dbHelper.getElderByDocumentId(auth.getUid()) != null){
+                        replaceView(ProfileActivity.class);
+                    }else if(dbHelper.getUserByDocumentId(auth.getUid()) != null){
+                        replaceView(UserHomePageActivity.class);
+                    }
                     return true;
             }
             return false;
