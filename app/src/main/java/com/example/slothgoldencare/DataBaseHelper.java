@@ -120,6 +120,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String APPOINTMENT_DATE = "date";
     static final String NOTES = "notes";
 
+    /*
+    WorkAndPayment Table info.
+ */
+    static final String WORK_AND_PAYMENT_TBL = "WORK_AND_PAYMENT";
+    static final String WORK_AND_PAYMENT_DATE_DAY = "dateDay";
+    static final String WORK_AND_PAYMENT_DOCTOR_ID = "doctorId";
+    static final String WORK_AND_PAYMENT_HOURS = "hours";
+    static final String WORK_AND_PAYMENT_IS_PAID = "isPaid";
+    static final String WORK_AND_PAYMENT_PAID_DATE = "paidDate";
+
     private SimpleDateFormat sdf; //for the Timestamp firbase
 
     /*
@@ -201,6 +211,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             HEALTH_TIP_CONTENT + " TEXT NOT NULL " +
             " );";
 
+    private static final String CREATE_DB_QUERY_WORK_AND_PAYMENT = "CREATE TABLE " + WORK_AND_PAYMENT_TBL + " ( " +
+            WORK_AND_PAYMENT_DATE_DAY + " TEXT NOT NULL, " +
+            WORK_AND_PAYMENT_DOCTOR_ID + " TEXT NOT NULL, " +
+            WORK_AND_PAYMENT_HOURS + " TEXT NOT NULL, " +
+            WORK_AND_PAYMENT_IS_PAID + " TEXT NOT NULL, " +
+            WORK_AND_PAYMENT_PAID_DATE + " TEXT " +
+            " );";
+
     public DataBaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
         sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
@@ -220,6 +238,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_DB_QUERY_APPOINTMENT);
         db.execSQL(CREATE_DB_QUERY_MEDICINE);
         db.execSQL(CREATE_DB_QUERY_HEALTH_TIP);
+        db.execSQL(CREATE_DB_QUERY_WORK_AND_PAYMENT);
         FetchDataFromFirestore();
     }
 
@@ -306,6 +325,21 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         long result = db.insert(APPOINTMENT_TBL, null, values);
         return result != -1;
     }
+
+    public boolean addWorkAndPaymentData(WorkAndPayment workAndPayment) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(WORK_AND_PAYMENT_DATE_DAY, workAndPayment.getDateDay());
+        values.put(WORK_AND_PAYMENT_DOCTOR_ID, workAndPayment.getDoctorId());
+        values.put(WORK_AND_PAYMENT_HOURS, workAndPayment.getHours());
+        values.put(WORK_AND_PAYMENT_IS_PAID, workAndPayment.isPaid() ? "1" : "0");
+        values.put(WORK_AND_PAYMENT_PAID_DATE, workAndPayment.getPaidDate());
+
+        long result = db.insert(WORK_AND_PAYMENT_TBL, null, values);
+        return result != -1;
+    }
+
 
     public boolean checkUserID(String uid) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -669,6 +703,32 @@ this method take as an input Elder ID and delete it from the DB.
         return appointmentsList;
     }
 
+    public List<WorkAndPayment> getWorkAndPaymentData() {
+        List<WorkAndPayment> workAndPaymentList = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(WORK_AND_PAYMENT_TBL, null, null, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String dateDay = cursor.getString(cursor.getColumnIndexOrThrow(WORK_AND_PAYMENT_DATE_DAY));
+                String doctorId = cursor.getString(cursor.getColumnIndexOrThrow(WORK_AND_PAYMENT_DOCTOR_ID));
+                String hours = cursor.getString(cursor.getColumnIndexOrThrow(WORK_AND_PAYMENT_HOURS));
+                boolean isPaid = cursor.getString(cursor.getColumnIndexOrThrow(WORK_AND_PAYMENT_IS_PAID)).equals("1");
+                String paidDate = cursor.getString(cursor.getColumnIndexOrThrow(WORK_AND_PAYMENT_PAID_DATE));
+
+                WorkAndPayment workAndPayment = new WorkAndPayment(dateDay, doctorId, hours, isPaid, paidDate);
+                workAndPaymentList.add(workAndPayment);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return workAndPaymentList;
+    }
+
+
     /*
     this method updated the changed values of the User TBL fileds.
      */
@@ -722,6 +782,22 @@ this method take as an input Elder ID and delete it from the DB.
         values.put(DOCTOR_SPECIALIZATION, doctor.getSpecialization());
 
         int rowsAffected = db.update(DOCTORS_TBL, values, DOCUMNET_ID+"=?", new String[]{doctor.getDocId()});
+        db.close();
+
+        return rowsAffected > 0;
+    }
+    public boolean updateWorkAndPaymentData(WorkAndPayment workAndPayment) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(WORK_AND_PAYMENT_DATE_DAY, workAndPayment.getDateDay());
+        values.put(WORK_AND_PAYMENT_DOCTOR_ID, workAndPayment.getDoctorId());
+        values.put(WORK_AND_PAYMENT_HOURS, workAndPayment.getHours());
+        values.put(WORK_AND_PAYMENT_IS_PAID, workAndPayment.isPaid() ? "1" : "0");
+        values.put(WORK_AND_PAYMENT_PAID_DATE, workAndPayment.getPaidDate());
+
+        int rowsAffected = db.update(WORK_AND_PAYMENT_TBL, values, WORK_AND_PAYMENT_DATE_DAY + "=? AND " +
+                WORK_AND_PAYMENT_DOCTOR_ID + "=?", new String[]{workAndPayment.getDateDay(), workAndPayment.getDoctorId()});
         db.close();
 
         return rowsAffected > 0;
@@ -1111,6 +1187,46 @@ this method take as an input Elder ID and delete it from the DB.
             Log.w(TAG,"Error fetching Health Tips data from firestore to SQLite: "+e.getMessage().toString());
         });
     }
+    public void fetchWorkAndPaymentDataFromFirestore() {
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        firestore.collection("WorkAndPayment").get().addOnSuccessListener(querySnapshot -> {
+            // Open connection to SQLite database
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            // Iterate over documents
+            for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                try {
+                    // Extract required fields from the document
+                    String dateDay = document.getTimestamp("dateDay").toDate().toString();
+                    String doctorId = document.getString("doctorId");
+                    String hours = document.getString("hours");
+                    boolean isPaid = document.getBoolean("isPaid");
+                    String paidDate = document.getTimestamp("paidDate").toDate().toString();
+
+                    // Execute the INSERT statement for the "WorkAndPayment" table
+                    String insertQuery = "INSERT INTO " + WORK_AND_PAYMENT_TBL + " (" +
+                            WORK_AND_PAYMENT_DATE_DAY + "," + WORK_AND_PAYMENT_DOCTOR_ID + "," +
+                            WORK_AND_PAYMENT_HOURS + "," + WORK_AND_PAYMENT_IS_PAID + "," +
+                            WORK_AND_PAYMENT_PAID_DATE + ") VALUES (?, ?, ?, ?, ?)";
+                    SQLiteStatement statement = db.compileStatement(insertQuery);
+                    statement.bindString(1, dateDay);
+                    statement.bindString(2, doctorId);
+                    statement.bindString(3, hours);
+                    statement.bindString(4, isPaid ? "true" : "false");
+                    statement.bindString(5, paidDate);
+                    long rowId = statement.executeInsert();
+                } catch (Exception e) {
+                    Log.w(TAG, "Specific WorkAndPayment data error: " + e.getMessage());
+                }
+            }
+            // Close the database connection
+            db.close();
+        }).addOnFailureListener(e -> {
+            Log.w(TAG, "Error fetching WorkAndPayment data from Firestore to SQLite: " + e.getMessage());
+        });
+    }
+
+
 
 
     public void FetchDataFromFirestore(){
@@ -1125,6 +1241,7 @@ this method take as an input Elder ID and delete it from the DB.
         FetchSurgeriesFromFirestore();
         FetchHealthTipsFromFirestore();
         FetchAppointmentsFromFirestore();
+        fetchWorkAndPaymentDataFromFirestore();
     }
 
     public Date convertStringToDate(String dobString){
