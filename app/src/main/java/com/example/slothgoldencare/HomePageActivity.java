@@ -64,8 +64,6 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
         auth = FirebaseAuth.getInstance();
         setContentView(R.layout.activity_home_page);
         editTextUsername = findViewById(R.id.username);
-        username = getIntent().getStringExtra("username");
-        userId = getIntent().getStringExtra("userID");
         healthTipList = new ArrayList<>();
         dbHelper = new DataBaseHelper(this);
         healthTipList = dbHelper.getHealthTips();

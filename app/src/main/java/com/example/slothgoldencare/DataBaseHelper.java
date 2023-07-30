@@ -684,6 +684,56 @@ this method take as an input Elder ID and delete it from the DB.
         }
         return relatives;
     }
+    public Elder getElderByDocumentId(String documentId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(ELDER_TBL, null, DOCUMNET_ID + "=?", new String[]{documentId}, null, null, null);
+        if (cursor.moveToFirst()) {
+            String docId = cursor.getString(cursor.getColumnIndexOrThrow(DOCUMNET_ID));
+            String id = cursor.getString(cursor.getColumnIndexOrThrow(ELDER_ID));
+            String name = cursor.getString(cursor.getColumnIndexOrThrow(ELDER_NAME));
+            String email = cursor.getString(cursor.getColumnIndexOrThrow(ELDER_EMAIL));
+            String password = cursor.getString(cursor.getColumnIndexOrThrow(ELDER_PASSWORD));
+            String phone = cursor.getString(cursor.getColumnIndexOrThrow(ELDER_PHONE));
+            String dobString = cursor.getString(cursor.getColumnIndexOrThrow(ELDER_DOB));
+            String genderString = cursor.getString(cursor.getColumnIndexOrThrow(ELDER_GENDER));
+
+            Date dob = null;
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                dob = sdf.parse(dobString);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Gender gender = Elder.GenderConvertor(genderString);
+            // Create and return the Elder object
+            Elder elder = new Elder(id, name,phone,dob, gender ,email, password);
+            elder.setDocId(docId);
+            return elder;
+        }
+        cursor.close();
+        // Return null if no matching elder found
+        return null;
+    }
+    public User getUserByDocumentId(String documentId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(USERS_TBL, null, DOCUMNET_ID + "=?", new String[]{documentId}, null, null, null);
+        if (cursor.moveToFirst()) {
+            String docId = cursor.getString(cursor.getColumnIndexOrThrow(DOCUMNET_ID));
+            String id = cursor.getString(cursor.getColumnIndexOrThrow(USER_ID));
+            String name = cursor.getString(cursor.getColumnIndexOrThrow(USER_NAME));
+            String email = cursor.getString(cursor.getColumnIndexOrThrow(USER_EMAIL));
+            String password = cursor.getString(cursor.getColumnIndexOrThrow(USER_PASSWORD));
+            String phone = cursor.getString(cursor.getColumnIndexOrThrow(USER_PHONE));
+
+            // Create and return the Elder object
+            User user = new User(id, name,phone,email, password);
+            user.setDocId(docId);
+            return user;
+        }
+        cursor.close();
+        // Return null if no matching elder found
+        return null;
+    }
     public List<HealthTip> getHealthTips() {
         List<HealthTip> healthTipsList = new ArrayList<>();
 

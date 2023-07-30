@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -53,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate() called");
+        auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         setContentView(R.layout.activity_login);
         Button elderBtn = (Button) findViewById(R.id.elderBtn);
@@ -116,21 +118,10 @@ public class LoginActivity extends AppCompatActivity {
                                             if (task.isSuccessful()) {
                                                 progressBar.setVisibility(View.GONE);
                                                 if (relativeRadioBtn.isChecked()) {
-                                                    Intent intent = new Intent(LoginActivity.this, UserHomePageActivity.class);
-                                                    intent.putExtra("userID", snapshot.get("id").toString());
-                                                    intent.putExtra("username", snapshot.get("username").toString());
-                                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                    startActivity(intent);
-                                                    finish();
-
+                                                    UpdateUI(null,auth.getUid());
                                                 }
                                                 else {
-                                                    Intent intent = new Intent(LoginActivity.this, HomePageActivity.class);
-                                                    intent.putExtra("userID", snapshot.get("id").toString());
-                                                    intent.putExtra("username", snapshot.get("username").toString());
-                                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                    startActivity(intent);
-                                                    finish();
+                                                    UpdateUI(auth.getUid(),null);
                                                 }
                                             } else {
                                                 progressBar.setVisibility(View.GONE);
@@ -173,11 +164,40 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currUser = auth.getCurrentUser();
+        if(currUser != null){
+            Elder elder = dbHelper.getElderByDocumentId(currUser.getUid());
+            User user = dbHelper.getUserByDocumentId(currUser.getUid());
+            if(elder != null){
+                UpdateUI(elder.getDocId(),null);
+            }else if (user != null){
+                UpdateUI(null,user.getDocId());
+            }
+        }else{
+
+        }
+    }
+    public void UpdateUI(String elderDocId, String userDocId){
+        if(elderDocId != null){
+            Intent intent = new Intent(LoginActivity.this, HomePageActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        }else if(userDocId != null){
+            Intent intent = new Intent(LoginActivity.this, UserHomePageActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        }
+    }
 
     /*
-    Since the Real Id Number consists of 9 digits Only, So in this method we check the Id Validation.
-    9 numbers only between 0-9.
-     */
+        Since the Real Id Number consists of 9 digits Only, So in this method we check the Id Validation.
+        9 numbers only between 0-9.
+         */
     public boolean checkIDValidation(String idV) {
         return idV.matches("[0-9]{9}");
     }
