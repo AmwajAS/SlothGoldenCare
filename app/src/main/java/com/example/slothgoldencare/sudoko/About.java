@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.example.slothgoldencare.AdministratorActivity;
+import com.example.slothgoldencare.AdministratorUsersActivity;
 import com.example.slothgoldencare.HomePageActivity;
 import com.example.slothgoldencare.ProfileActivity;
 import com.example.slothgoldencare.R;
@@ -24,6 +27,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
  */
 public class About extends AppCompatActivity {
 
+    private Button backBtn;
     /**
      * This method is called when the `About` activity is created.
      * It initializes the activity and sets the content view to the layout defined in the `activity_about.xml` file.
@@ -34,6 +38,12 @@ public class About extends AppCompatActivity {
         setContentView(R.layout.activity_about);
         bottomNavigationView();
 
+        // back btn to remove the replaced view to the main one.
+        backBtn = findViewById(R.id.back_btn);
+        backBtn.setOnClickListener(view1 -> {
+                    Intent intent = new Intent(About.this, GameActivity.class);
+                    startActivity(intent);
+    });
     }
 
     /*

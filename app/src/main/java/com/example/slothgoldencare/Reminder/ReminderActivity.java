@@ -3,6 +3,7 @@ package com.example.slothgoldencare.Reminder;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
@@ -27,6 +28,8 @@ import com.example.slothgoldencare.HomePageActivity;
 import com.example.slothgoldencare.ProfileActivity;
 import com.example.slothgoldencare.R;
 import com.example.slothgoldencare.SettingsActivity;
+import com.example.slothgoldencare.sudoko.About;
+import com.example.slothgoldencare.sudoko.GameActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -51,6 +54,7 @@ public class ReminderActivity extends AppCompatActivity {
     EditText mTitledit;
     String timeTonotify;
     private DataBaseHelper dataBaseHelper;
+    private Button backBtn;
 
     /**
      * This method is called when the activity is created.
@@ -68,10 +72,31 @@ public class ReminderActivity extends AppCompatActivity {
         mTimebtn = (Button) findViewById(R.id.btnTime);
         mSubmitbtn = (Button) findViewById(R.id.btnSubmit);
 
-        // Initialize the RadioGroup and RadioButtons
-        radioGroupFrequency = findViewById(R.id.radioGroupFrequency);
-        radioButtonOneTime = findViewById(R.id.radioButtonOneTime);
-        radioButtonDaily = findViewById(R.id.radioButtonDaily);
+
+        // back btn to remove the replaced view to the main one.
+        backBtn = findViewById(R.id.back_btn);
+        backBtn.setOnClickListener(view1 -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(ReminderActivity.this);
+            builder.setTitle("Confirm Exit");
+            builder.setMessage("Are you sure you want to exit this Reminder, Data will not be Saved?");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(ReminderActivity.this, TODOActivity.class);
+                    startActivity(intent);
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+
+        });
 
         bottomNavigationView();
         mTimebtn.setOnClickListener(new View.OnClickListener() {
@@ -112,7 +137,7 @@ public class ReminderActivity extends AppCompatActivity {
      * @return True if all fields are filled, False otherwise
      */
     private boolean checkEmptyFields(String title, String date, String time) {
-        if (title.isEmpty() || date.equals("date") || time.equals("time") || getSelectedFrequency().isEmpty()) {
+        if (title.isEmpty() || date.equals("date") || time.equals("time")) {
             // Show AlertDialog indicating the empty field
             AlertDialog.Builder builder = new AlertDialog.Builder(ReminderActivity.this);
             builder.setTitle("Warning");
@@ -290,20 +315,6 @@ public class ReminderActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * Retrieves the selected task frequency from the RadioGroup.
-     *
-     * @return The selected task frequency (One-time or Daily)
-     */
-    private String getSelectedFrequency() {
-        int selectedId = radioGroupFrequency.getCheckedRadioButtonId();
-        if (selectedId == R.id.radioButtonOneTime) {
-            return "One-time";
-        } else if (selectedId == R.id.radioButtonDaily) {
-            return "Daily";
-        }
-        return "";
-    }
 
     /*
    this method handle the selected items / buttons of the bottom navigation bar.

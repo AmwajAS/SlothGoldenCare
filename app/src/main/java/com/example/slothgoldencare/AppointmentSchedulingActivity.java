@@ -21,6 +21,7 @@ public class AppointmentSchedulingActivity extends AppCompatActivity {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_appointment_scheduling);
+            bottomNavigationView();
 
             DatePicker datePicker = findViewById(R.id.datePicker);
             Button nextDateButton = findViewById(R.id.nextButton1);

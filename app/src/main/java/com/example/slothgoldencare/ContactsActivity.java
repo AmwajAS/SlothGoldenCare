@@ -1,38 +1,33 @@
 package com.example.slothgoldencare;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Application;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.slothgoldencare.Model.Elder;
-import com.example.slothgoldencare.Model.Gender;
 import com.example.slothgoldencare.Model.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class ContactsActivity extends AppCompatActivity {
@@ -43,6 +38,7 @@ public class ContactsActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private List<User> relatives;
     private RecyclerView relativesList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +54,10 @@ public class ContactsActivity extends AppCompatActivity {
 
         bottomNavigationView();
 
-
         //toolbar = findViewById(R.id.actBar);
         relativesList = findViewById(R.id.relativesListView);
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         relativesList.setLayoutManager(layoutManager);
 
         RecyclerView.Adapter<ElderViewHolder> usersAdapter = new RecyclerView.Adapter<ElderViewHolder>() {
@@ -89,6 +84,7 @@ public class ContactsActivity extends AppCompatActivity {
                 });
             }
 
+
             @Override
             public int getItemCount() {
                 return relatives.size();
@@ -102,6 +98,25 @@ public class ContactsActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                Intent intent = new Intent(ContactsActivity.this, HomePageActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                // app icon in action bar clicked; go home
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
 
     public static class ElderViewHolder extends RecyclerView.ViewHolder {
         ImageView relativeImg;
@@ -134,7 +149,7 @@ public class ContactsActivity extends AppCompatActivity {
         if (cursor != null && cursor.moveToFirst()) {
             do {
                 // Extract data from the cursor for each matching row
-               // String documentId = cursor.getString(cursor.getColumnIndexOrThrow("docId"));
+                // String documentId = cursor.getString(cursor.getColumnIndexOrThrow("docId"));
                 String userId = cursor.getString(cursor.getColumnIndexOrThrow("ID"));
                 String name = cursor.getString(cursor.getColumnIndexOrThrow("user_name"));
                 String email = cursor.getString(cursor.getColumnIndexOrThrow("user_email"));
@@ -142,7 +157,7 @@ public class ContactsActivity extends AppCompatActivity {
                 String phone = cursor.getString(cursor.getColumnIndexOrThrow("user_phone"));
 
                 User user = new User(userId, name, phone, email, password);
-              //  user.setDocId(documentId);
+                //  user.setDocId(documentId);
                 temp.add(user);
 
             } while (cursor.moveToNext());
@@ -156,37 +171,37 @@ public class ContactsActivity extends AppCompatActivity {
         return temp;
     }
 
-        /*
-      this method handle the selected items / buttons of the bottom navigation bar.
-       */
-        public void bottomNavigationView() {
-            BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
-            bottomNavigationView.setSelectedItemId(R.id.current);
-            Menu menu = bottomNavigationView.getMenu();
-            MenuItem currentItem = menu.findItem(R.id.current);
-            // Hiding the "current" menu item
-            currentItem.setVisible(false);
+    /*
+  this method handle the selected items / buttons of the bottom navigation bar.
+   */
+    public void bottomNavigationView() {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
+        bottomNavigationView.setSelectedItemId(R.id.current);
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem currentItem = menu.findItem(R.id.current);
+        // Hiding the "current" menu item
+        currentItem.setVisible(false);
 
-            bottomNavigationView.setOnItemSelectedListener(item -> {
-                switch (item.getItemId()) {
-                    case R.id.home:
-                        replaceView(HomePageActivity.class);
-                        return true;
-                    case R.id.settings:
-                        replaceView(SettingsActivity.class);
-                        return true;
-                    case R.id.profile:
-                        replaceView(ProfileActivity.class);
-                        return true;
-                }
-                return false;
-            });
-        }
-
-        public void replaceView(Class classView) {
-            startActivity(new Intent(getApplicationContext(), classView));
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-            finish();
-        }
-
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.home:
+                    replaceView(HomePageActivity.class);
+                    return true;
+                case R.id.settings:
+                    replaceView(SettingsActivity.class);
+                    return true;
+                case R.id.profile:
+                    replaceView(ProfileActivity.class);
+                    return true;
+            }
+            return false;
+        });
     }
+
+    public void replaceView(Class classView) {
+        startActivity(new Intent(getApplicationContext(), classView));
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        finish();
+    }
+
+}

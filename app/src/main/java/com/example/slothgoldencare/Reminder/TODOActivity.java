@@ -47,7 +47,7 @@ public class TODOActivity extends AppCompatActivity {
         setContentView(R.layout.activity_todoactivity);
         dataBaseHelper = new DataBaseHelper(this);
         elderlyId = getIntent().getStringExtra("elderlyId");
-        elder = dataBaseHelper.getElderById(elderlyId);
+        //elder = dataBaseHelper.getElderById(elderlyId);
         auth = FirebaseAuth.getInstance();
 
 
@@ -67,6 +67,7 @@ public class TODOActivity extends AppCompatActivity {
             dataholder = dataBaseHelper.getReminderByElderlyDocId(FirebaseAuth.getInstance().getUid());
         }else if(dataBaseHelper.getUserByDocumentId(auth.getUid()) != null){
             dataholder = dataBaseHelper.getReminderByElderlyDocId(elder.getDocId());
+            elder = dataBaseHelper.getElderById(elderlyId);
             mCreateRem.setVisibility(View.GONE);
         }
 

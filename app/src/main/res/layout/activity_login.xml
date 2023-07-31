@@ -52,11 +52,40 @@
             android:text="@string/login"
             android:textColor="#fff" />
 
-        <RadioGroup android:id="@+id/login_option_radio_group" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="15dp" android:orientation="horizontal">
-            <RadioButton android:id="@+id/relative_login_radio_button" android:layout_width="0dp" android:layout_weight="1" android:text="@string/relative_login" android:layout_height="wrap_content"/>
-            <RadioButton android:id="@+id/doctor_login_radio_button" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="@string/doctor_login"/>
-            <RadioButton android:id="@+id/admin_login_radio_button" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="@string/admin_login"/>
-            <RadioButton android:id="@+id/elderly_login_radio_button" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="@string/elderly_login"/>
+        <RadioGroup
+            android:id="@+id/login_option_radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/relative_login_radio_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/relative_login" />
+
+            <RadioButton
+                android:id="@+id/doctor_login_radio_button"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:text="@string/doctor_login" />
+
+            <RadioButton
+                android:id="@+id/admin_login_radio_button"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:text="@string/admin_login" />
+
+            <RadioButton
+                android:id="@+id/elderly_login_radio_button"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:text="@string/elderly_login" />
         </RadioGroup>
 
     </LinearLayout>
