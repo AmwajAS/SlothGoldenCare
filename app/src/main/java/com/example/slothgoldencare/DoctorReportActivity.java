@@ -38,7 +38,6 @@ public class DoctorReportActivity extends AppCompatActivity {
 
         viewConfirmationButton = findViewById(R.id.viewConfirmationButton);
         viewConfirmationButton.setOnClickListener(v -> showConfirmationData());
-
         loadWorkAndPaymentData();
     }
 

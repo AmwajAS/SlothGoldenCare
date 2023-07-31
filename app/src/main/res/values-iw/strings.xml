@@ -160,4 +160,5 @@
     <string name="AddElderly">הוסף קשישים</string>
     <string name="AddDoctor">הוסף רופא</string>
     <string name="AddUser">הוסף משתמש</string>
+    <string name="admin_pay_docs">שלום לרופאים</string>
 </resources>

@@ -160,4 +160,5 @@
     <string name="AddElderly">أضف كبار السن</string>
     <string name="AddDoctor">إضافة طبيب</string>
     <string name="AddUser">إضافة مستخدم</string>
+    <string name="admin_pay_docs">دفع للأطباء</string>
 </resources>

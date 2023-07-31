@@ -160,4 +160,5 @@
     <string name="AddElderly">"ДОБАВИТЬ "</string>
     <string name="AddDoctor">ДОБАВИТЬ ВРАЧА</string>
     <string name="AddUser">"ДОБАВИТЬ "</string>
+    <string name="admin_pay_docs">Платежи для врачей</string>
 </resources>

@@ -1,31 +1,44 @@
 package com.example.slothgoldencare;
 
+import static android.content.ContentValues.TAG;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.slothgoldencare.Model.WorkAndPayment;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ManageDoctorActivity extends AppCompatActivity{
+    FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private List<WorkAndPayment> workAndPaymentList;
     private RecyclerView recyclerView;
     private WorkAndPaymentAdapter adapter;
-    private Button viewConfirmationButton;
+    private Button payBtn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_doctor_report);
+        setContentView(R.layout.activity_manage_doctor);
 
         recyclerView = findViewById(R.id.workAndPaymentRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -33,57 +46,98 @@ public class ManageDoctorActivity extends AppCompatActivity{
         workAndPaymentList = new ArrayList<>();
         adapter = new WorkAndPaymentAdapter(this, workAndPaymentList);
         recyclerView.setAdapter(adapter);
+
+        payBtn=findViewById(R.id.payButton);
+        payBtn.setOnClickListener(v -> updateAllPaymentsToPaid());
         loadWorkAndPaymentData();
+
     }
 
     private void loadWorkAndPaymentData() {
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-
         CollectionReference workAndPaymentRef = firestore.collection("WorkAndPayment");
         workAndPaymentRef.get()
                 .addOnSuccessListener(querySnapshot -> {
                     workAndPaymentList.clear();
                     for (QueryDocumentSnapshot document : querySnapshot) {
                         WorkAndPayment workAndPayment = document.toObject(WorkAndPayment.class);
-                        workAndPaymentList.add(workAndPayment);
+                        if(workAndPayment.getIsPaid().equals("No")){
+                            workAndPaymentList.add(workAndPayment);
+                        }
                     }
                     adapter.notifyDataSetChanged();
                 })
                 .addOnFailureListener(e -> {
-                    // Handle the failure to fetch work and payment data from the database
-                    // You can display an error message or handle it in any other way
+                    Log.d(TAG, "Cant load the documents!");
                 });
     }
+    private void updateAllPaymentsToPaid() {
+        if(workAndPaymentList.isEmpty()){
+            showAlert("Alert","There are no payments request!") ;
+        }
+        Date currentDate = new Date();
+        Timestamp currentTimestamp = new Timestamp(currentDate);
 
-    public void onWorkAndPaymentClick(int position) {
-        // Get the clicked item from the workAndPaymentList based on the position
-        WorkAndPayment clickedItem = workAndPaymentList.get(position);
-        updateIsPaidStatusInFirestore(clickedItem);
-        // After handling the click event, you may want to refresh the RecyclerView to reflect the changes
+        for (WorkAndPayment workAndPayment : workAndPaymentList) {
+            if(workAndPayment.getIsPaid().equals("No")){
+                workAndPayment.setIsPaid("Yes");
+                workAndPayment.setPaidDate(currentTimestamp);
+                updateInFireBase(currentTimestamp);
+                showAlert("Success","Payment Successful!") ;
+            }else{
+                showAlert("Alert","There are no payments request!") ;
+            }
+        }
         adapter.notifyDataSetChanged();
     }
-    private void updateIsPaidStatusInFirestore(WorkAndPayment workAndPayment) {
-        // Get the Firestore instance
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    private void showAlert(String title, String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // The user clicked "OK," so dismiss the dialog
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
 
-        // Reference to the "WorkAndPayment" collection
+    public void updateInFireBase(Timestamp updatedDate){
         CollectionReference workAndPaymentRef = firestore.collection("WorkAndPayment");
+        // Create a query to get the documents where isPaid == "No"
+        Query query = workAndPaymentRef.whereEqualTo("isPaid", "No");
 
-        // Get the document ID of the clicked item (assuming you have a method to retrieve it)
-        String documentId = workAndPayment.getDoctorId();
+        // Execute the query
+        query.get()
+                .addOnSuccessListener(querySnapshot -> {
+                    // Create a batch write
+                    WriteBatch batch = firestore.batch();
+                    for (QueryDocumentSnapshot document : querySnapshot) {
+                        // Get the WorkAndPayment object from the document
+                        WorkAndPayment workAndPayment = document.toObject(WorkAndPayment.class);
+                        // Update the isPaid and the paid date
+                        workAndPayment.setIsPaid("Yes");
+                        workAndPayment.setPaidDate(updatedDate);
 
-        // Get a reference to the specific document in the collection
-        DocumentReference documentReference = workAndPaymentRef.document(documentId);
-
-        // Update the "isPaid" field to true
-        documentReference.update("isPaid", true)
-                .addOnSuccessListener(aVoid -> {
-                    // Update successful
-                    // You can display a success message or perform any other action here
+                        DocumentReference docRef = document.getReference();
+                        batch.set(docRef, workAndPayment);
+                    }
+                    // Commit the batch write
+                    batch.commit()
+                            .addOnSuccessListener(aVoid -> {
+                                // Handle the successful update if needed
+                                Toast.makeText(this, "All payments updated to Paid.", Toast.LENGTH_SHORT).show();
+                            })
+                            .addOnFailureListener(e -> {
+                                // Handle the failure to update if needed
+                                Log.d(TAG, "Batch write failed: " + e.getMessage());
+                            });
                 })
                 .addOnFailureListener(e -> {
-                    // Update failed
-                    // You can display an error message or handle the failure in any other way
+                    // Handle the failure to fetch documents if needed
+                    Log.d(TAG, "Error fetching documents: " + e.getMessage());
                 });
     }
-    }
+}

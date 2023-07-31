@@ -160,4 +160,5 @@
     <string name="AddElderly">ADD ELDERLY</string>
     <string name="AddDoctor">ADD DOCTOR</string>
     <string name="AddUser">ADD USER</string>
+    <string name="admin_pay_docs">Payments For Doctors</string>
 </resources>

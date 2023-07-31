@@ -20,16 +20,6 @@ public class WorkAndPaymentAdapter extends RecyclerView.Adapter<WorkAndPaymentAd
 
     private Context context;
     private List<WorkAndPayment> workAndPaymentList;
-//    private OnWorkAndPaymentClickListener onWorkAndPaymentClickListener;
-//
-//    public interface OnWorkAndPaymentClickListener {
-//        void onWorkAndPaymentClick(int position);
-//    }
-//    public WorkAndPaymentAdapter(Context context, List<WorkAndPayment> workAndPaymentList, OnWorkAndPaymentClickListener listener) {
-//        this.context = context;
-//        this.workAndPaymentList = workAndPaymentList;
-//        this.onWorkAndPaymentClickListener = listener;
-//    }
 
     public WorkAndPaymentAdapter(Context context, List<WorkAndPayment> workAndPaymentList) {
         this.context = context;
@@ -57,21 +47,6 @@ public class WorkAndPaymentAdapter extends RecyclerView.Adapter<WorkAndPaymentAd
         holder.paidDateTextView.setText("Paid Date: " +paidDate);
         holder.isPaidTextView.setText("Is Paid: " + workAndPayment.getIsPaid());
 
-        // Display the paid date if the workAndPayment is paid, otherwise hide it
-//        if (workAndPayment.isPaid()) {
-//            holder.paidDateTextView.setVisibility(View.VISIBLE);
-//            holder.paidDateTextView.setText("Paid Date: " + workAndPayment.getPaidDate());
-//            holder.viewConfirmationButton.setVisibility(View.VISIBLE);
-//        } else {
-//            holder.paidDateTextView.setVisibility(View.GONE);
-//            holder.viewConfirmationButton.setVisibility(View.GONE);
-//        }
-        // Set a click listener for the viewConfirmationButton
-//        holder.viewConfirmationButton.setOnClickListener(v -> {
-//            if (onWorkAndPaymentClickListener != null) {
-//                onWorkAndPaymentClickListener.onWorkAndPaymentClick(position);
-//            }
-//        });
     }
 
     @Override
