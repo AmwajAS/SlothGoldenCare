@@ -1,15 +1,14 @@
 package com.example.slothgoldencare;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.slothgoldencare.Model.Elder;
@@ -29,6 +28,7 @@ public class DoctorActivity extends AppCompatActivity implements SearchView.OnQu
     private DataBaseHelper dbHelper;
     private String userId;
     private SearchView searchBar;
+    private Button backBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +47,15 @@ public class DoctorActivity extends AppCompatActivity implements SearchView.OnQu
 
         ElderListAdapter elderAdapter = new ElderListAdapter(this, elderlies);
         elderliesList.setAdapter(elderAdapter);
+
+
+        // back btn to remove the replaced view to the main one.
+        backBtn = findViewById(R.id.back_btn);
+        backBtn.setOnClickListener(view1 -> {
+            Intent intent = new Intent(DoctorActivity.this, DoctorActivityMain.class);
+            startActivity(intent);
+        });
+
 
         searchBar.setOnQueryTextListener(this);
         searchBar.setOnCloseListener(new SearchView.OnCloseListener() {
@@ -69,12 +78,12 @@ public class DoctorActivity extends AppCompatActivity implements SearchView.OnQu
     }
 
     @Override
-    public boolean onQueryTextSubmit (String query){
+    public boolean onQueryTextSubmit(String query) {
         return false;
     }
 
     @Override
-    public boolean onQueryTextChange (String newText){
+    public boolean onQueryTextChange(String newText) {
         ElderListAdapter elderAdapter = (ElderListAdapter) elderliesList.getAdapter();
         if (elderAdapter != null) {
             elderAdapter.getFilter().filter(newText);

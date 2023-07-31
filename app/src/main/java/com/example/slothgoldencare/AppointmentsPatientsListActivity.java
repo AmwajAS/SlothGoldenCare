@@ -6,8 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 
 import com.example.slothgoldencare.Model.Appointment;
 import com.example.slothgoldencare.Model.Doctor;
@@ -29,6 +31,7 @@ public class AppointmentsPatientsListActivity extends AppCompatActivity {
     private String connectedDoctorName;
     private String connectedDoctorSpecialization;
     private DataBaseHelper db;
+    private Button backBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +44,14 @@ public class AppointmentsPatientsListActivity extends AppCompatActivity {
         appointmentsList = new ArrayList<>();
         adapter = new AppointmentsAdapter(this, appointmentsList);
         recyclerView.setAdapter(adapter);
+
+
+        // back btn to remove the replaced view to the main one.
+        backBtn = findViewById(R.id.back_btn);
+        backBtn.setOnClickListener(view1 -> {
+            Intent intent = new Intent(AppointmentsPatientsListActivity.this, DoctorActivityMain.class);
+            startActivity(intent);
+        });
 
         // Load the appointments specific to the connected doctor
         loadAppointmentsData();

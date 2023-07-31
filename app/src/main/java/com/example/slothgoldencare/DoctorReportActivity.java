@@ -5,6 +5,8 @@ import static android.content.ContentValues.TAG;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,7 +28,7 @@ public class DoctorReportActivity extends AppCompatActivity {
     private Button viewConfirmationButton;
     private DataBaseHelper dataBaseHelper;
     private FirebaseAuth auth;
-
+    private Button backBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +46,13 @@ public class DoctorReportActivity extends AppCompatActivity {
         viewConfirmationButton = findViewById(R.id.viewConfirmationButton);
         viewConfirmationButton.setOnClickListener(v -> showConfirmationData());
         loadWorkAndPaymentData();
+        // back btn to remove the replaced view to the main one.
+        backBtn = findViewById(R.id.back_btn);
+        backBtn.setOnClickListener(view1 -> {
+            Intent intent = new Intent(DoctorReportActivity.this, DoctorActivityMain.class);
+            startActivity(intent);
+        });
+
     }
 
     private void loadWorkAndPaymentData() {

@@ -77,10 +77,8 @@ public class ContactsActivity extends AppCompatActivity {
 
                 //clicking on a specific elderly to show the profile.
                 holder.itemView.setOnClickListener(view -> {
-                    Toast.makeText(view.getContext(), "Item clicked: " + user.getUsername(), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(ContactsActivity.this, VisitElderlyProfileActivity.class);
-                    intent.putExtra("elderlyId", user.getID());
-                    startActivity(intent);
+                    Toast.makeText(view.getContext(), "" + user.getUsername(), Toast.LENGTH_LONG).show();
+
                 });
             }
 

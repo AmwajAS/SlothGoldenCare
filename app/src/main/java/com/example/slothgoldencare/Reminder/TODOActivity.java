@@ -66,8 +66,8 @@ public class TODOActivity extends AppCompatActivity {
         if(dataBaseHelper.getElderByDocumentId(auth.getUid()) != null){
             dataholder = dataBaseHelper.getReminderByElderlyDocId(FirebaseAuth.getInstance().getUid());
         }else if(dataBaseHelper.getUserByDocumentId(auth.getUid()) != null){
-            dataholder = dataBaseHelper.getReminderByElderlyDocId(elder.getDocId());
             elder = dataBaseHelper.getElderById(elderlyId);
+            dataholder = dataBaseHelper.getReminderByElderlyDocId(elder.getDocId());
             mCreateRem.setVisibility(View.GONE);
         }
 

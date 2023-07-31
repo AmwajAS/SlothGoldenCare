@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.net.Uri;
 import android.provider.Settings;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -37,6 +38,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     private List<HealthTip> healthTipList;
     private FirebaseAuth auth;
     private List<User> relativesArrayList;
+    private ImageView img;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
         DataBaseHelper dbHelper = new DataBaseHelper(this);
 
         TextView editTextUsername = findViewById(R.id.username);
+        img = findViewById(R.id.imageView);
 
         healthTipList = new ArrayList<>();
         healthTipList = dbHelper.getHealthTips();
@@ -53,6 +56,12 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
         //relatives of elderly
         relativesArrayList = new ArrayList<>();
         relativesArrayList = dbHelper.GetRelativesByElderly(auth.getUid());
+
+        // Set the OnClickListener for the ImageView
+        img.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+            startActivity(intent);
+                });
 
         editTextUsername.setText(auth.getCurrentUser().getDisplayName());
 
