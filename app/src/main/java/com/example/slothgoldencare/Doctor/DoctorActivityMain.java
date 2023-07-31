@@ -1,9 +1,13 @@
-package com.example.slothgoldencare;
+package com.example.slothgoldencare.Doctor;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
+import com.example.slothgoldencare.AppointmentsPatientsListActivity;
+import com.example.slothgoldencare.DataBaseHelper.DataBaseHelper;
+import com.example.slothgoldencare.LoginActivity;
 import com.example.slothgoldencare.Model.Doctor;
+import com.example.slothgoldencare.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 

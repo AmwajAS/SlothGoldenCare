@@ -1,22 +1,15 @@
-package com.example.slothgoldencare;
+package com.example.slothgoldencare.Admin;
 
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.*;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import com.example.slothgoldencare.DataBaseHelper.DataBaseHelper;
+import com.example.slothgoldencare.LoginActivity;
+import com.example.slothgoldencare.ManageDoctorActivity;
+import com.example.slothgoldencare.R;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.ktx.Firebase;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class AdministratorActivity extends AppCompatActivity{
     private static final String TAG = "ADMIN";
@@ -55,7 +48,7 @@ public class AdministratorActivity extends AppCompatActivity{
             startActivity(intent);
         });
         payBtn.setOnClickListener(v-> {
-            Intent intent = new Intent(AdministratorActivity.this,ManageDoctorActivity.class);
+            Intent intent = new Intent(AdministratorActivity.this, ManageDoctorActivity.class);
             startActivity(intent);
         });
 

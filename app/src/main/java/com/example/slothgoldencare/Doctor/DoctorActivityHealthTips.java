@@ -1,10 +1,7 @@
-package com.example.slothgoldencare;
+package com.example.slothgoldencare.Doctor;
 
 import android.app.AlertDialog;
-import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +10,11 @@ import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.slothgoldencare.Model.Diagnosis;
-import com.example.slothgoldencare.Model.Doctor;
+import com.example.slothgoldencare.DataBaseHelper.DataBaseHelper;
 import com.example.slothgoldencare.Model.HealthTip;
+import com.example.slothgoldencare.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.List;

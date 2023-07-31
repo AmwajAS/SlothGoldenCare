@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.slothgoldencare.DataBaseHelper.DataBaseHelper;
 import com.example.slothgoldencare.Model.Allergy;
 import com.example.slothgoldencare.Model.Diagnosis;
 import com.example.slothgoldencare.Model.Medicine;

@@ -1,4 +1,4 @@
-package com.example.slothgoldencare;
+package com.example.slothgoldencare.Doctor;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +11,9 @@ import android.widget.*;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.slothgoldencare.DataBaseHelper.DataBaseHelper;
 import com.example.slothgoldencare.Model.Elder;
+import com.example.slothgoldencare.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;

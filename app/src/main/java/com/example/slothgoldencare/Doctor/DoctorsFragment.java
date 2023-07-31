@@ -1,4 +1,4 @@
-package com.example.slothgoldencare;
+package com.example.slothgoldencare.Doctor;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +16,10 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.slothgoldencare.AppointmentSchedulingActivity;
+import com.example.slothgoldencare.DataBaseHelper.DataBaseHelper;
 import com.example.slothgoldencare.Model.Doctor;
+import com.example.slothgoldencare.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 

@@ -8,16 +8,12 @@ import android.widget.TimePicker;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 
-import com.google.firebase.Timestamp;
+import com.example.slothgoldencare.Doctor.DoctorsNotesActivity;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 public class TimeActivity extends AppCompatActivity {
     private String selectedDate; // To store the selected date from the previous activity

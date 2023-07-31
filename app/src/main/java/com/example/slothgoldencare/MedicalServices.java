@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.slothgoldencare.Doctor.DoctorsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MedicalServices extends AppCompatActivity implements View.OnClickListener{

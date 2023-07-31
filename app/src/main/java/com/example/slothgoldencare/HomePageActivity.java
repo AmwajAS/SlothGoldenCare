@@ -17,6 +17,9 @@ import android.os.Bundle;
 import java.util.*;
 import android.view.View;
 import android.widget.Toast;
+import com.example.slothgoldencare.DataBaseHelper.DataBaseHelper;
+import com.example.slothgoldencare.Model.Elder;
+import com.example.slothgoldencare.Model.Gender;
 import com.example.slothgoldencare.Model.HealthTip;
 import com.example.slothgoldencare.Model.User;
 import com.example.slothgoldencare.Reminder.TODOActivity;
@@ -46,7 +49,12 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_home_page);
         auth = FirebaseAuth.getInstance();
         DataBaseHelper dbHelper = new DataBaseHelper(this);
+        Elder elder = dbHelper.getElderByDocumentId(auth.getUid());
 
+        img = findViewById(R.id.imageView);
+        if(elder.getGender().equals(Gender.Female)){
+            img.setImageResource(R.drawable.woman);
+        }
         TextView editTextUsername = findViewById(R.id.username);
         img = findViewById(R.id.imageView);
 

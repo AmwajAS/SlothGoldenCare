@@ -1,4 +1,4 @@
-package com.example.slothgoldencare;
+package com.example.slothgoldencare.Doctor;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -13,11 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.slothgoldencare.*;
+import com.example.slothgoldencare.DataBaseHelper.DataBaseHelper;
 import com.example.slothgoldencare.Model.Allergy;
 import com.example.slothgoldencare.Model.Diagnosis;
 import com.example.slothgoldencare.Model.Medicine;
 import com.example.slothgoldencare.Model.Surgery;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 

@@ -22,14 +22,12 @@ import android.widget.RadioGroup;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.slothgoldencare.DataBaseHelper;
+import com.example.slothgoldencare.DataBaseHelper.DataBaseHelper;
 import com.example.slothgoldencare.ElderSignupActivity;
 import com.example.slothgoldencare.HomePageActivity;
 import com.example.slothgoldencare.ProfileActivity;
 import com.example.slothgoldencare.R;
 import com.example.slothgoldencare.SettingsActivity;
-import com.example.slothgoldencare.sudoko.About;
-import com.example.slothgoldencare.sudoko.GameActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;

@@ -8,12 +8,9 @@ import android.view.MenuItem;
 import android.widget.Button;
 
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-import com.example.slothgoldencare.AdministratorActivity;
-import com.example.slothgoldencare.AdministratorUsersActivity;
 import com.example.slothgoldencare.HomePageActivity;
 import com.example.slothgoldencare.ProfileActivity;
 import com.example.slothgoldencare.R;

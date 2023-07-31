@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import com.example.slothgoldencare.DataBaseHelper.DataBaseHelper;
 
 import java.io.File;
 import java.util.Timer;

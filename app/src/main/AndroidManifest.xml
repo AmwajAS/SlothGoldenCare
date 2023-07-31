@@ -28,7 +28,7 @@
         android:theme="@style/Theme.SlothGoldenCare"
         tools:targetApi="31">
         <activity
-            android:name=".DoctorReportActivity"
+            android:name=".Doctor.DoctorReportActivity"
             android:exported="false" />
         <activity
             android:name=".AppointmentsPatientsListActivity"
@@ -40,13 +40,13 @@
             android:name=".AppointmentsListActivity"
             android:exported="false" />
         <activity
-            android:name=".DoctorsNotesActivity"
+            android:name=".Doctor.DoctorsNotesActivity"
             android:exported="false" />
         <activity
             android:name=".TimeActivity"
             android:exported="false" />
         <activity
-            android:name=".AdministratorDoctorsActivity"
+            android:name=".Admin.AdministratorDoctorsActivity"
             android:exported="false" />
         <activity
             android:name=".AppointmentSchedulingActivity"
@@ -101,25 +101,25 @@
             android:configChanges="locale"
             android:exported="false" />
         <activity
-            android:name=".AdministratorActivity"
+            android:name=".Admin.AdministratorActivity"
             android:exported="false" />
         <activity
-            android:name=".AdministratorUsersActivity"
+            android:name=".Admin.AdministratorUsersActivity"
             android:exported="false" />
         <activity
-            android:name=".AdministratorElderliesActivity"
+            android:name=".Admin.AdministratorElderliesActivity"
             android:exported="false" />
         <activity
-            android:name=".DoctorActivityMain"
+            android:name=".Doctor.DoctorActivityMain"
             android:exported="false" />
         <activity
-            android:name=".DoctorActivity"
+            android:name=".Doctor.DoctorActivity"
             android:exported="false" />
         <activity
-            android:name=".DoctorVisitElderlyActivity"
+            android:name=".Doctor.DoctorVisitElderlyActivity"
             android:exported="false" />
         <activity
-            android:name=".DoctorActivityHealthTips"
+            android:name=".Doctor.DoctorActivityHealthTips"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

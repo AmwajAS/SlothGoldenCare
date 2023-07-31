@@ -1,10 +1,9 @@
-package com.example.slothgoldencare;
+package com.example.slothgoldencare.Admin;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,77 +13,85 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.slothgoldencare.DataBaseHelper.DataBaseHelper;
+import com.example.slothgoldencare.ElderlyItemDialog;
 import com.example.slothgoldencare.Model.Doctor;
 import com.example.slothgoldencare.Model.Elder;
 import com.example.slothgoldencare.Model.User;
+import com.example.slothgoldencare.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-public class AdministratorElderliesActivity extends AppCompatActivity implements View.OnClickListener {
+public class AdministratorUsersActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "ADMIN";
 
-    private ListView eldersList;
-    private List<Elder> elders;
-    private Button buttonAddElderly;
-    private ArrayAdapter<Elder> elderAdapter;
-    DataBaseHelper dbHelper;
-    FirebaseFirestore db;
+    private ListView usersList;
+
+    private List<User> users;
+    private DataBaseHelper dbHelper;
+    private FirebaseFirestore db;
+    private Button buttonAddUser;
     private Button backBtn;
     private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_elderlies);
+        setContentView(R.layout.activity_admin_users);
         dbHelper = new DataBaseHelper(this);
-        eldersList = findViewById(R.id.elderly_list);
-        elders = new ArrayList<>();
-        elders = dbHelper.getElders();
-        buttonAddElderly = findViewById(R.id.buttonAdd);
         auth = FirebaseAuth.getInstance();
+        usersList = findViewById(R.id.users_list);
+        //eldersList = findViewById(R.id.elderly_list);
+        users = new ArrayList<>();
+        users = dbHelper.getUsers();
+        buttonAddUser = findViewById(R.id.buttonAdd);
 
         // back btn to remove the replaced view to the main one.
         backBtn = findViewById(R.id.back_btn);
         backBtn.setOnClickListener(view1 -> {
-            Intent intent = new Intent(AdministratorElderliesActivity.this,AdministratorActivity.class);
+            Intent intent = new Intent(AdministratorUsersActivity.this,AdministratorActivity.class);
             startActivity(intent);
         });
 
 
-        elderAdapter = new ArrayAdapter<Elder>(this, R.layout.administrator_user_item, elders) {
+        ArrayAdapter<User> userAdapter = new ArrayAdapter<User>(this, R.layout.administrator_user_item, users) {
             @NonNull
             @Override
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
 
                 // Get the user object for the current position
-                Elder elder = getItem(position);
+                User user = getItem(position);
 
                 // Inflate the list item layout
                 if (convertView == null) {
                     convertView = LayoutInflater.from(getContext()).inflate(R.layout.administrator_user_item, parent, false);
                 }
+
                 // Set the username in the TextView
                 TextView userNameTextView = convertView.findViewById(R.id.user_name);
-                userNameTextView.setText(elder.getUsername());
+                userNameTextView.setText(user.getUsername());
                 ImageButton deleteButton = convertView.findViewById(R.id.delete_user_btn);
                 ImageButton editButton = convertView.findViewById(R.id.edit_user_btn);
 
+
+
+
+                // Set a click listener for the delete button
                 deleteButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                         builder.setTitle("Confirm Deletion");
-                        builder.setMessage("Are you sure you want to delete this entry?");
+                        builder.setMessage("Are you sure you want to delete this user?");
                         builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                elders.remove(elder);
-                                deleteUser(elder);
+                                users.remove(user);
+                                deleteUser(user);
                                 notifyDataSetChanged();
                             }
                         });
@@ -106,25 +113,28 @@ public class AdministratorElderliesActivity extends AppCompatActivity implements
                         ElderlyItemDialog elderlyItemDialog = new ElderlyItemDialog(getContext(), new ElderlyItemDialog.OnSaveChangesListener() {
                             @Override
                             public void onSaveChanges(Elder elder) {
-                                if (elder != null) {
+
+                            }
+
+                            @Override
+                            public void onSaveChanges(User user) {
+                                if (user != null) {
                                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                                     builder.setTitle("Confirm Update");
-                                    builder.setMessage("Are you sure you want to update this entry?");
+                                    builder.setMessage("Are you sure you want to update this user's information?");
                                     builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             db = FirebaseFirestore.getInstance();
-                                            db.collection("Elderlies").document(elder.getDocId()).update(
-                                                    "id", elder.getID(),
-                                                    "username", elder.getUsername(),
-                                                    "phoneNumber", elder.getPhoneNumber(),
-                                                    "email", elder.getEmail(),
-                                                    "password", elder.getPassword(),
-                                                    "gender", elder.getGender().toString(),
-                                                    "dob", elder.getDOB()
+                                            db.collection("Users").document(user.getDocId()).update(
+                                                    "id", user.getID(),
+                                                    "username", user.getUsername(),
+                                                    "phoneNumber", user.getPhoneNumber(),
+                                                    "email", user.getEmail(),
+                                                    "password", user.getPassword()
                                             ).addOnCompleteListener(task -> {
                                                 if (task.isSuccessful()) {
-                                                    if (dbHelper.updateElderlyInfo(elder)) {
+                                                    if (dbHelper.updateUserInfo(user)) {
                                                         recreate();
                                                         Toast.makeText(getApplicationContext(), R.string.info_updated_success, Toast.LENGTH_LONG).show();
                                                     } else {
@@ -146,45 +156,43 @@ public class AdministratorElderliesActivity extends AppCompatActivity implements
                                 }
                             }
 
-
-                            @Override
-                            public void onSaveChanges(User user) {
-
-                            }
-
                             @Override
                             public void onSaveChanges(Doctor doctor) {
 
                             }
-
-                        }, ElderlyItemDialog.ItemType.ELDER);
+                        }, ElderlyItemDialog.ItemType.USER);
 
                         elderlyItemDialog.show();
-                        elderlyItemDialog.setEditTextValues(elder,null,null);
+                        elderlyItemDialog.setEditTextValues(null,user,null);
                     }
                 });
-
                 return convertView;
             }
         };
-        eldersList.setAdapter(elderAdapter);
-        buttonAddElderly.setOnClickListener(new View.OnClickListener() {
+        usersList.setAdapter(userAdapter);
+
+        buttonAddUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                ElderlyItemDialog elderlyItemDialog = new ElderlyItemDialog(AdministratorElderliesActivity.this, new ElderlyItemDialog.OnSaveChangesListener() {
+                ElderlyItemDialog elderlyItemDialog = new ElderlyItemDialog(AdministratorUsersActivity.this, new ElderlyItemDialog.OnSaveChangesListener() {
                     @Override
                     public void onSaveChanges(Elder elder) {
-                        if(elder != null){
+
+                    }
+
+                    @Override
+                    public void onSaveChanges(User user) {
+                        if(user != null){
                             db = FirebaseFirestore.getInstance();
-                            auth.createUserWithEmailAndPassword(elder.getEmail(),elder.getPassword()).addOnCompleteListener(task1 -> {
-                                if(task1.isSuccessful()) {
-                                    elder.setDocId(auth.getUid());
-                                    db.collection("Elderlies").document(elder.getDocId()).set(elder).addOnCompleteListener(task -> {
-                                        if(task.isSuccessful()){
-                                            if (dbHelper.addElderData(elder)) {
+                            auth.createUserWithEmailAndPassword(user.getEmail(),user.getPassword()).addOnCompleteListener(task1 -> {
+                                if (task1.isSuccessful()) {
+                                    user.setDocId(auth.getUid());
+                                    db.collection("Users").document(user.getDocId()).set(user).addOnCompleteListener(task -> {
+                                        if (task.isSuccessful()) {
+                                            if (dbHelper.addUserData(user)) {
+                                                userAdapter.notifyDataSetInvalidated();
                                                 Toast.makeText(getApplicationContext(), R.string.info_add_success, Toast.LENGTH_LONG).show();
-                                                elderAdapter.notifyDataSetInvalidated();
                                             } else {
                                                 Toast.makeText(getApplicationContext(), R.string.info_add_fail, Toast.LENGTH_LONG).show();
                                             }
@@ -197,16 +205,11 @@ public class AdministratorElderliesActivity extends AppCompatActivity implements
                     }
 
                     @Override
-                    public void onSaveChanges(User user) {
-
-                    }
-
-                    @Override
                     public void onSaveChanges(Doctor doctor) {
 
                     }
 
-                }, ElderlyItemDialog.ItemType.ELDER);
+                }, ElderlyItemDialog.ItemType.USER);
 
                 elderlyItemDialog.show();
                 elderlyItemDialog.setEditTextValues(null, null, null);
@@ -224,14 +227,14 @@ public class AdministratorElderliesActivity extends AppCompatActivity implements
         super.onPointerCaptureChanged(hasCapture);
     }
 
-    private void deleteUser(Elder elder) {
+    private void deleteUser(User user) {
         db = FirebaseFirestore.getInstance();
-        db.collection("Elderlies").document(elder.getDocId()).delete().addOnCompleteListener(task -> {
+        db.collection("Users").document(user.getDocId()).delete().addOnCompleteListener(task -> {
             if(task.isSuccessful()){
-                if(dbHelper.deleteElderByDocId(elder.getDocId())){
+                if(dbHelper.deleteUserByDocId(user.getDocId())){
                     Toast.makeText(getApplicationContext(),R.string.info_delete_success,Toast.LENGTH_LONG).show();
                 }else{
-                    Toast.makeText(getApplicationContext(),R.string.info_delete_fail,Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),R.string.info_delete_fail+" || "+"Problem in Sqlite.",Toast.LENGTH_LONG).show();
                 }
             }else{
                 Toast.makeText(getApplicationContext(),R.string.info_delete_fail+" || "+task.getException().getMessage().toString(),Toast.LENGTH_LONG).show();

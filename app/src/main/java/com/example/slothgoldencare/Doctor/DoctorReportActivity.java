@@ -1,4 +1,4 @@
-package com.example.slothgoldencare;
+package com.example.slothgoldencare.Doctor;
 
 import static android.content.ContentValues.TAG;
 
@@ -12,8 +12,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+import com.example.slothgoldencare.ConfirmationDialogFragment;
+import com.example.slothgoldencare.DataBaseHelper.DataBaseHelper;
 import com.example.slothgoldencare.Model.Doctor;
 import com.example.slothgoldencare.Model.WorkAndPayment;
+import com.example.slothgoldencare.R;
+import com.example.slothgoldencare.WorkAndPaymentAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;

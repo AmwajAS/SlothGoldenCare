@@ -1,4 +1,4 @@
-package com.example.slothgoldencare;
+package com.example.slothgoldencare.Doctor;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,7 +14,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.slothgoldencare.AppointmentsListActivity;
 import com.example.slothgoldencare.Model.Appointment;
+import com.example.slothgoldencare.R;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
 

@@ -1,33 +1,20 @@
-package com.example.slothgoldencare;
+package com.example.slothgoldencare.Doctor;
 
-import android.app.Application;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import android.widget.Toast;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.slothgoldencare.Model.Doctor;
+import com.example.slothgoldencare.DataBaseHelper.DataBaseHelper;
 import com.example.slothgoldencare.Model.Elder;
-import com.google.firebase.auth.FirebaseAuth;
-import com.zegocloud.uikit.prebuilt.call.config.ZegoNotificationConfig;
-import com.zegocloud.uikit.prebuilt.call.invite.ZegoUIKitPrebuiltCallInvitationConfig;
-import com.zegocloud.uikit.prebuilt.call.invite.ZegoUIKitPrebuiltCallInvitationService;
-import com.zegocloud.uikit.prebuilt.call.invite.widget.ZegoSendCallInvitationButton;
-import com.zegocloud.uikit.service.defines.ZegoUIKitUser;
-
-import java.util.Collections;
+import com.example.slothgoldencare.R;
 
 public class DoctorVisitElderlyActivity extends AppCompatActivity implements View.OnClickListener {
 

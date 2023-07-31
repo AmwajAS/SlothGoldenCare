@@ -1,4 +1,4 @@
-package com.example.slothgoldencare;
+package com.example.slothgoldencare.DataBaseHelper;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
+import com.example.slothgoldencare.ElderSignupActivity;
 import com.example.slothgoldencare.Model.*;
 import com.example.slothgoldencare.Reminder.Reminder;
 import com.google.firebase.Timestamp;

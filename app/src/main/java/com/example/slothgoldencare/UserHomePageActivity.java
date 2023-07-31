@@ -15,6 +15,7 @@ import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.slothgoldencare.DataBaseHelper.DataBaseHelper;
 import com.example.slothgoldencare.Model.Elder;
 import com.example.slothgoldencare.Model.Gender;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -70,7 +71,12 @@ public class UserHomePageActivity extends AppCompatActivity {
             @Override
             public void onBindViewHolder(@NonNull ElderViewHolder holder, int position) {
                 Elder elder = relatives.get(position);
-                holder.relativeImg.setImageResource(R.drawable.man);
+                if(elder.getGender().equals(Gender.Female)){
+                    holder.relativeImg.setImageResource(R.drawable.woman);
+                }else if(elder.getGender().equals(Gender.Male)){
+                    holder.relativeImg.setImageResource(R.drawable.man);
+                }
+
                 holder.relativeName.setText(elder.getUsername());
 
                 //clicking on a specific elderly to show the profile.

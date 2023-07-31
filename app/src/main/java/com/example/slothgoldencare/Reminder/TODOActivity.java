@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.slothgoldencare.DataBaseHelper;
+import com.example.slothgoldencare.DataBaseHelper.DataBaseHelper;
 import com.example.slothgoldencare.HomePageActivity;
 import com.example.slothgoldencare.Model.Elder;
 import com.example.slothgoldencare.Model.User;

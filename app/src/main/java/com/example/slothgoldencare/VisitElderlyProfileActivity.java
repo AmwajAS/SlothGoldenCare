@@ -11,6 +11,8 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import com.example.slothgoldencare.DataBaseHelper.DataBaseHelper;
+import com.example.slothgoldencare.Doctor.DoctorsFragment;
 import com.example.slothgoldencare.Model.Elder;
 import com.example.slothgoldencare.Reminder.TODOActivity;
 

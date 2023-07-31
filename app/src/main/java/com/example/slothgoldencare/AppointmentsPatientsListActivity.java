@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 
+import com.example.slothgoldencare.DataBaseHelper.DataBaseHelper;
+import com.example.slothgoldencare.Doctor.DoctorActivityMain;
 import com.example.slothgoldencare.Model.Appointment;
 import com.example.slothgoldencare.Model.Doctor;
 import com.google.firebase.auth.FirebaseAuth;
