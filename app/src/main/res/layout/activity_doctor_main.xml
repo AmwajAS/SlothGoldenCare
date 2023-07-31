@@ -5,11 +5,34 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
  android:layout_width="match_parent"
  android:layout_height="match_parent"
  tools:context=".AdministratorActivity">
+    <Button android:id="@+id/log_out_btn"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            android:text="Log out"
+            android:layout_height="wrap_content"/>
 
-    <LinearLayout android:layout_width="match_parent"
+    <TextView
+            android:id="@+id/doctor_username"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/buttons_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="20dp"
+            android:text="Username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <LinearLayout
+            android:id="@+id/buttons_layout"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
                   android:orientation="vertical"
                   android:gravity="center"
-                  android:layout_height="match_parent">
+                  android:layout_height="wrap_content">
 
         <Button android:id="@+id/elderlies_btn"
                 android:layout_width="match_parent"
@@ -32,12 +55,6 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="WORK AND PAYMENTS" />
-
-        <Button
-            android:id="@+id/callBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="MAKE A CALL" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

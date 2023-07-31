@@ -78,18 +78,26 @@ public class LoginActivity extends AppCompatActivity {
                 if (checkIDValidation(uid)) {
                     //checking if log in as doctor
                     if (doctorRadioBtn.isChecked()) {
+                        boolean found = false;
                         for(Doctor doctor : doctorsList){
                             if(doctor.getID().equals(uid)){
-                                progressBar.setVisibility(View.GONE);
-                                Intent intent = new Intent(LoginActivity.this, DoctorActivityMain.class);
-                                intent.putExtra("doctorUid", uid);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                                finish();
+                                found = true;
+                                auth.signInWithEmailAndPassword(doctor.getEmail(),doctor.getPassword()).addOnCompleteListener(task -> {
+                                    if(task.isSuccessful()){
+                                        //if successful, call UpdateUI function for doctor.
+                                        progressBar.setVisibility(View.GONE);
+                                        UpdateUI(null,null,auth.getUid());
+                                    }else{
+                                        progressBar.setVisibility(View.GONE);
+                                        Snackbar.make(getWindow().getDecorView(), Objects.requireNonNull(Objects.requireNonNull(task.getException()).getMessage()), Snackbar.LENGTH_LONG).show();
+                                    }
+                                });
                             }
                         }
-                        progressBar.setVisibility(View.GONE);
-                        Snackbar.make(getWindow().getDecorView(), R.string.alert_message_failed_sign_in, Snackbar.LENGTH_LONG).show();
+                        if(!found) {
+                            progressBar.setVisibility(View.GONE);
+                            Snackbar.make(getWindow().getDecorView(), R.string.alert_message_failed_sign_in, Snackbar.LENGTH_LONG).show();
+                        }
                     }
                     //check if log in as relative
                     else if (relativeRadioBtn.isChecked()) {
@@ -102,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
                                     if(task.isSuccessful()){
                                         //if successful, call UpdateUI function for relative.
                                         progressBar.setVisibility(View.GONE);
-                                        UpdateUI(null,auth.getUid());
+                                        UpdateUI(null,auth.getUid(),null);
                                     }else{
                                         progressBar.setVisibility(View.GONE);
                                         Snackbar.make(getWindow().getDecorView(), Objects.requireNonNull(Objects.requireNonNull(task.getException()).getMessage()), Snackbar.LENGTH_LONG).show();
@@ -125,7 +133,7 @@ public class LoginActivity extends AppCompatActivity {
                                     //if successful, call UpdateUI function for elderly.
                                     if(task.isSuccessful()){
                                         progressBar.setVisibility(View.GONE);
-                                        UpdateUI(auth.getUid(),null);
+                                        UpdateUI(auth.getUid(),null,null);
                                     }else{
                                         progressBar.setVisibility(View.GONE);
                                         Snackbar.make(getWindow().getDecorView(), Objects.requireNonNull(Objects.requireNonNull(task.getException()).getMessage()), Snackbar.LENGTH_LONG).show();
@@ -168,27 +176,35 @@ public class LoginActivity extends AppCompatActivity {
         if(currUser != null){
             Elder elder = dbHelper.getElderByDocumentId(currUser.getUid());
             User user = dbHelper.getUserByDocumentId(currUser.getUid());
+            Doctor doctor = dbHelper.getDoctorByDocumentId(currUser.getUid());
+
             if(elder != null){
-                UpdateUI(elder.getDocId(),null);
+                UpdateUI(elder.getDocId(),null,null);
             }else if (user != null){
-                UpdateUI(null,user.getDocId());
+                UpdateUI(null,user.getDocId(),null);
+            }else if(doctor != null){
+                UpdateUI(null,null,doctor.getDocId());
             }
         }
     }
     //UpdateUI function that opens the relevant page.
-    public void UpdateUI(String elderDocId, String userDocId){
-        if(elderDocId != null){
+    public void UpdateUI(String elderDocId, String userDocId,String doctorDocId) {
+        if (elderDocId != null) {
             Intent intent = new Intent(LoginActivity.this, HomePageActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
-        }else if(userDocId != null) {
+        } else if (userDocId != null) {
             Intent intent = new Intent(LoginActivity.this, UserHomePageActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
+        } else if (doctorDocId != null) {
+            Intent intent = new Intent(LoginActivity.this, DoctorActivityMain.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         }
-
     }
 
     /*

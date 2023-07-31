@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.slothgoldencare.Model.Appointment;
+import com.example.slothgoldencare.Model.Doctor;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -23,19 +24,20 @@ public class AppointmentsPatientsListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private AppointmentsAdapter adapter;
     private List<Appointment> appointmentsList;
-
+    private FirebaseAuth auth;
     private String connectedDoctorId;
     private String connectedDoctorName;
     private String connectedDoctorSpecialization;
-
+    private DataBaseHelper db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointments_patients_list);
-
+        auth = FirebaseAuth.getInstance();
         recyclerView = findViewById(R.id.appointmentsRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        db = new DataBaseHelper(this);
         appointmentsList = new ArrayList<>();
         adapter = new AppointmentsAdapter(this, appointmentsList);
         recyclerView.setAdapter(adapter);
@@ -44,7 +46,11 @@ public class AppointmentsPatientsListActivity extends AppCompatActivity {
         loadAppointmentsData();
     }
     private void loadAppointmentsData() {
-        String doctorId = getIntent().getStringExtra("doctorUid");
+        String doctorDocId = auth.getUid();
+        Log.w(TAG,"this is the doctor document id: "+doctorDocId);
+        Doctor doctor = db.getDoctorByDocumentId(doctorDocId);
+        Log.w(TAG,"this is the doctor id: "+doctor.getID());
+        String doctorId = doctor.getID();
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         // Query the "Doctor" collection to get the doctor's data based on the "id" field
         firestore.collection("Doctors").whereEqualTo("id", doctorId).get()

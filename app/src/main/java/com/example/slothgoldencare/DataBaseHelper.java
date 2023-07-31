@@ -756,6 +756,27 @@ this method take as an input Elder ID and delete it from the DB.
         // Return null if no matching elder found
         return null;
     }
+    public Doctor getDoctorByDocumentId(String documentId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(DOCTORS_TBL, null, DOCUMNET_ID + "=?", new String[]{documentId}, null, null, null);
+        if (cursor.moveToFirst()) {
+            String docId = cursor.getString(cursor.getColumnIndexOrThrow(DOCUMNET_ID));
+            String id = cursor.getString(cursor.getColumnIndexOrThrow(DOCTOR_ID));
+            String name = cursor.getString(cursor.getColumnIndexOrThrow(DOCTOR_NAME));
+            String email = cursor.getString(cursor.getColumnIndexOrThrow(DOCTOR_EMAIL));
+            String password = cursor.getString(cursor.getColumnIndexOrThrow(DOCTOR_PASSWORD));
+            String phone = cursor.getString(cursor.getColumnIndexOrThrow(DOCTOR_PHONE));
+            String specialization = cursor.getString(cursor.getColumnIndexOrThrow(DOCTOR_SPECIALIZATION));
+
+            // Create and return the Elder object
+            Doctor doctor = new Doctor(id, name,phone,email, password,specialization);
+            doctor.setDocId(docId);
+            return doctor;
+        }
+        cursor.close();
+        // Return null if no matching elder found
+        return null;
+    }
     public List<HealthTip> getHealthTips() {
         List<HealthTip> healthTipsList = new ArrayList<>();
 

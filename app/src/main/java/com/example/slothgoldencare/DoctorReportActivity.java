@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+import com.example.slothgoldencare.Model.Doctor;
 import com.example.slothgoldencare.Model.WorkAndPayment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -23,6 +24,8 @@ public class DoctorReportActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private WorkAndPaymentAdapter adapter;
     private Button viewConfirmationButton;
+    private DataBaseHelper dataBaseHelper;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,13 +39,16 @@ public class DoctorReportActivity extends AppCompatActivity {
         adapter = new WorkAndPaymentAdapter(this, workAndPaymentList);
         recyclerView.setAdapter(adapter);
 
+        dataBaseHelper = new DataBaseHelper(this);
+        auth = FirebaseAuth.getInstance();
         viewConfirmationButton = findViewById(R.id.viewConfirmationButton);
         viewConfirmationButton.setOnClickListener(v -> showConfirmationData());
         loadWorkAndPaymentData();
     }
 
     private void loadWorkAndPaymentData() {
-        String doctorId = getIntent().getStringExtra("doctorUid");
+        Doctor doctor = dataBaseHelper.getDoctorByDocumentId(auth.getUid());
+        String doctorId = doctor.getID();
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
         // Query the "WorkAndPayment" collection to get the work and payment data for the connected doctor
