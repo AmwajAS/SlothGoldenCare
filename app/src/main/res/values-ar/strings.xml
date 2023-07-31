@@ -154,4 +154,6 @@
     <string name="doc_appointments">المواعيد الخاصة بي</string>
     <string name="doc_work_pay">العمل والمدفوعات</string>
     <string name="administer_pay_btn">دفع</string>
+    <string name="SearchId">البحث بالهوية</string>
+    <string name="our_doctors">أطبائنا</string>
 </resources>

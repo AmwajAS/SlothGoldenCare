@@ -4,12 +4,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.view.*;
 import android.widget.*;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -74,8 +76,8 @@ public class UserHomePageActivity extends AppCompatActivity {
                 //clicking on a specific elderly to show the profile.
                 holder.itemView.setOnClickListener(view -> {
                     Toast.makeText(view.getContext(), "Elderly Clicked: " + elder.getUsername(), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(UserHomePageActivity.this,VisitElderlyProfileActivity.class);
-                    intent.putExtra("elderlyId",elder.getID());
+                    Intent intent = new Intent(UserHomePageActivity.this, VisitElderlyProfileActivity.class);
+                    intent.putExtra("elderlyId", elder.getID());
                     startActivity(intent);
                 });
             }
@@ -114,7 +116,10 @@ public class UserHomePageActivity extends AppCompatActivity {
         return true;
     }
 
-    public List<Elder> GetRelativeElderlies(){
+    /*
+    This method retrieve the Elder and their Relatives from the FireStore.
+     */
+    public List<Elder> GetRelativeElderlies() {
         List<Elder> temp = new ArrayList<>();
         // Assuming you have a valid SQLiteDatabase object named "db"
 
@@ -140,7 +145,7 @@ public class UserHomePageActivity extends AppCompatActivity {
                 Gender gender = Elder.GenderConvertor(genderString);
                 Date dateOfBirth = Elder.convertStringIntoDate(dob);
 
-                Elder elder = new Elder(elderId,name,phone,dateOfBirth,gender,email,password);
+                Elder elder = new Elder(elderId, name, phone, dateOfBirth, gender, email, password);
                 elder.setDocId(documentId);
                 temp.add(elder);
 
@@ -159,7 +164,7 @@ public class UserHomePageActivity extends AppCompatActivity {
        */
     public void bottomNavigationView() {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
-        bottomNavigationView.setSelectedItemId(R.id.current);
+        bottomNavigationView.setSelectedItemId(R.id.home);
         Menu menu = bottomNavigationView.getMenu();
         MenuItem currentItem = menu.findItem(R.id.current);
         // Hiding the "current" menu item

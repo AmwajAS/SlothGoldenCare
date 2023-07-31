@@ -154,4 +154,6 @@
     <string name="health_tip">טיפ בריאות</string>
     <string name="Appointment_Scheduling_CV">זימון פגישות</string>
     <string name="administer_pay_btn">תשלום</string>
+    <string name="SearchId">חפש לפי זיהוי</string>
+    <string name="our_doctors">הרופאים שלנו</string>
 </resources>

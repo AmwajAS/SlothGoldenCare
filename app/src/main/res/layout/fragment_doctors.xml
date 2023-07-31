@@ -9,65 +9,35 @@
     tools:context=".DoctorsFragment">
 
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:fontFamily="@font/sigmar_one"
-        android:gravity="center"
-        android:text="Our Doctors"
-        android:textColor="#3F51B5"
-        android:textSize="20sp" />
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/imageViewDoc1"
-            android:layout_width="340dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
-
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:fontFamily="sans-serif-black"
-            android:text="Dr. David Patel.\nDomain: Geriatric Psychiatry.\n\nDr. David Patel is a geriatric psychiatrist who specializes in mental health care for the elderly.
-            He is highly skilled in diagnosing and treating age-related cognitive disorders, depression, anxiety, and other mental health conditions commonly experienced by older adults.
-            \n\nContact: \nPhone:052-6674545\nEmail: dr.davidpatel@Macabi.com" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/imageViewDoc2"
-            android:layout_width="340dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-        <TextView
-            android:id="@+id/textView10"
+        <Button
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="sans-serif-black"
-            android:text="Dr. Emily Johnson.\nDomain: Geriatric Medicine.\n\nDr.Dr. Emily Johnson specializes in geriatric medicine, which focuses on the health and well-being of older adults. She has extensive experience in managing age-related conditions and providing comprehensive care tailored to the unique needs of elderly patients.\n\nContact: \nPhone:054-4207890\nEmail:  dr.emilyjohnson@Macabi.com" />
-    </LinearLayout>
+            android:text="back"
+            android:id="@+id/back_btn"
+            android:layout_height="wrap_content"/>
 
-    <Button
-        android:id="@+id/backButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
-        android:text="Back" />
+        <TextView
+            android:id="@+id/list_title"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:fontFamily="@font/sigmar_one"
+            android:gravity="center"
+            android:text="@string/doctors"
+            android:textColor="#3F51B5"
+            android:textSize="20sp" />
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+        <ListView
+            android:layout_weight="13"
+            android:id="@+id/doctors_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+        </ListView>
+    </LinearLayout>
 
 </LinearLayout>

@@ -154,4 +154,6 @@
     <string name="doc_appointments">МОИ НАЗНАЧЕНИЯ</string>
     <string name="doc_work_pay">РАБОТА И ОПЛАТА</string>
     <string name="administer_pay_btn">Платежи</string>
+    <string name="SearchId">Поиск по идентификатору</string>
+    <string name="our_doctors">Наши врачи</string>
 </resources>

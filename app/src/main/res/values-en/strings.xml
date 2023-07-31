@@ -154,4 +154,6 @@
     <string name="doc_appointments">MY APPOINTMENTS</string>
     <string name="doc_work_pay">WORK AND PAYMENTS</string>
     <string name="administer_pay_btn">Payments</string>
+    <string name="SearchId">Search By Id</string>
+    <string name="our_doctors">Our Doctors</string>
 </resources>

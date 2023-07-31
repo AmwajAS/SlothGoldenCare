@@ -232,8 +232,8 @@
     <string name="administer_pay_btn">Payments</string>
 
     <string name="make_a_call" translatable="false">MAKE A CALL</string>
-    <string name="SearchId" translatable="false">Search By Id</string>
-
+    <string name="SearchId">Search By Id</string>
+    <string name="our_doctors">Our Doctors</string>
 
 
 </resources>
