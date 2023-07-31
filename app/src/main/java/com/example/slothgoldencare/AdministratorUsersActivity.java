@@ -2,6 +2,7 @@ package com.example.slothgoldencare;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,7 @@ public class AdministratorUsersActivity extends AppCompatActivity implements Vie
     private DataBaseHelper dbHelper;
     private FirebaseFirestore db;
     private Button buttonAddUser;
+    private Button backBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,13 @@ public class AdministratorUsersActivity extends AppCompatActivity implements Vie
         users = new ArrayList<>();
         users = dbHelper.getUsers();
         buttonAddUser = findViewById(R.id.buttonAdd);
+
+        // back btn to remove the replaced view to the main one.
+        backBtn = findViewById(R.id.back_btn);
+        backBtn.setOnClickListener(view1 -> {
+            Intent intent = new Intent(AdministratorUsersActivity.this,AdministratorActivity.class);
+            startActivity(intent);
+        });
 
 
         ArrayAdapter<User> userAdapter = new ArrayAdapter<User>(this, R.layout.administrator_user_item, users) {

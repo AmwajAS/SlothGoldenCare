@@ -156,4 +156,8 @@
     <string name="administer_pay_btn">Payments</string>
     <string name="SearchId">Search By Id</string>
     <string name="our_doctors">Our Doctors</string>
+    <string name="back">Back</string>
+    <string name="AddElderly">ADD ELDERLY</string>
+    <string name="AddDoctor">ADD DOCTOR</string>
+    <string name="AddUser">ADD USER</string>
 </resources>

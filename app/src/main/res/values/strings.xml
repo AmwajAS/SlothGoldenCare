@@ -234,6 +234,10 @@
     <string name="make_a_call" translatable="false">MAKE A CALL</string>
     <string name="SearchId">Search By Id</string>
     <string name="our_doctors">Our Doctors</string>
+    <string name="back">Back</string>
+    <string name="AddElderly">ADD ELDERLY</string>
+    <string name="AddDoctor">ADD DOCTOR</string>
+    <string name="AddUser">ADD USER</string>
 
 
 </resources>

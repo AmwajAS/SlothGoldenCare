@@ -156,4 +156,8 @@
     <string name="administer_pay_btn">Платежи</string>
     <string name="SearchId">Поиск по идентификатору</string>
     <string name="our_doctors">Наши врачи</string>
+    <string name="back">назад</string>
+    <string name="AddElderly">"ДОБАВИТЬ "</string>
+    <string name="AddDoctor">ДОБАВИТЬ ВРАЧА</string>
+    <string name="AddUser">"ДОБАВИТЬ "</string>
 </resources>

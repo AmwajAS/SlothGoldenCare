@@ -2,6 +2,7 @@ package com.example.slothgoldencare;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +32,7 @@ public class AdministratorElderliesActivity extends AppCompatActivity implements
     private ArrayAdapter<Elder> elderAdapter;
     DataBaseHelper dbHelper;
     FirebaseFirestore db;
+    private Button backBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,14 @@ public class AdministratorElderliesActivity extends AppCompatActivity implements
         elders = new ArrayList<>();
         elders = dbHelper.getElders();
         buttonAddElderly = findViewById(R.id.buttonAdd);
+
+
+        // back btn to remove the replaced view to the main one.
+        backBtn = findViewById(R.id.back_btn);
+        backBtn.setOnClickListener(view1 -> {
+            Intent intent = new Intent(AdministratorElderliesActivity.this,AdministratorActivity.class);
+            startActivity(intent);
+        });
 
 
         elderAdapter = new ArrayAdapter<Elder>(this, R.layout.administrator_user_item, elders) {

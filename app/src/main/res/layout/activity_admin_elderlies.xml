@@ -16,6 +16,16 @@
                 app:layout_constraintBottom_toTopOf="@id/buttonAdd"
                 app:layout_constraintTop_toTopOf="parent">
 
+
+            <Button
+                android:id="@+id/back_btn"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="@string/back"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
         <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -31,13 +41,13 @@
     </LinearLayout>
 
     <Button
-            android:id="@+id/buttonAdd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add Elderly"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginBottom="16dp" />
+        android:id="@+id/buttonAdd"
+        android:layout_width="170dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/AddElderly"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

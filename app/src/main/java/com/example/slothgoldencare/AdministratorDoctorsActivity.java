@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,7 @@ public class AdministratorDoctorsActivity extends AppCompatActivity {
     private ArrayAdapter<Doctor> doctorAdapter;
     DataBaseHelper dbHelper;
     FirebaseFirestore db;
+    private Button backBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,16 @@ public class AdministratorDoctorsActivity extends AppCompatActivity {
         doctors = new ArrayList<>();
         doctors.addAll(dbHelper.getDoctors());
         addDrBtn = findViewById(R.id.buttonAdd);
+
+        // back btn to remove the replaced view to the main one.
+        backBtn = findViewById(R.id.back_btn);
+        backBtn.setOnClickListener(view1 -> {
+            Intent intent = new Intent(AdministratorDoctorsActivity.this,AdministratorActivity.class);
+            startActivity(intent);
+        });
+
+
+
 
         // Create the doctorAdapter and set it to the ListView
         doctorAdapter = new ArrayAdapter<Doctor>(this, R.layout.administrator_user_item, doctors);
