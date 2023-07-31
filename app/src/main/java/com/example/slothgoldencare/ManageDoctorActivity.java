@@ -33,6 +33,7 @@ public class ManageDoctorActivity extends AppCompatActivity{
     private RecyclerView recyclerView;
     private WorkAndPaymentAdapter adapter;
     private Button payBtn;
+    private Button backBtn;
 
 
     @Override
@@ -46,6 +47,13 @@ public class ManageDoctorActivity extends AppCompatActivity{
         workAndPaymentList = new ArrayList<>();
         adapter = new WorkAndPaymentAdapter(this, workAndPaymentList);
         recyclerView.setAdapter(adapter);
+
+        // back btn to remove the replaced view to the main one.
+        backBtn = findViewById(R.id.back_btn);
+        backBtn.setOnClickListener(view1 -> {
+            Intent intent = new Intent(ManageDoctorActivity.this, AdministratorActivity.class);
+            startActivity(intent);
+        });
 
         payBtn=findViewById(R.id.payButton);
         payBtn.setOnClickListener(v -> updateAllPaymentsToPaid());
