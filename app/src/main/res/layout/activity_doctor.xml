@@ -22,6 +22,7 @@
             android:layout_width="331dp"
             android:layout_height="60dp"
             android:layout_marginStart="18dp"
+            android:iconifiedByDefault="false"
             android:layout_marginTop="28dp"
             android:queryHint="@string/SearchId" />
     </LinearLayout>

@@ -49,6 +49,11 @@ public class Elder extends User {
         return dateFormat.format(date);
     }
 
+    public String getID() {
+        return "" + super.getID() + " " + getUsername() + "";
+    }
+
+
     public static Date convertStringIntoDate(String dateString) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Date date = null;
