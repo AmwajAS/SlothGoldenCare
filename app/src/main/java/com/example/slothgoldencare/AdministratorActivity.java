@@ -12,6 +12,8 @@ import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.ktx.Firebase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,7 @@ public class AdministratorActivity extends AppCompatActivity{
     private Button elderliesBtn;
     private Button doctorsBtn;
     private Button payBtn;
+    private Button backBtn;
 
     DataBaseHelper dbHelper;
 
@@ -37,6 +40,7 @@ public class AdministratorActivity extends AppCompatActivity{
         elderliesBtn = findViewById(R.id.elderlies_btn);
         doctorsBtn = findViewById(R.id.doctors_btn);
         payBtn = findViewById(R.id.payBtn);
+        backBtn = findViewById(R.id.back_btn);
 
         usersBtn.setOnClickListener(v-> {
             Intent intent = new Intent(AdministratorActivity.this,AdministratorUsersActivity.class);
@@ -53,6 +57,16 @@ public class AdministratorActivity extends AppCompatActivity{
         payBtn.setOnClickListener(v-> {
             Intent intent = new Intent(AdministratorActivity.this,ManageDoctorActivity.class);
             startActivity(intent);
+        });
+
+        backBtn.setOnClickListener(v->{
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            if(auth.getCurrentUser() != null){
+                auth.signOut();
+            }
+            Intent intent = new Intent(AdministratorActivity.this, LoginActivity.class);
+            startActivity(intent);
+            this.finish();
         });
     }
 

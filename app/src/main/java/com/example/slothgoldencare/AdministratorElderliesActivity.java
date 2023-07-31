@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.slothgoldencare.Model.Doctor;
 import com.example.slothgoldencare.Model.Elder;
 import com.example.slothgoldencare.Model.User;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class AdministratorElderliesActivity extends AppCompatActivity implements
     DataBaseHelper dbHelper;
     FirebaseFirestore db;
     private Button backBtn;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,7 @@ public class AdministratorElderliesActivity extends AppCompatActivity implements
         elders = new ArrayList<>();
         elders = dbHelper.getElders();
         buttonAddElderly = findViewById(R.id.buttonAdd);
-
+        auth = FirebaseAuth.getInstance();
 
         // back btn to remove the replaced view to the main one.
         backBtn = findViewById(R.id.back_btn);
@@ -175,15 +177,22 @@ public class AdministratorElderliesActivity extends AppCompatActivity implements
                     public void onSaveChanges(Elder elder) {
                         if(elder != null){
                             db = FirebaseFirestore.getInstance();
-                            db.collection("Elderlies").add(elder).addOnCompleteListener(task -> {
-                                if(task.isSuccessful()){
-                                    if(dbHelper.addElderData(elder)){
-                                        Toast.makeText(getApplicationContext(),R.string.info_add_success,Toast.LENGTH_LONG).show();
-                                    }else{
-                                        Toast.makeText(getApplicationContext(),R.string.info_add_fail,Toast.LENGTH_LONG).show();
-                                    }
+                            auth.createUserWithEmailAndPassword(elder.getEmail(),elder.getPassword()).addOnCompleteListener(task1 -> {
+                                if(task1.isSuccessful()) {
+                                    elder.setDocId(auth.getUid());
+                                    db.collection("Elderlies").document(elder.getDocId()).set(elder).addOnCompleteListener(task -> {
+                                        if(task.isSuccessful()){
+                                            if (dbHelper.addElderData(elder)) {
+                                                Toast.makeText(getApplicationContext(), R.string.info_add_success, Toast.LENGTH_LONG).show();
+                                                elderAdapter.notifyDataSetInvalidated();
+                                            } else {
+                                                Toast.makeText(getApplicationContext(), R.string.info_add_fail, Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+                                    });
                                 }
                             });
+                            auth.signOut();
                         }
                     }
 

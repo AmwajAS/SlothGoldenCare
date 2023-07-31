@@ -42,7 +42,9 @@ public class ElderlyItemDialog extends Dialog {
                 etId.setText(oldElder.getID());
                 etUsername.setText(oldElder.getUsername());
                 etEmail.setText(oldElder.getEmail());
+                etEmail.setEnabled(false);
                 etPassword.setText(oldElder.getPassword());
+                etPassword.setEnabled(false);
                 etPhoneNumber.setText(oldElder.getPhoneNumber());
                 etGender.setText(oldElder.getGender().toString());
                 etDOB.setText(oldElder.getDOB().toString());
@@ -53,7 +55,9 @@ public class ElderlyItemDialog extends Dialog {
                 etId.setText(oldUser.getID());
                 etUsername.setText(oldUser.getUsername());
                 etEmail.setText(oldUser.getEmail());
+                etEmail.setEnabled(false);
                 etPassword.setText(oldUser.getPassword());
+                etPassword.setEnabled(false);
                 etPhoneNumber.setText(oldUser.getPhoneNumber());
             }
         } else if (itemType == ItemType.DOCTOR) {
@@ -63,7 +67,9 @@ public class ElderlyItemDialog extends Dialog {
                 etUsername.setText(oldDoctor.getUsername());
                 etspecialization.setText(oldDoctor.getSpecialization());
                 etEmail.setText(oldDoctor.getEmail());
+                etEmail.setEnabled(false);
                 etPassword.setText(oldDoctor.getPassword());
+                etPassword.setEnabled(false);
                 etPhoneNumber.setText(oldDoctor.getPhoneNumber());
             }
         }
@@ -149,7 +155,7 @@ public class ElderlyItemDialog extends Dialog {
                 if(itemType == ItemType.ELDER) {
                     String genderString = etGender.getText().toString();
                     String dob = etDOB.getText().toString();
-                    Date date = DataBaseHelper.parseDateString(dob);
+                    Date date = ElderSignupActivity.convertStringIntoDate(dob);
                     Gender gender = Elder.GenderConvertor(genderString);
                     Elder newElder = new Elder(id, username, phoneNumber, date, gender, email, password);
                     newElder.setDocId(docId);

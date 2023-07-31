@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.slothgoldencare.Model.Doctor;
 import com.example.slothgoldencare.Model.Elder;
 import com.example.slothgoldencare.Model.User;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -31,12 +32,14 @@ public class AdministratorUsersActivity extends AppCompatActivity implements Vie
     private FirebaseFirestore db;
     private Button buttonAddUser;
     private Button backBtn;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_users);
         dbHelper = new DataBaseHelper(this);
+        auth = FirebaseAuth.getInstance();
         usersList = findViewById(R.id.users_list);
         //eldersList = findViewById(R.id.elderly_list);
         users = new ArrayList<>();
@@ -179,15 +182,22 @@ public class AdministratorUsersActivity extends AppCompatActivity implements Vie
                     public void onSaveChanges(User user) {
                         if(user != null){
                             db = FirebaseFirestore.getInstance();
-                            db.collection("Users").add(user).addOnCompleteListener(task -> {
-                                if(task.isSuccessful()){
-                                    if(dbHelper.addUserData(user)){
-                                        Toast.makeText(getApplicationContext(),R.string.info_add_success,Toast.LENGTH_LONG).show();
-                                    }else{
-                                        Toast.makeText(getApplicationContext(),R.string.info_add_fail,Toast.LENGTH_LONG).show();
-                                    }
+                            auth.createUserWithEmailAndPassword(user.getEmail(),user.getPassword()).addOnCompleteListener(task1 -> {
+                                if (task1.isSuccessful()) {
+                                    user.setDocId(auth.getUid());
+                                    db.collection("Users").document(user.getDocId()).set(user).addOnCompleteListener(task -> {
+                                        if (task.isSuccessful()) {
+                                            if (dbHelper.addUserData(user)) {
+                                                userAdapter.notifyDataSetInvalidated();
+                                                Toast.makeText(getApplicationContext(), R.string.info_add_success, Toast.LENGTH_LONG).show();
+                                            } else {
+                                                Toast.makeText(getApplicationContext(), R.string.info_add_fail, Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+                                    });
                                 }
                             });
+                            auth.signOut();
                         }
                     }
 

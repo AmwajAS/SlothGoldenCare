@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.example.slothgoldencare.Model.Doctor;
 import com.example.slothgoldencare.Model.Elder;
 import com.example.slothgoldencare.Model.User;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public class AdministratorDoctorsActivity extends AppCompatActivity {
     DataBaseHelper dbHelper;
     FirebaseFirestore db;
     private Button backBtn;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class AdministratorDoctorsActivity extends AppCompatActivity {
 
 
         dbHelper = new DataBaseHelper(this);
+        auth = FirebaseAuth.getInstance();
         doctorsList = findViewById(R.id.doctors_list);
         doctors = new ArrayList<>();
         doctors.addAll(dbHelper.getDoctors());
@@ -188,20 +191,26 @@ public class AdministratorDoctorsActivity extends AppCompatActivity {
                     public void onSaveChanges(Doctor doctor) {
                         //CHECK THIS SECTION!
                         if(doctor != null){
-                            db = FirebaseFirestore.getInstance();
-                            db.collection("Doctors").add(doctor).addOnCompleteListener(task -> {
-                                if(task.isSuccessful()){
-                                    Toast.makeText(getApplicationContext(),"added to firestore",Toast.LENGTH_LONG).show();
-
-                                    if(dbHelper.addDoctorData(doctor)){
-                                        Toast.makeText(getApplicationContext(),R.string.info_add_success,Toast.LENGTH_LONG).show();
-                                    }else{
-                                        Toast.makeText(getApplicationContext(),R.string.info_add_fail,Toast.LENGTH_LONG).show();
-                                    }
-                                }else{
-                                    Toast.makeText(getApplicationContext(),"Not added to firestore",Toast.LENGTH_LONG).show();
+                            auth.createUserWithEmailAndPassword(doctor.getEmail(),doctor.getPassword()).addOnCompleteListener(task1 -> {
+                                if (task1.isSuccessful()) {
+                                    doctor.setDocId(auth.getUid());
+                                    db = FirebaseFirestore.getInstance();
+                                    db.collection("Doctors").document(doctor.getDocId()).set(doctor).addOnCompleteListener(task -> {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(getApplicationContext(), "added to firestore", Toast.LENGTH_LONG).show();
+                                            if (dbHelper.addDoctorData(doctor)) {
+                                                Toast.makeText(getApplicationContext(), R.string.info_add_success, Toast.LENGTH_LONG).show();
+                                                doctorAdapter.notifyDataSetChanged();
+                                            } else {
+                                                Toast.makeText(getApplicationContext(), R.string.info_add_fail, Toast.LENGTH_LONG).show();
+                                            }
+                                        } else {
+                                            Toast.makeText(getApplicationContext(), "Not added to firestore", Toast.LENGTH_LONG).show();
+                                        }
+                                    });
                                 }
                             });
+                            auth.signOut();
                         }
                     }
 
