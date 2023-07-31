@@ -12,22 +12,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.slothgoldencare.Model.WorkAndPayment;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class WorkAndPaymentAdapter extends RecyclerView.Adapter<WorkAndPaymentAdapter.WorkAndPaymentViewHolder> {
 
     private Context context;
     private List<WorkAndPayment> workAndPaymentList;
-    private OnWorkAndPaymentClickListener onWorkAndPaymentClickListener;
-
-    public interface OnWorkAndPaymentClickListener {
-        void onWorkAndPaymentClick(int position);
-    }
-    public WorkAndPaymentAdapter(Context context, List<WorkAndPayment> workAndPaymentList, OnWorkAndPaymentClickListener listener) {
-        this.context = context;
-        this.workAndPaymentList = workAndPaymentList;
-        this.onWorkAndPaymentClickListener = listener;
-    }
+//    private OnWorkAndPaymentClickListener onWorkAndPaymentClickListener;
+//
+//    public interface OnWorkAndPaymentClickListener {
+//        void onWorkAndPaymentClick(int position);
+//    }
+//    public WorkAndPaymentAdapter(Context context, List<WorkAndPayment> workAndPaymentList, OnWorkAndPaymentClickListener listener) {
+//        this.context = context;
+//        this.workAndPaymentList = workAndPaymentList;
+//        this.onWorkAndPaymentClickListener = listener;
+//    }
 
     public WorkAndPaymentAdapter(Context context, List<WorkAndPayment> workAndPaymentList) {
         this.context = context;
@@ -44,27 +46,32 @@ public class WorkAndPaymentAdapter extends RecyclerView.Adapter<WorkAndPaymentAd
     @Override
     public void onBindViewHolder(@NonNull WorkAndPaymentViewHolder holder, int position) {
         WorkAndPayment workAndPayment = workAndPaymentList.get(position);
+            // Convert Timestamp to a formatted date string
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        String dateDay = dateFormat.format(workAndPayment.getDateDay().toDate());
+        String paidDate = dateFormat.format(workAndPayment.getPaidDate().toDate());
 
-        holder.dateDayTextView.setText("Date Day: " + workAndPayment.getDateDay());
+        holder.dateDayTextView.setText("Date Day: " + dateDay);
         holder.doctorIdTextView.setText("Doctor ID: " + workAndPayment.getDoctorId());
         holder.hoursTextView.setText("Hours: " + workAndPayment.getHours());
-        holder.isPaidTextView.setText("Is Paid: " + workAndPayment.isPaid());
+        holder.paidDateTextView.setText("Paid Date: " +paidDate);
+        holder.isPaidTextView.setText("Is Paid: " + workAndPayment.getIsPaid());
 
         // Display the paid date if the workAndPayment is paid, otherwise hide it
-        if (workAndPayment.isPaid()) {
-            holder.paidDateTextView.setVisibility(View.VISIBLE);
-            holder.paidDateTextView.setText("Paid Date: " + workAndPayment.getPaidDate());
-            holder.viewConfirmationButton.setVisibility(View.VISIBLE);
-        } else {
-            holder.paidDateTextView.setVisibility(View.GONE);
-            holder.viewConfirmationButton.setVisibility(View.GONE);
-        }
+//        if (workAndPayment.isPaid()) {
+//            holder.paidDateTextView.setVisibility(View.VISIBLE);
+//            holder.paidDateTextView.setText("Paid Date: " + workAndPayment.getPaidDate());
+//            holder.viewConfirmationButton.setVisibility(View.VISIBLE);
+//        } else {
+//            holder.paidDateTextView.setVisibility(View.GONE);
+//            holder.viewConfirmationButton.setVisibility(View.GONE);
+//        }
         // Set a click listener for the viewConfirmationButton
-        holder.viewConfirmationButton.setOnClickListener(v -> {
-            if (onWorkAndPaymentClickListener != null) {
-                onWorkAndPaymentClickListener.onWorkAndPaymentClick(position);
-            }
-        });
+//        holder.viewConfirmationButton.setOnClickListener(v -> {
+//            if (onWorkAndPaymentClickListener != null) {
+//                onWorkAndPaymentClickListener.onWorkAndPaymentClick(position);
+//            }
+//        });
     }
 
     @Override
@@ -78,7 +85,7 @@ public class WorkAndPaymentAdapter extends RecyclerView.Adapter<WorkAndPaymentAd
         TextView hoursTextView;
         TextView isPaidTextView;
         TextView paidDateTextView;
-        Button viewConfirmationButton;
+
 
         public WorkAndPaymentViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -87,7 +94,6 @@ public class WorkAndPaymentAdapter extends RecyclerView.Adapter<WorkAndPaymentAd
             hoursTextView = itemView.findViewById(R.id.hoursTextView);
             isPaidTextView = itemView.findViewById(R.id.isPaidTextView);
             paidDateTextView = itemView.findViewById(R.id.paidDateTextView);
-            viewConfirmationButton = itemView.findViewById(R.id.viewConfirmationButton);
         }
     }
 }

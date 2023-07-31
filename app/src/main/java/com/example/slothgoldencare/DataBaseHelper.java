@@ -330,11 +330,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put(WORK_AND_PAYMENT_DATE_DAY, workAndPayment.getDateDay().toDate().toString());
+        values.put(WORK_AND_PAYMENT_DATE_DAY, sdf.format(workAndPayment.getDateDay().toDate()));
         values.put(WORK_AND_PAYMENT_DOCTOR_ID, workAndPayment.getDoctorId());
         values.put(WORK_AND_PAYMENT_HOURS, workAndPayment.getHours());
-        values.put(WORK_AND_PAYMENT_IS_PAID, workAndPayment.isPaid() ? 1 : 0);
-        values.put(WORK_AND_PAYMENT_PAID_DATE, workAndPayment.getPaidDate().toDate().toString());
+        values.put(WORK_AND_PAYMENT_IS_PAID, workAndPayment.getIsPaid());
+        values.put(WORK_AND_PAYMENT_PAID_DATE, sdf.format(workAndPayment.getPaidDate().toDate()));
 
         long result = db.insert(WORK_AND_PAYMENT_TBL, null, values);
         db.close();
@@ -811,31 +811,44 @@ this method take as an input Elder ID and delete it from the DB.
         return appointmentsList;
     }
 
-//    public List<WorkAndPayment> getWorkAndPaymentData() {
-//        List<WorkAndPayment> workAndPaymentList = new ArrayList<>();
-//
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        Cursor cursor = db.query(WORK_AND_PAYMENT_TBL, null, null, null, null, null, null);
-//
-//        if (cursor.moveToFirst()) {
-//            do {
-//                String dateDay = cursor.getString(cursor.getColumnIndexOrThrow(WORK_AND_PAYMENT_DATE_DAY));
-//                String doctorId = cursor.getString(cursor.getColumnIndexOrThrow(WORK_AND_PAYMENT_DOCTOR_ID));
-//                String hours = cursor.getString(cursor.getColumnIndexOrThrow(WORK_AND_PAYMENT_HOURS));
-//                boolean isPaid = cursor.getString(cursor.getColumnIndexOrThrow(WORK_AND_PAYMENT_IS_PAID)).equals("1");
-//                String paidDate = cursor.getString(cursor.getColumnIndexOrThrow(WORK_AND_PAYMENT_PAID_DATE));
-//
-//                WorkAndPayment workAndPayment = new WorkAndPayment(dateDay, doctorId, hours, isPaid, paidDate);
-//                workAndPaymentList.add(workAndPayment);
-//            } while (cursor.moveToNext());
-//        }
-//
-//        cursor.close();
-//        db.close();
-//
-//        return workAndPaymentList;
-//    }
-//
+    public List<WorkAndPayment> getWorkAndPaymentData() {
+        List<WorkAndPayment> workAndPaymentList = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(WORK_AND_PAYMENT_TBL, null, null, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String dateDayStr = cursor.getString(cursor.getColumnIndexOrThrow(WORK_AND_PAYMENT_DATE_DAY));
+                String doctorId = cursor.getString(cursor.getColumnIndexOrThrow(WORK_AND_PAYMENT_DOCTOR_ID));
+                String hours = cursor.getString(cursor.getColumnIndexOrThrow(WORK_AND_PAYMENT_HOURS));
+                String isPaid = cursor.getString(cursor.getColumnIndexOrThrow(WORK_AND_PAYMENT_IS_PAID));
+                String paidDateStr = cursor.getString(cursor.getColumnIndexOrThrow(WORK_AND_PAYMENT_PAID_DATE));
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                Date dateDay = null;
+                Date paidDate = null;
+                try {
+                    dateDay = sdf.parse(dateDayStr);
+                    paidDate = sdf.parse(paidDateStr);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                Timestamp dateDayTimestamp = new Timestamp(dateDay);
+                Timestamp paidDateTimestamp = new Timestamp(paidDate);
+
+                WorkAndPayment workAndPayment = new WorkAndPayment(dateDayTimestamp, doctorId, hours, isPaid, paidDateTimestamp);
+                workAndPaymentList.add(workAndPayment);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return workAndPaymentList;
+    }
+
 
     /*
     this method updated the changed values of the User TBL fileds.
@@ -898,27 +911,18 @@ this method take as an input Elder ID and delete it from the DB.
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        // Convert Timestamp to String representation for date fields
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        String formattedDateDay = dateFormat.format(workAndPayment.getDateDay().toDate());
-        String formattedPaidDate = dateFormat.format(workAndPayment.getPaidDate().toDate());
-
-        values.put(WORK_AND_PAYMENT_DATE_DAY, formattedDateDay);
+        values.put(WORK_AND_PAYMENT_DATE_DAY, sdf.format(workAndPayment.getDateDay().toDate()));
         values.put(WORK_AND_PAYMENT_DOCTOR_ID, workAndPayment.getDoctorId());
         values.put(WORK_AND_PAYMENT_HOURS, workAndPayment.getHours());
-        values.put(WORK_AND_PAYMENT_IS_PAID, workAndPayment.isPaid() ? "1" : "0");
-        values.put(WORK_AND_PAYMENT_PAID_DATE, formattedPaidDate);
+        values.put(WORK_AND_PAYMENT_IS_PAID, workAndPayment.getIsPaid());
+        values.put(WORK_AND_PAYMENT_PAID_DATE, sdf.format(workAndPayment.getPaidDate().toDate()));
 
-        int rowsAffected = db.update(WORK_AND_PAYMENT_TBL, values,
-                WORK_AND_PAYMENT_DATE_DAY + "=? AND " + WORK_AND_PAYMENT_DOCTOR_ID + "=?",
-                new String[]{formattedDateDay, workAndPayment.getDoctorId()});
-
+        int rowsAffected = db.update(WORK_AND_PAYMENT_TBL, values, WORK_AND_PAYMENT_DATE_DAY + "=? AND " +
+                WORK_AND_PAYMENT_DOCTOR_ID + "=?", new String[]{sdf.format(workAndPayment.getDateDay().toDate()), workAndPayment.getDoctorId()});
         db.close();
 
         return rowsAffected > 0;
     }
-
-
     public void FetchElderliesDataFromFirestore(){
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         firestore.collection("Elderlies").get().addOnSuccessListener(querySnapshot -> {
@@ -1313,37 +1317,42 @@ this method take as an input Elder ID and delete it from the DB.
             for (DocumentSnapshot document : querySnapshot.getDocuments()) {
                 try {
                     // Extract required fields from the document
-                    String dateDay = document.getTimestamp("dateDay").toDate().toString();
                     String doctorId = document.getString("doctorId");
                     String hours = document.getString("hours");
-                    boolean isPaid = document.getBoolean("isPaid");
-                    String paidDate = document.getTimestamp("paidDate").toDate().toString();
+                    String isPaid = document.getString("isPaid");
+                    Timestamp paidDate = document.getTimestamp("paidDate");
+                    Timestamp dateDay = document.getTimestamp("dateDay");
+
+                    // Convert Timestamp to string representation
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                    String paidDateStr = sdf.format(paidDate.toDate());
+                    String dateDayStr = sdf.format(dateDay.toDate());
 
                     // Execute the INSERT statement for the "WorkAndPayment" table
-                    String insertQuery = "INSERT INTO " + WORK_AND_PAYMENT_TBL + " (" +
-                            WORK_AND_PAYMENT_DATE_DAY + "," + WORK_AND_PAYMENT_DOCTOR_ID + "," +
-                            WORK_AND_PAYMENT_HOURS + "," + WORK_AND_PAYMENT_IS_PAID + "," +
-                            WORK_AND_PAYMENT_PAID_DATE + ") VALUES (?, ?, ?, ?, ?)";
+                    String insertQuery = "INSERT INTO " + WORK_AND_PAYMENT_TBL + " (" + WORK_AND_PAYMENT_DOCTOR_ID + ", " + WORK_AND_PAYMENT_HOURS + ", " +
+                            WORK_AND_PAYMENT_IS_PAID + ", " + WORK_AND_PAYMENT_PAID_DATE + ", " + WORK_AND_PAYMENT_DATE_DAY + ") VALUES (?, ?, ?, ?, ?)";
                     SQLiteStatement statement = db.compileStatement(insertQuery);
-                    statement.bindString(1, dateDay);
-                    statement.bindString(2, doctorId);
-                    statement.bindString(3, hours);
-                    statement.bindString(4, isPaid ? "true" : "false");
-                    statement.bindString(5, paidDate);
+                    statement.bindString(1, doctorId);
+                    statement.bindString(2, hours);
+                    statement.bindString(3, isPaid);
+                    statement.bindString(4, paidDateStr);
+                    statement.bindString(5, dateDayStr);
                     long rowId = statement.executeInsert();
+
+                    // Print the rowId for debugging
+                    // Log.d(TAG, "Inserted Row Id: " + rowId);
+
                 } catch (Exception e) {
-                    Log.w(TAG, "Specific WorkAndPayment data error: " + e.getMessage());
+                    Log.w(TAG, "Error inserting specific WorkAndPayment data: " + e.getMessage());
                 }
             }
+
             // Close the database connection
             db.close();
         }).addOnFailureListener(e -> {
             Log.w(TAG, "Error fetching WorkAndPayment data from Firestore to SQLite: " + e.getMessage());
         });
     }
-
-
-
 
     public void FetchDataFromFirestore(){
         FetchUsersDataFromFirestore();

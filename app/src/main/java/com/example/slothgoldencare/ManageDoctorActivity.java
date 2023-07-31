@@ -16,7 +16,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManageDoctorActivity extends AppCompatActivity implements WorkAndPaymentAdapter.OnWorkAndPaymentClickListener {
+public class ManageDoctorActivity extends AppCompatActivity{
     private List<WorkAndPayment> workAndPaymentList;
     private RecyclerView recyclerView;
     private WorkAndPaymentAdapter adapter;
@@ -31,7 +31,7 @@ public class ManageDoctorActivity extends AppCompatActivity implements WorkAndPa
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         workAndPaymentList = new ArrayList<>();
-        adapter = new WorkAndPaymentAdapter(this, workAndPaymentList, this); // Pass this activity as the click listener
+        adapter = new WorkAndPaymentAdapter(this, workAndPaymentList);
         recyclerView.setAdapter(adapter);
         loadWorkAndPaymentData();
     }

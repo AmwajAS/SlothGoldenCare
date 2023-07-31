@@ -55,21 +55,22 @@ public class DoctorReportActivity extends AppCompatActivity {
                         // Replace "WorkAndPayment" with your WorkAndPayment class model
                         WorkAndPayment workAndPayment = document.toObject(WorkAndPayment.class);
                         workAndPaymentList.add(workAndPayment);
+
+                        if(workAndPayment.getIsPaid().equals("Yes")){
+                            viewConfirmationButton.setVisibility(View.VISIBLE);
+                        }
                     }
                     adapter.notifyDataSetChanged();
                 })
                 .addOnFailureListener(e -> {
-                    // Handle the failure to fetch work and payment data from the database
-                    // You can display an error message or handle it in any other way
+                 Log.d(TAG, "Cant load the documents!");
                 });
     }
-
     private void showConfirmationData() {
         List<WorkAndPayment> confirmedPayments = new ArrayList<>();
 
         for (WorkAndPayment workAndPayment : workAndPaymentList) {
-//            Log.d(TAG, "check ispaid" +workAndPayment.isPaid() );
-            if (workAndPayment.isPaid()) {
+            if (workAndPayment.getIsPaid().equals("Yes")) {
                 confirmedPayments.add(workAndPayment);
             }
         }
@@ -77,17 +78,11 @@ public class DoctorReportActivity extends AppCompatActivity {
         if (confirmedPayments.isEmpty()) {
             Toast.makeText(this, "No confirmed payments found.", Toast.LENGTH_SHORT).show();
         } else {
-            // Show the confirmed payments in a new activity or dialog
-            // For simplicity, we'll just display a Toast message with the details
-            StringBuilder message = new StringBuilder();
-            for (WorkAndPayment payment : confirmedPayments) {
-                message.append("Date: ").append(payment.getDateDay().toDate().toString()).append("\n");
-                message.append("Doctor ID: ").append(payment.getDoctorId()).append("\n");
-                message.append("Hours: ").append(payment.getHours()).append("\n");
-                message.append("Paid Date: ").append(payment.getPaidDate()).append("\n\n");
-            }
-            Toast.makeText(this, message.toString(), Toast.LENGTH_LONG).show();
+            // Show the confirmation dialog
+            ConfirmationDialogFragment dialogFragment = new ConfirmationDialogFragment(confirmedPayments);
+            dialogFragment.show(getSupportFragmentManager(), "ConfirmationDialog");
         }
     }
+
 }
 
