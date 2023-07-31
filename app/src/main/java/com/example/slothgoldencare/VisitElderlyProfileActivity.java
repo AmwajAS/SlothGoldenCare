@@ -12,10 +12,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.example.slothgoldencare.Model.Elder;
+import com.example.slothgoldencare.Reminder.TODOActivity;
 
 public class VisitElderlyProfileActivity  extends AppCompatActivity implements View.OnClickListener {
 
     private  Elder elder;
+    private String elderlyId;
 
 
     @Override
@@ -24,7 +26,7 @@ public class VisitElderlyProfileActivity  extends AppCompatActivity implements V
         setContentView(R.layout.activity_visit_elderly_profile);
 
         //starting variables
-        String elderlyId = getIntent().getStringExtra("elderlyId");
+        elderlyId = getIntent().getStringExtra("elderlyId");
         DataBaseHelper dataBaseHelper = new DataBaseHelper(this);
         elder = dataBaseHelper.getElderById(elderlyId);
         Button backBtn = findViewById(R.id.back_btn);
@@ -61,6 +63,9 @@ public class VisitElderlyProfileActivity  extends AppCompatActivity implements V
                 replaceFragment(new DoctorsFragment());
                 break;
             case R.id.d2:
+                Intent intent = new Intent(this.getApplicationContext(), TODOActivity.class);
+                intent.putExtra("elderlyId", elderlyId);
+                startActivity(intent);
                 break;
             case R.id.d3:
                 Bundle args3 = new Bundle();
