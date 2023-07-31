@@ -96,7 +96,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    app:cardBackgroundColor="#ffd54f"
+                    app:cardBackgroundColor="#143A84"
                     app:cardCornerRadius="6dp"
                     app:cardMaxElevation="6dp">
 

@@ -441,9 +441,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return null;
     }
 
-    public Doctor getDoctorById(String doctorId) {
+    public Doctor getDoctorById(String doctorDoc) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(DOCTORS_TBL, null, DOCTOR_ID + "=?", new String[]{doctorId}, null, null, null);
+        Cursor cursor = db.query(DOCTORS_TBL, null, DOCUMNET_ID + "=?", new String[]{doctorDoc}, null, null, null);
         if (cursor.moveToFirst()) {
             String docId = cursor.getString(cursor.getColumnIndexOrThrow(DOCUMNET_ID));
             String id = cursor.getString(cursor.getColumnIndexOrThrow(DOCTOR_ID));

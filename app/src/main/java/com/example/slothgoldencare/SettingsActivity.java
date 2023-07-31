@@ -39,6 +39,8 @@ private FirebaseAuth auth;
         bottomNavigationView.setSelectedItemId(R.id.settings);
         Menu menu = bottomNavigationView.getMenu();
         MenuItem currentItem = menu.findItem(R.id.current);
+        MenuItem profileItem = menu.findItem(R.id.profile);
+
         // Hiding the "current" menu item
         currentItem.setVisible(false);
         bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -58,6 +60,7 @@ private FirebaseAuth auth;
                         replaceView(ProfileActivity.class);
                     }else if(dbHelper.getUserByDocumentId(auth.getUid()) != null){
                         replaceView(UserHomePageActivity.class);
+
                     }
                     return true;
             }
@@ -70,4 +73,5 @@ private FirebaseAuth auth;
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         finish();
     }
+
 }
