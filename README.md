@@ -19,7 +19,7 @@ Help in managing elderly care: Enable primary caretakers to monitor the activiti
 - Medication reminders.
 - Appointment scheduling.
 - Care worker management.
-- Video Chat.
+- Voice call.
 - Location Tracking.
 - Customizable profiles.
 - Health tips and resources.
@@ -28,7 +28,6 @@ Help in managing elderly care: Enable primary caretakers to monitor the activiti
 
 ### More Design features
 - Font and Elements size: Larger buttons and comprehensive text details.
-- Colors: Avoid blue font for important UI elements. The color vision also decreases with age and it becomes difficult to distinguish between different colors. In some people, blue shades appear to be distorted or faded. Similarly, the hearing also declines in elderly – resulting in implications for the certain type of content.
 - Clear, simple UI and Make the UI convenient
 - Error recovery: The app will provide a Back / Cancel Button in order to recover from errors that the elder may make by mistake.
 
