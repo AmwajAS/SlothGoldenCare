@@ -54,6 +54,7 @@ public class ProfileActivity extends AppCompatActivity {
         emailTextView.setVisibility(View.VISIBLE);
         phoneNumberTextView.setVisibility(View.VISIBLE);
         emailEditText.setVisibility(View.GONE);
+        emailEditText.setEnabled(false);
         phoneNumberEditText.setVisibility(View.GONE);
         saveButton.setVisibility(View.GONE);
 
@@ -93,10 +94,9 @@ public class ProfileActivity extends AppCompatActivity {
             String newPhoneNumber = phoneNumberEditText.getText().toString();
             // Update the user data in Firestore
             firestore.collection("Elderlies").document(userId)
-                    .update("email", newEmail, "phoneNumber", newPhoneNumber)
+                    .update( "phoneNumber", newPhoneNumber)
                     .addOnSuccessListener(aVoid -> {
                         // Update TextViews with the new values
-                        emailTextView.setText(newEmail);
                         phoneNumberTextView.setText(newPhoneNumber);
 
                         // Show TextViews and hide EditTexts and Save button
