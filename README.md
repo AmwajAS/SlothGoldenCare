@@ -5,8 +5,10 @@ Elderly health care app.
 Help in managing elderly care: Enable primary caretakers to monitor the activities of elderly people, give the elderly a simple button to call for assistance, connection to health services, monitor the taking of medication. Manage the payment and holidays of the care worker. Send daily Sudoku puzzles or Word games to help prevent Alzheimer’s disease. Allow multiple family members to help out. 
 
 ## Technology 
-- JAVA 
-## Requirements.
+- JAVA
+- SQLite
+- Firestore DB
+- Android Studio
 
 ## Features
 - Registration.
